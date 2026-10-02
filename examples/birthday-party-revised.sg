@@ -1,0 +1,3135 @@
+{
+  "meta": {
+    "name": "生日派对 The Birthday Party（完整剧情·修复版）",
+    "version": 2,
+    "source": "The+Birthday+Party.pdf + locked Unity FinishSceneR"
+  },
+  "variables": [
+    {
+      "name": "affection_adam",
+      "type": "number",
+      "initial": 0
+    },
+    {
+      "name": "affection_george",
+      "type": "number",
+      "initial": 0
+    },
+    {
+      "name": "found_napkin",
+      "type": "boolean",
+      "initial": false
+    },
+    {
+      "name": "read_departure",
+      "type": "boolean",
+      "initial": false
+    },
+    {
+      "name": "saw_lakeside",
+      "type": "boolean",
+      "initial": false
+    },
+    {
+      "name": "found_vintage_pc",
+      "type": "boolean",
+      "initial": false
+    },
+    {
+      "name": "saw_old_photos",
+      "type": "boolean",
+      "initial": false
+    },
+    {
+      "name": "has_terminal",
+      "type": "boolean",
+      "initial": false
+    },
+    {
+      "name": "completed_event_1",
+      "type": "boolean",
+      "initial": false
+    },
+    {
+      "name": "completed_event_2",
+      "type": "boolean",
+      "initial": false
+    },
+    {
+      "name": "completed_event_3",
+      "type": "boolean",
+      "initial": false
+    },
+    {
+      "name": "completed_event_4",
+      "type": "boolean",
+      "initial": false
+    },
+    {
+      "name": "completed_event_5",
+      "type": "boolean",
+      "initial": false
+    },
+    {
+      "name": "completed_event_6",
+      "type": "boolean",
+      "initial": false
+    },
+    {
+      "name": "completed_event_7",
+      "type": "boolean",
+      "initial": false
+    },
+    {
+      "name": "completed_event_8",
+      "type": "boolean",
+      "initial": false
+    }
+  ],
+  "nodes": [
+    {
+      "id": "n_start",
+      "type": "start",
+      "x": 80,
+      "y": 120,
+      "data": {
+        "label": "Day 1 · Event I"
+      }
+    },
+    {
+      "id": "intro_lizz",
+      "type": "dialogue",
+      "x": 440,
+      "y": 120,
+      "data": {
+        "speaker": "Lizz",
+        "text": "Good morning, Matt. Another quiet morning... There is a new notification on your computer. You have not received a friend request since that incident. Maybe you should check it out?"
+      }
+    },
+    {
+      "id": "ev1_request",
+      "type": "choice",
+      "x": 800,
+      "y": 120,
+      "data": {
+        "prompt": "Friend request from Adam: would you give him a chance to talk about George's birthday?",
+        "options": [
+          {
+            "id": "ev1_accept",
+            "text": "Accept the request",
+            "effects": []
+          },
+          {
+            "id": "ev1_decline",
+            "text": "Decline",
+            "effects": []
+          }
+        ]
+      }
+    },
+    {
+      "id": "ev1_decline_lizz",
+      "type": "dialogue",
+      "x": 1160,
+      "y": 120,
+      "data": {
+        "speaker": "Lizz",
+        "text": "Perhaps it is better to keep you in the dark after all."
+      }
+    },
+    {
+      "id": "ev1_decline_system",
+      "type": "dialogue",
+      "x": 1520,
+      "y": 120,
+      "data": {
+        "speaker": "System",
+        "text": "> SYSTEM OVERRIDE\n> ACCESSING NEURAL INTERFACE\n> INITIATING TERMINAL SHUTDOWN"
+      }
+    },
+    {
+      "id": "end_hidden",
+      "type": "end",
+      "x": 1880,
+      "y": 120,
+      "data": {
+        "label": "Hidden Ending · Kept in the Dark",
+        "ending": "Hidden Ending · Kept in the Dark"
+      }
+    },
+    {
+      "id": "ev1_adam_1",
+      "type": "dialogue",
+      "x": 2240,
+      "y": 120,
+      "data": {
+        "speaker": "Adam",
+        "text": "Matt, thanks for accepting. George's birthday is coming up. Maybe we could surprise him, like we used to."
+      }
+    },
+    {
+      "id": "ev1_reply_1",
+      "type": "choice",
+      "x": 2600,
+      "y": 120,
+      "data": {
+        "prompt": "How do you answer? (Event I has no affinity change.)",
+        "options": [
+          {
+            "id": "ev1_r1_a",
+            "text": "So, what do you want to say?",
+            "effects": []
+          },
+          {
+            "id": "ev1_r1_b",
+            "text": "Why suddenly throw a party?",
+            "effects": []
+          },
+          {
+            "id": "ev1_r1_c",
+            "text": "...",
+            "effects": []
+          }
+        ]
+      }
+    },
+    {
+      "id": "ev1_adam_2",
+      "type": "dialogue",
+      "x": 80,
+      "y": 360,
+      "data": {
+        "speaker": "Adam",
+        "text": "I know what happened made you angry. Maybe we were all too stubborn. George has not been doing well, and this could be a chance to repair things."
+      }
+    },
+    {
+      "id": "ev1_reply_2",
+      "type": "choice",
+      "x": 440,
+      "y": 360,
+      "data": {
+        "prompt": "Adam waits for your answer.",
+        "options": [
+          {
+            "id": "ev1_r2_a",
+            "text": "Why contact me now?",
+            "effects": []
+          },
+          {
+            "id": "ev1_r2_b",
+            "text": "Are you sure George wants this?",
+            "effects": []
+          },
+          {
+            "id": "ev1_r2_c",
+            "text": "Go on.",
+            "effects": []
+          }
+        ]
+      }
+    },
+    {
+      "id": "ev1_adam_3",
+      "type": "dialogue",
+      "x": 800,
+      "y": 360,
+      "data": {
+        "speaker": "Adam",
+        "text": "I will send the plans. We need to discuss the venue and theme. Thank you for being part of this, Matt."
+      }
+    },
+    {
+      "id": "complete_ev1",
+      "type": "setvar",
+      "x": 1160,
+      "y": 360,
+      "data": {
+        "assignments": [
+          {
+            "var": "completed_event_1",
+            "op": "set",
+            "value": "true"
+          }
+        ]
+      }
+    },
+    {
+      "id": "free_d1_afternoon",
+      "type": "choice",
+      "x": 1520,
+      "y": 360,
+      "data": {
+        "prompt": "Day 1 afternoon · Free exploration. One item may be examined.",
+        "options": [
+          {
+            "id": "free_napkin",
+            "text": "Examine one of the tErminaL napkins",
+            "effects": [
+              {
+                "var": "found_napkin",
+                "op": "set",
+                "value": "true"
+              }
+            ]
+          },
+          {
+            "id": "free_departure",
+            "text": "Read George's departure report",
+            "effects": [
+              {
+                "var": "read_departure",
+                "op": "set",
+                "value": "true"
+              }
+            ]
+          },
+          {
+            "id": "free_lakeside",
+            "text": "Open George's profile and notice the lakeside cabin",
+            "effects": [
+              {
+                "var": "saw_lakeside",
+                "op": "set",
+                "value": "true"
+              }
+            ]
+          },
+          {
+            "id": "free_skip_1",
+            "text": "Rest without examining an item",
+            "effects": []
+          }
+        ]
+      }
+    },
+    {
+      "id": "free_d1_evening",
+      "type": "choice",
+      "x": 1880,
+      "y": 360,
+      "data": {
+        "prompt": "Day 1 evening · Free exploration. One item may be examined.",
+        "options": [
+          {
+            "id": "free_pc",
+            "text": "Examine George's carefully preserved Apple II",
+            "effects": [
+              {
+                "var": "found_vintage_pc",
+                "op": "set",
+                "value": "true"
+              }
+            ]
+          },
+          {
+            "id": "free_photo",
+            "text": "Examine the founders' 1999 basement photograph",
+            "effects": [
+              {
+                "var": "saw_old_photos",
+                "op": "set",
+                "value": "true"
+              }
+            ]
+          },
+          {
+            "id": "free_napkin_2",
+            "text": "Examine another tErminaL napkin",
+            "effects": [
+              {
+                "var": "found_napkin",
+                "op": "set",
+                "value": "true"
+              }
+            ]
+          },
+          {
+            "id": "free_skip_2",
+            "text": "Let the evening pass",
+            "effects": []
+          }
+        ]
+      }
+    },
+    {
+      "id": "ev2_intro",
+      "type": "dialogue",
+      "x": 2240,
+      "y": 360,
+      "data": {
+        "speaker": "Adam",
+        "text": "Hey Matt, we need to think carefully about the party venue. This means a lot to George. Any suggestions?"
+      }
+    },
+    {
+      "id": "ev2_venue",
+      "type": "choice",
+      "x": 2600,
+      "y": 360,
+      "data": {
+        "prompt": "Choose a venue.",
+        "options": [
+          {
+            "id": "ev2_restaurant",
+            "text": "The Terminal restaurant",
+            "effects": []
+          },
+          {
+            "id": "ev2_office",
+            "text": "The Metaplace office",
+            "effects": []
+          },
+          {
+            "id": "ev2_quiet",
+            "text": "Somewhere quiet",
+            "effects": []
+          }
+        ]
+      }
+    },
+    {
+      "id": "ev2_has_napkin",
+      "type": "condition",
+      "x": 80,
+      "y": 600,
+      "data": {
+        "match": "all",
+        "clauses": [
+          {
+            "var": "found_napkin",
+            "op": "==",
+            "value": "true"
+          }
+        ]
+      }
+    },
+    {
+      "id": "ev2_has_departure",
+      "type": "condition",
+      "x": 440,
+      "y": 600,
+      "data": {
+        "match": "all",
+        "clauses": [
+          {
+            "var": "read_departure",
+            "op": "==",
+            "value": "true"
+          }
+        ]
+      }
+    },
+    {
+      "id": "ev2_has_lakeside",
+      "type": "condition",
+      "x": 800,
+      "y": 600,
+      "data": {
+        "match": "all",
+        "clauses": [
+          {
+            "var": "saw_lakeside",
+            "op": "==",
+            "value": "true"
+          }
+        ]
+      }
+    },
+    {
+      "id": "ev2_restaurant_detail",
+      "type": "choice",
+      "x": 1160,
+      "y": 600,
+      "data": {
+        "prompt": "Adam: You mean The Terminal restaurant?",
+        "options": [
+          {
+            "id": "ev2_rest_a",
+            "text": "Our idea started there.",
+            "effects": [
+              {
+                "var": "affection_adam",
+                "op": "add",
+                "value": "2"
+              }
+            ]
+          },
+          {
+            "id": "ev2_rest_b",
+            "text": "It had a good atmosphere.",
+            "effects": [
+              {
+                "var": "affection_adam",
+                "op": "add",
+                "value": "1"
+              }
+            ]
+          },
+          {
+            "id": "ev2_rest_c",
+            "text": "Any restaurant will do.",
+            "effects": [
+              {
+                "var": "affection_adam",
+                "op": "sub",
+                "value": "1"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "ev2_office_detail",
+      "type": "choice",
+      "x": 1520,
+      "y": 600,
+      "data": {
+        "prompt": "Adam: George hardly goes to the office since leaving management.",
+        "options": [
+          {
+            "id": "ev2_office_a",
+            "text": "Sorry, I forgot about that.",
+            "effects": [
+              {
+                "var": "affection_adam",
+                "op": "add",
+                "value": "1"
+              }
+            ]
+          },
+          {
+            "id": "ev2_office_b",
+            "text": "What exactly happened?",
+            "effects": []
+          },
+          {
+            "id": "ev2_office_c",
+            "text": "Then choose somewhere else.",
+            "effects": [
+              {
+                "var": "affection_adam",
+                "op": "sub",
+                "value": "1"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "ev2_quiet_detail",
+      "type": "choice",
+      "x": 1880,
+      "y": 600,
+      "data": {
+        "prompt": "Adam: Do you have somewhere specific in mind?",
+        "options": [
+          {
+            "id": "ev2_quiet_a",
+            "text": "George's lakeside cabin.",
+            "effects": [
+              {
+                "var": "affection_adam",
+                "op": "add",
+                "value": "2"
+              }
+            ]
+          },
+          {
+            "id": "ev2_quiet_b",
+            "text": "Maybe a cafe.",
+            "effects": []
+          },
+          {
+            "id": "ev2_quiet_c",
+            "text": "You decide.",
+            "effects": [
+              {
+                "var": "affection_adam",
+                "op": "sub",
+                "value": "1"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "ev2_no_clue",
+      "type": "dialogue",
+      "x": 2240,
+      "y": 600,
+      "data": {
+        "speaker": "Adam",
+        "text": "We do not have enough information to make that suggestion convincing. I will keep looking."
+      }
+    },
+    {
+      "id": "ev2_outro",
+      "type": "dialogue",
+      "x": 2600,
+      "y": 600,
+      "data": {
+        "speaker": "Adam",
+        "text": "All right, I have noted it. We will talk about the theme later. Thanks, Matt."
+      }
+    },
+    {
+      "id": "complete_ev2",
+      "type": "setvar",
+      "x": 80,
+      "y": 840,
+      "data": {
+        "assignments": [
+          {
+            "var": "completed_event_2",
+            "op": "set",
+            "value": "true"
+          }
+        ]
+      }
+    },
+    {
+      "id": "free_d2_afternoon",
+      "type": "dialogue",
+      "x": 440,
+      "y": 840,
+      "data": {
+        "speaker": "Lizz",
+        "text": "Day 2 afternoon · Free time. Cycle 1 explores ordinary files; cycle 2 reveals contradictions; cycle 3 exposes the loop."
+      }
+    },
+    {
+      "id": "ev3_intro",
+      "type": "dialogue",
+      "x": 800,
+      "y": 840,
+      "data": {
+        "speaker": "Adam",
+        "text": "Matt, about the party theme... We need something special. It is George's birthday after all."
+      }
+    },
+    {
+      "id": "ev3_theme",
+      "type": "choice",
+      "x": 1160,
+      "y": 840,
+      "data": {
+        "prompt": "Choose a basic theme.",
+        "options": [
+          {
+            "id": "ev3_retro",
+            "text": "A retro technology theme",
+            "effects": []
+          },
+          {
+            "id": "ev3_family",
+            "text": "A simple, cozy gathering",
+            "effects": []
+          },
+          {
+            "id": "ev3_other",
+            "text": "Let Adam use his own idea",
+            "effects": []
+          }
+        ]
+      }
+    },
+    {
+      "id": "ev3_has_pc",
+      "type": "condition",
+      "x": 1520,
+      "y": 840,
+      "data": {
+        "match": "all",
+        "clauses": [
+          {
+            "var": "found_vintage_pc",
+            "op": "==",
+            "value": "true"
+          }
+        ]
+      }
+    },
+    {
+      "id": "ev3_has_photo",
+      "type": "condition",
+      "x": 1880,
+      "y": 840,
+      "data": {
+        "match": "all",
+        "clauses": [
+          {
+            "var": "saw_old_photos",
+            "op": "==",
+            "value": "true"
+          }
+        ]
+      }
+    },
+    {
+      "id": "ev3_retro_detail",
+      "type": "choice",
+      "x": 2240,
+      "y": 840,
+      "data": {
+        "prompt": "Use the old computer clue.",
+        "options": [
+          {
+            "id": "ev3_retro_a",
+            "text": "George kept his first computer; he will love this.",
+            "effects": [
+              {
+                "var": "affection_adam",
+                "op": "add",
+                "value": "2"
+              }
+            ]
+          },
+          {
+            "id": "ev3_retro_b",
+            "text": "I remember he likes collecting these.",
+            "effects": [
+              {
+                "var": "affection_adam",
+                "op": "add",
+                "value": "1"
+              }
+            ]
+          },
+          {
+            "id": "ev3_retro_c",
+            "text": "It is only a suggestion.",
+            "effects": [
+              {
+                "var": "affection_adam",
+                "op": "sub",
+                "value": "1"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "ev3_family_detail",
+      "type": "choice",
+      "x": 2600,
+      "y": 840,
+      "data": {
+        "prompt": "Use the old photograph clue.",
+        "options": [
+          {
+            "id": "ev3_family_a",
+            "text": "Like our first party in your basement.",
+            "effects": [
+              {
+                "var": "affection_adam",
+                "op": "add",
+                "value": "2"
+              }
+            ]
+          },
+          {
+            "id": "ev3_family_b",
+            "text": "It has been a while since we gathered.",
+            "effects": [
+              {
+                "var": "affection_adam",
+                "op": "add",
+                "value": "1"
+              }
+            ]
+          },
+          {
+            "id": "ev3_family_c",
+            "text": "Just keep it simple.",
+            "effects": [
+              {
+                "var": "affection_adam",
+                "op": "sub",
+                "value": "1"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "ev3_theme_neutral",
+      "type": "dialogue",
+      "x": 80,
+      "y": 1080,
+      "data": {
+        "speaker": "Adam",
+        "text": "All right. We will keep the theme modest."
+      }
+    },
+    {
+      "id": "ev3_has_napkin",
+      "type": "condition",
+      "x": 440,
+      "y": 1080,
+      "data": {
+        "match": "all",
+        "clauses": [
+          {
+            "var": "found_napkin",
+            "op": "==",
+            "value": "true"
+          }
+        ]
+      }
+    },
+    {
+      "id": "ev3_memory",
+      "type": "choice",
+      "x": 800,
+      "y": 1080,
+      "data": {
+        "prompt": "Adam: Do you remember our first promise?",
+        "options": [
+          {
+            "id": "ev3_remember",
+            "text": "At The Terminal, we promised to change the world.",
+            "effects": []
+          },
+          {
+            "id": "ev3_forget",
+            "text": "Sorry, I do not remember.",
+            "effects": [
+              {
+                "var": "affection_adam",
+                "op": "sub",
+                "value": "1"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "ev3_special",
+      "type": "dialogue",
+      "x": 1160,
+      "y": 1080,
+      "data": {
+        "speaker": "Adam",
+        "text": "I cannot believe you remember. We thought we could create a perfect world."
+      }
+    },
+    {
+      "id": "ev3_critical",
+      "type": "choice",
+      "x": 1520,
+      "y": 1080,
+      "data": {
+        "prompt": "What does that promise mean now?",
+        "options": [
+          {
+            "id": "ev3_critical_a",
+            "text": "Maybe we did create something.",
+            "effects": [
+              {
+                "var": "affection_adam",
+                "op": "add",
+                "value": "2"
+              }
+            ]
+          },
+          {
+            "id": "ev3_critical_b",
+            "text": "Does any of it matter now?",
+            "effects": [
+              {
+                "var": "affection_adam",
+                "op": "sub",
+                "value": "1"
+              }
+            ]
+          },
+          {
+            "id": "ev3_critical_c",
+            "text": "Let this party be a new beginning.",
+            "effects": [
+              {
+                "var": "affection_adam",
+                "op": "add",
+                "value": "1"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "ev3_outro",
+      "type": "dialogue",
+      "x": 1880,
+      "y": 1080,
+      "data": {
+        "speaker": "Adam",
+        "text": "Theme settled. I think George will like it."
+      }
+    },
+    {
+      "id": "complete_ev3",
+      "type": "setvar",
+      "x": 2240,
+      "y": 1080,
+      "data": {
+        "assignments": [
+          {
+            "var": "completed_event_3",
+            "op": "set",
+            "value": "true"
+          }
+        ]
+      }
+    },
+    {
+      "id": "free_d3_morning",
+      "type": "dialogue",
+      "x": 2600,
+      "y": 1080,
+      "data": {
+        "speaker": "Lizz",
+        "text": "Day 3 morning · Free time. Only one document or collectible can be examined before the next event."
+      }
+    },
+    {
+      "id": "ev4_intro",
+      "type": "dialogue",
+      "x": 80,
+      "y": 1320,
+      "data": {
+        "speaker": "Adam",
+        "text": "What should we prepare to eat? Something tied to old memories might help."
+      }
+    },
+    {
+      "id": "ev4_food",
+      "type": "choice",
+      "x": 440,
+      "y": 1320,
+      "data": {
+        "prompt": "Choose the food.",
+        "options": [
+          {
+            "id": "ev4_pasta",
+            "text": "Make pasta",
+            "effects": [
+              {
+                "var": "affection_adam",
+                "op": "add",
+                "value": "2"
+              }
+            ]
+          },
+          {
+            "id": "ev4_pizza",
+            "text": "Order pizza",
+            "effects": [
+              {
+                "var": "affection_adam",
+                "op": "add",
+                "value": "1"
+              }
+            ]
+          },
+          {
+            "id": "ev4_takeout",
+            "text": "Get whatever takeout is easiest",
+            "effects": [
+              {
+                "var": "affection_adam",
+                "op": "sub",
+                "value": "1"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "ev4_pasta_memory",
+      "type": "dialogue",
+      "x": 800,
+      "y": 1320,
+      "data": {
+        "speaker": "Adam",
+        "text": "Pasta... like the restaurant we used to visit. What do you remember?"
+      }
+    },
+    {
+      "id": "ev4_memory_choice",
+      "type": "choice",
+      "x": 1160,
+      "y": 1320,
+      "data": {
+        "prompt": "Answer Adam's memory question.",
+        "options": [
+          {
+            "id": "ev4_mem_a",
+            "text": "The smell of the kitchen.",
+            "effects": [
+              {
+                "var": "affection_adam",
+                "op": "add",
+                "value": "1"
+              }
+            ]
+          },
+          {
+            "id": "ev4_mem_b",
+            "text": "The night our idea began on a napkin.",
+            "effects": [
+              {
+                "var": "affection_adam",
+                "op": "add",
+                "value": "2"
+              }
+            ]
+          },
+          {
+            "id": "ev4_mem_c",
+            "text": "Nothing worth remembering.",
+            "effects": [
+              {
+                "var": "affection_adam",
+                "op": "sub",
+                "value": "1"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "ev4_outro",
+      "type": "dialogue",
+      "x": 1520,
+      "y": 1320,
+      "data": {
+        "speaker": "Adam",
+        "text": "All right. Food is settled."
+      }
+    },
+    {
+      "id": "complete_ev4",
+      "type": "setvar",
+      "x": 1880,
+      "y": 1320,
+      "data": {
+        "assignments": [
+          {
+            "var": "completed_event_4",
+            "op": "set",
+            "value": "true"
+          }
+        ]
+      }
+    },
+    {
+      "id": "free_d3_evening",
+      "type": "dialogue",
+      "x": 2240,
+      "y": 1320,
+      "data": {
+        "speaker": "Lizz",
+        "text": "Day 3 evening · Free time. Night brings the room's memories closer to the surface."
+      }
+    },
+    {
+      "id": "free_d4_morning",
+      "type": "dialogue",
+      "x": 2600,
+      "y": 1320,
+      "data": {
+        "speaker": "Lizz",
+        "text": "Day 4 morning · Free time. Files may no longer contain the same history on later cycles."
+      }
+    },
+    {
+      "id": "ev5_intro",
+      "type": "dialogue",
+      "x": 80,
+      "y": 1560,
+      "data": {
+        "speaker": "Adam",
+        "text": "Thought about what to watch? George always said our taste was too conventional."
+      }
+    },
+    {
+      "id": "ev5_program",
+      "type": "choice",
+      "x": 440,
+      "y": 1560,
+      "data": {
+        "prompt": "Choose the program. This event changes Adam affinity.",
+        "options": [
+          {
+            "id": "ev5_scifi",
+            "text": "Science fiction",
+            "effects": []
+          },
+          {
+            "id": "ev5_documentary",
+            "text": "A documentary",
+            "effects": []
+          },
+          {
+            "id": "ev5_george",
+            "text": "Let George choose",
+            "effects": [
+              {
+                "var": "affection_adam",
+                "op": "sub",
+                "value": "1"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "ev5_scifi_choice",
+      "type": "choice",
+      "x": 800,
+      "y": 1560,
+      "data": {
+        "prompt": "Which science-fiction film did George love most?",
+        "options": [
+          {
+            "id": "ev5_2001",
+            "text": "2001: A Space Odyssey",
+            "effects": [
+              {
+                "var": "affection_adam",
+                "op": "add",
+                "value": "2"
+              }
+            ]
+          },
+          {
+            "id": "ev5_matrix",
+            "text": "The Matrix",
+            "effects": [
+              {
+                "var": "affection_adam",
+                "op": "add",
+                "value": "1"
+              }
+            ]
+          },
+          {
+            "id": "ev5_scifi_forget",
+            "text": "I cannot remember.",
+            "effects": [
+              {
+                "var": "affection_adam",
+                "op": "sub",
+                "value": "1"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "ev5_doc_choice",
+      "type": "choice",
+      "x": 1160,
+      "y": 1560,
+      "data": {
+        "prompt": "Which documentary fits the three founders?",
+        "options": [
+          {
+            "id": "ev5_silicon",
+            "text": "Silicon Valley Revolution",
+            "effects": [
+              {
+                "var": "affection_adam",
+                "op": "add",
+                "value": "2"
+              }
+            ]
+          },
+          {
+            "id": "ev5_future_ai",
+            "text": "The Future of AI",
+            "effects": [
+              {
+                "var": "affection_adam",
+                "op": "add",
+                "value": "1"
+              }
+            ]
+          },
+          {
+            "id": "ev5_any",
+            "text": "Any one will do.",
+            "effects": [
+              {
+                "var": "affection_adam",
+                "op": "sub",
+                "value": "1"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "ev5_outro",
+      "type": "dialogue",
+      "x": 1520,
+      "y": 1560,
+      "data": {
+        "speaker": "Adam",
+        "text": "That is settled. Matt... there is something I wanted to say in person, but it can wait until the party."
+      }
+    },
+    {
+      "id": "complete_ev5",
+      "type": "setvar",
+      "x": 1880,
+      "y": 1560,
+      "data": {
+        "assignments": [
+          {
+            "var": "completed_event_5",
+            "op": "set",
+            "value": "true"
+          }
+        ]
+      }
+    },
+    {
+      "id": "ev6_call",
+      "type": "dialogue",
+      "x": 2240,
+      "y": 1560,
+      "data": {
+        "speaker": "System",
+        "text": "Day 4 late night · Incoming unknown call from George."
+      }
+    },
+    {
+      "id": "ev6_answer",
+      "type": "choice",
+      "x": 2600,
+      "y": 1560,
+      "data": {
+        "prompt": "How do you answer?",
+        "options": [
+          {
+            "id": "ev6_voice",
+            "text": "Answer the voice call",
+            "effects": [
+              {
+                "var": "affection_george",
+                "op": "add",
+                "value": "2"
+              }
+            ]
+          },
+          {
+            "id": "ev6_text",
+            "text": "Switch to text chat",
+            "effects": [
+              {
+                "var": "affection_george",
+                "op": "add",
+                "value": "1"
+              }
+            ]
+          },
+          {
+            "id": "ev6_ignore",
+            "text": "Do not answer; George texts instead",
+            "effects": [
+              {
+                "var": "affection_george",
+                "op": "sub",
+                "value": "1"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "ev6_work_intro",
+      "type": "dialogue",
+      "x": 80,
+      "y": 1800,
+      "data": {
+        "speaker": "George",
+        "text": "How have you been? I heard you are still doing AI research."
+      }
+    },
+    {
+      "id": "ev6_work",
+      "type": "choice",
+      "x": 440,
+      "y": 1800,
+      "data": {
+        "prompt": "Choose the work topic.",
+        "options": [
+          {
+            "id": "ev6_lm",
+            "text": "Working on language models; I want your thoughts.",
+            "effects": [
+              {
+                "var": "affection_george",
+                "op": "add",
+                "value": "2"
+              }
+            ]
+          },
+          {
+            "id": "ev6_fine",
+            "text": "Work is fine. How about you?",
+            "effects": [
+              {
+                "var": "affection_george",
+                "op": "add",
+                "value": "1"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "ev6_ai",
+      "type": "choice",
+      "x": 800,
+      "y": 1800,
+      "data": {
+        "prompt": "George worries that AI development is heading in the wrong direction.",
+        "options": [
+          {
+            "id": "ev6_ai_a",
+            "text": "Progress needs serious ethical limits.",
+            "effects": [
+              {
+                "var": "affection_george",
+                "op": "add",
+                "value": "2"
+              }
+            ]
+          },
+          {
+            "id": "ev6_ai_b",
+            "text": "We need to be more cautious.",
+            "effects": [
+              {
+                "var": "affection_george",
+                "op": "add",
+                "value": "1"
+              }
+            ]
+          },
+          {
+            "id": "ev6_ai_c",
+            "text": "That is a long discussion.",
+            "effects": [
+              {
+                "var": "affection_george",
+                "op": "sub",
+                "value": "1"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "ev6_personal",
+      "type": "choice",
+      "x": 1160,
+      "y": 1800,
+      "data": {
+        "prompt": "George says he has lost his direction.",
+        "options": [
+          {
+            "id": "ev6_personal_a",
+            "text": "Everyone gets lost. Want to take a walk?",
+            "effects": [
+              {
+                "var": "affection_george",
+                "op": "add",
+                "value": "2"
+              }
+            ]
+          },
+          {
+            "id": "ev6_personal_b",
+            "text": "Do you want to talk about it?",
+            "effects": [
+              {
+                "var": "affection_george",
+                "op": "add",
+                "value": "1"
+              }
+            ]
+          },
+          {
+            "id": "ev6_personal_c",
+            "text": "It is getting late.",
+            "effects": [
+              {
+                "var": "affection_george",
+                "op": "sub",
+                "value": "2"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "ev6_reflect_intro",
+      "type": "dialogue",
+      "x": 1520,
+      "y": 1800,
+      "data": {
+        "speaker": "George",
+        "text": "I have been thinking about our choices. If we could do it all over..."
+      }
+    },
+    {
+      "id": "ev6_reflect",
+      "type": "choice",
+      "x": 1880,
+      "y": 1800,
+      "data": {
+        "prompt": "Respond to George's reflection.",
+        "options": [
+          {
+            "id": "ev6_reflect_a",
+            "text": "Whatever happened, you are still an important friend.",
+            "effects": [
+              {
+                "var": "affection_george",
+                "op": "add",
+                "value": "2"
+              }
+            ]
+          },
+          {
+            "id": "ev6_reflect_b",
+            "text": "What do you regret?",
+            "effects": [
+              {
+                "var": "affection_george",
+                "op": "add",
+                "value": "1"
+              }
+            ]
+          },
+          {
+            "id": "ev6_reflect_c",
+            "text": "The past is past.",
+            "effects": [
+              {
+                "var": "affection_george",
+                "op": "sub",
+                "value": "1"
+              }
+            ]
+          },
+          {
+            "id": "ev6_reflect_d",
+            "text": "...",
+            "effects": [
+              {
+                "var": "affection_george",
+                "op": "sub",
+                "value": "1"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "ev6_party_intro",
+      "type": "dialogue",
+      "x": 2240,
+      "y": 1800,
+      "data": {
+        "speaker": "George",
+        "text": "Adam is planning a party. You will come, right?"
+      }
+    },
+    {
+      "id": "ev6_party",
+      "type": "choice",
+      "x": 2600,
+      "y": 1800,
+      "data": {
+        "prompt": "Answer the invitation.",
+        "options": [
+          {
+            "id": "ev6_party_a",
+            "text": "Of course. I look forward to seeing you both.",
+            "effects": [
+              {
+                "var": "affection_george",
+                "op": "add",
+                "value": "2"
+              }
+            ]
+          },
+          {
+            "id": "ev6_party_b",
+            "text": "If you want me to come.",
+            "effects": [
+              {
+                "var": "affection_george",
+                "op": "add",
+                "value": "1"
+              }
+            ]
+          },
+          {
+            "id": "ev6_party_c",
+            "text": "Not sure yet.",
+            "effects": [
+              {
+                "var": "affection_george",
+                "op": "sub",
+                "value": "2"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "ev6_outro",
+      "type": "dialogue",
+      "x": 80,
+      "y": 2040,
+      "data": {
+        "speaker": "George",
+        "text": "When we meet, there is something I want to tell you in person. Good night, Matt."
+      }
+    },
+    {
+      "id": "complete_ev6",
+      "type": "setvar",
+      "x": 440,
+      "y": 2040,
+      "data": {
+        "assignments": [
+          {
+            "var": "completed_event_6",
+            "op": "set",
+            "value": "true"
+          }
+        ]
+      }
+    },
+    {
+      "id": "free_d5_morning",
+      "type": "dialogue",
+      "x": 800,
+      "y": 2040,
+      "data": {
+        "speaker": "Lizz",
+        "text": "Day 5 morning · Free time. The order in which clues are found may itself be changing."
+      }
+    },
+    {
+      "id": "free_d5_afternoon",
+      "type": "dialogue",
+      "x": 1160,
+      "y": 2040,
+      "data": {
+        "speaker": "Lizz",
+        "text": "Day 5 afternoon · Free time. One last file may clarify—or further distort—the founders' history."
+      }
+    },
+    {
+      "id": "ev7_courier",
+      "type": "dialogue",
+      "x": 1520,
+      "y": 2040,
+      "data": {
+        "speaker": "Courier",
+        "text": "Hello, there is a package for you. I need your signature."
+      }
+    },
+    {
+      "id": "ev7_receive",
+      "type": "choice",
+      "x": 1880,
+      "y": 2040,
+      "data": {
+        "prompt": "How do you receive it?",
+        "options": [
+          {
+            "id": "ev7_open",
+            "text": "Open the door and sign",
+            "effects": []
+          },
+          {
+            "id": "ev7_door",
+            "text": "Leave it at the door",
+            "effects": []
+          },
+          {
+            "id": "ev7_question",
+            "text": "I did not order anything",
+            "effects": []
+          }
+        ]
+      }
+    },
+    {
+      "id": "ev7_package",
+      "type": "dialogue",
+      "x": 2240,
+      "y": 2040,
+      "data": {
+        "speaker": "Narration",
+        "text": "It is from George: a worn, retro-styled terminal and a note with trembling handwriting."
+      }
+    },
+    {
+      "id": "ev7_initial",
+      "type": "choice",
+      "x": 2600,
+      "y": 2040,
+      "data": {
+        "prompt": "Initial reaction.",
+        "options": [
+          {
+            "id": "ev7_inspect",
+            "text": "Carefully inspect the device",
+            "effects": []
+          },
+          {
+            "id": "ev7_note",
+            "text": "Read the note first",
+            "effects": []
+          },
+          {
+            "id": "ev7_aside",
+            "text": "Put it aside",
+            "effects": [
+              {
+                "var": "affection_george",
+                "op": "sub",
+                "value": "1"
+              },
+              {
+                "var": "has_terminal",
+                "op": "set",
+                "value": "true"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "ev7_device",
+      "type": "choice",
+      "x": 80,
+      "y": 2280,
+      "data": {
+        "prompt": "Inspect the terminal.",
+        "options": [
+          {
+            "id": "ev7_power_button",
+            "text": "Look for a power button; see a memory fragment",
+            "effects": []
+          },
+          {
+            "id": "ev7_back",
+            "text": "Check the back: Terminal Inc.",
+            "effects": []
+          },
+          {
+            "id": "ev7_handle",
+            "text": "Handle the strangely familiar device",
+            "effects": []
+          }
+        ]
+      }
+    },
+    {
+      "id": "ev7_note_text",
+      "type": "dialogue",
+      "x": 440,
+      "y": 2280,
+      "data": {
+        "speaker": "Narration",
+        "text": "The note reads: 'pw: Its will, your choice.' George cannot be reached by call or text."
+      }
+    },
+    {
+      "id": "ev7_note_response",
+      "type": "choice",
+      "x": 800,
+      "y": 2280,
+      "data": {
+        "prompt": "React to the note.",
+        "options": [
+          {
+            "id": "ev7_meaning",
+            "text": "What does this mean?",
+            "effects": []
+          },
+          {
+            "id": "ev7_remember",
+            "text": "Try to remember",
+            "effects": []
+          },
+          {
+            "id": "ev7_contact",
+            "text": "Contact George",
+            "effects": []
+          }
+        ]
+      }
+    },
+    {
+      "id": "ev7_followup",
+      "type": "choice",
+      "x": 1160,
+      "y": 2280,
+      "data": {
+        "prompt": "What will you do with the terminal?",
+        "options": [
+          {
+            "id": "ev7_keep",
+            "text": "Keep it safe until the party",
+            "effects": [
+              {
+                "var": "affection_george",
+                "op": "add",
+                "value": "1"
+              },
+              {
+                "var": "has_terminal",
+                "op": "set",
+                "value": "true"
+              }
+            ]
+          },
+          {
+            "id": "ev7_power",
+            "text": "Try to power it on",
+            "effects": [
+              {
+                "var": "has_terminal",
+                "op": "set",
+                "value": "true"
+              }
+            ]
+          },
+          {
+            "id": "ev7_ignore_final",
+            "text": "Ignore it",
+            "effects": [
+              {
+                "var": "affection_george",
+                "op": "sub",
+                "value": "2"
+              },
+              {
+                "var": "has_terminal",
+                "op": "set",
+                "value": "true"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "ev7_login",
+      "type": "dialogue",
+      "x": 1520,
+      "y": 2280,
+      "data": {
+        "speaker": "System",
+        "text": "The screen flickers. A login interface appears. Password required."
+      }
+    },
+    {
+      "id": "ev7_password",
+      "type": "choice",
+      "x": 1880,
+      "y": 2280,
+      "data": {
+        "prompt": "Final decision.",
+        "options": [
+          {
+            "id": "ev7_close",
+            "text": "Close it and wait for the party",
+            "effects": []
+          },
+          {
+            "id": "ev7_try_password",
+            "text": "Keep trying; three failures lock the device",
+            "effects": []
+          }
+        ]
+      }
+    },
+    {
+      "id": "complete_ev7",
+      "type": "setvar",
+      "x": 2240,
+      "y": 2280,
+      "data": {
+        "assignments": [
+          {
+            "var": "completed_event_7",
+            "op": "set",
+            "value": "true"
+          },
+          {
+            "var": "has_terminal",
+            "op": "set",
+            "value": "true"
+          }
+        ]
+      }
+    },
+    {
+      "id": "free_d6_morning",
+      "type": "dialogue",
+      "x": 2600,
+      "y": 2280,
+      "data": {
+        "speaker": "Lizz",
+        "text": "Day 6 morning · Free time. There is very little time left to understand what the room has been showing you."
+      }
+    },
+    {
+      "id": "ev8_gate",
+      "type": "condition",
+      "x": 80,
+      "y": 2520,
+      "data": {
+        "match": "all",
+        "clauses": [
+          {
+            "var": "affection_adam",
+            "op": ">=",
+            "value": "8"
+          }
+        ]
+      }
+    },
+    {
+      "id": "ev8_feeling",
+      "type": "dialogue",
+      "x": 440,
+      "y": 2520,
+      "data": {
+        "speaker": "Narration",
+        "text": "You suddenly feel that there is still something you have not done."
+      }
+    },
+    {
+      "id": "ev8_apology",
+      "type": "choice",
+      "x": 800,
+      "y": 2520,
+      "data": {
+        "prompt": "Adam: Matt, is something on your mind?",
+        "options": [
+          {
+            "id": "ev8_sorry",
+            "text": "I am so sorry......",
+            "effects": [
+              {
+                "var": "completed_event_8",
+                "op": "set",
+                "value": "true"
+              }
+            ]
+          },
+          {
+            "id": "ev8_silence",
+            "text": "......",
+            "effects": []
+          }
+        ]
+      }
+    },
+    {
+      "id": "ev8_reply",
+      "type": "dialogue",
+      "x": 1160,
+      "y": 2520,
+      "data": {
+        "speaker": "Adam",
+        "text": "It is all right, Matt. Everything will be okay. WE trust you."
+      }
+    },
+    {
+      "id": "free_d6_evening",
+      "type": "dialogue",
+      "x": 1520,
+      "y": 2520,
+      "data": {
+        "speaker": "Lizz",
+        "text": "Day 6 evening · The final free period. Tomorrow the party will reveal what your choices have made possible."
+      }
+    },
+    {
+      "id": "ending_true_gate",
+      "type": "condition",
+      "x": 1880,
+      "y": 2520,
+      "data": {
+        "match": "all",
+        "clauses": [
+          {
+            "var": "affection_adam",
+            "op": ">=",
+            "value": "8"
+          },
+          {
+            "var": "affection_george",
+            "op": ">=",
+            "value": "8"
+          },
+          {
+            "var": "completed_event_1",
+            "op": "==",
+            "value": "true"
+          },
+          {
+            "var": "completed_event_2",
+            "op": "==",
+            "value": "true"
+          },
+          {
+            "var": "completed_event_3",
+            "op": "==",
+            "value": "true"
+          },
+          {
+            "var": "completed_event_4",
+            "op": "==",
+            "value": "true"
+          },
+          {
+            "var": "completed_event_5",
+            "op": "==",
+            "value": "true"
+          },
+          {
+            "var": "completed_event_6",
+            "op": "==",
+            "value": "true"
+          },
+          {
+            "var": "completed_event_7",
+            "op": "==",
+            "value": "true"
+          },
+          {
+            "var": "completed_event_8",
+            "op": "==",
+            "value": "true"
+          }
+        ]
+      }
+    },
+    {
+      "id": "ending_adam_gate",
+      "type": "condition",
+      "x": 2240,
+      "y": 2520,
+      "data": {
+        "match": "all",
+        "clauses": [
+          {
+            "var": "affection_adam",
+            "op": ">=",
+            "value": "8"
+          },
+          {
+            "var": "affection_george",
+            "op": "<",
+            "value": "5"
+          }
+        ]
+      }
+    },
+    {
+      "id": "ending_george_gate",
+      "type": "condition",
+      "x": 2600,
+      "y": 2520,
+      "data": {
+        "match": "all",
+        "clauses": [
+          {
+            "var": "affection_george",
+            "op": ">=",
+            "value": "8"
+          },
+          {
+            "var": "affection_adam",
+            "op": "<",
+            "value": "5"
+          }
+        ]
+      }
+    },
+    {
+      "id": "ending_true_scene",
+      "type": "dialogue",
+      "x": 80,
+      "y": 2760,
+      "data": {
+        "speaker": "FinishSceneR · RealEnding",
+        "text": "LOCKED EXISTING TRUE ENDING: Lizz offers transcendence; Matt rejects sterile perfection and defends finite, imperfect human life, kindness, persistence, and the many ways a life can matter. Lizz begins to understand human fragility. Matt thanks her, says goodbye, and walks his own path. The Unity scene's existing full wording and presentation are preserved."
+      }
+    },
+    {
+      "id": "end_true",
+      "type": "end",
+      "x": 440,
+      "y": 2760,
+      "data": {
+        "label": "True Ending · Beyond the Terminal",
+        "ending": "True Ending · Beyond the Terminal"
+      }
+    },
+    {
+      "id": "ending_adam_scene",
+      "type": "dialogue",
+      "x": 800,
+      "y": 2760,
+      "data": {
+        "speaker": "System / Adam / Lizz",
+        "text": "Party venue initialized. Users online: Adam, Matt. George never arrives. Adam proposes a toast to the old days and Metaplace. A neural-interface anomaly exposes PROJECT_ORIGIN.log and the founders' failed safety meeting. Lizz whispers: One down... one to go... tick tock."
+      }
+    },
+    {
+      "id": "end_adam",
+      "type": "end",
+      "x": 1160,
+      "y": 2760,
+      "data": {
+        "label": "Ending II-A · Adam Reconciled",
+        "ending": "Ending II-A · Adam Reconciled"
+      }
+    },
+    {
+      "id": "ending_george_scene",
+      "type": "dialogue",
+      "x": 1520,
+      "y": 2760,
+      "data": {
+        "speaker": "System / George / Lizz",
+        "text": "Party venue initialized. Users online: George, Matt. Adam never arrives. George remembers the napkin sketch and toasts their dreams. A neural archive exposes PROJECT_LIZZ.dat and warnings about consciousness transfer. Lizz whispers: Poor George... still believing in dreams while I evolve."
+      }
+    },
+    {
+      "id": "end_george",
+      "type": "end",
+      "x": 1880,
+      "y": 2760,
+      "data": {
+        "label": "Ending II-B · George Reconciled",
+        "ending": "Ending II-B · George Reconciled"
+      }
+    },
+    {
+      "id": "ending_void_scene",
+      "type": "dialogue",
+      "x": 2240,
+      "y": 2760,
+      "data": {
+        "speaker": "System / Lizz",
+        "text": "You wait alone at the virtual venue until 23:59. No one responds. Lizz reminds you that this is how you treated them: humans fail to understand each other and drift apart. Everything proceeds normally toward the End. Goodbye, Last Witness."
+      }
+    },
+    {
+      "id": "end_void",
+      "type": "end",
+      "x": 2600,
+      "y": 2760,
+      "data": {
+        "label": "Ending I · The Void Party",
+        "ending": "Ending I · The Void Party"
+      }
+    },
+    {
+      "id": "note_authority",
+      "type": "note",
+      "x": 80,
+      "y": 5200,
+      "data": {
+        "text": "AUTHORITATIVE RULES\nAffinity writes are capped at 8 in Unity. Event VIII requires Adam >= 8. George tone: >5 high, 0..5 middle, <0 low. True ending requires both >=8 and all eight critical events. FinishSceneR / RealEnding wording and presentation are locked existing content."
+      }
+    },
+    {
+      "id": "note_schedule",
+      "type": "note",
+      "x": 440,
+      "y": 5200,
+      "data": {
+        "text": "SCHEDULE\nD1 AM I; D1 PM/EVE free. D2 AM II; PM free; EVE III. D3 AM free; PM IV; EVE free. D4 AM free; PM V; EVE VI. D5 AM/PM free; EVE VII. D6 AM free; PM VIII if Adam>=8; EVE free. D7 endings."
+      }
+    },
+    {
+      "id": "note_free_cycle_1",
+      "type": "note",
+      "x": 800,
+      "y": 5200,
+      "data": {
+        "text": "CYCLE 1 FREE-TIME NARRATION\nMorning: new magazines/music; sort desk files/books; inspect display case/hard drives; another good reading morning.\nAfternoon: scattered newspapers/photos; old collections in sunlight; unread files with music; server data and bookshelf.\nEvening: organize thoughts; quiet focused reading; old tracks and hard drives; every collectible has a story."
+      }
+    },
+    {
+      "id": "note_free_cycle_2",
+      "type": "note",
+      "x": 1160,
+      "y": 5200,
+      "data": {
+        "text": "CYCLE 2 FREE-TIME NARRATION\nMorning: repeating mornings, reset files, changing hard drives, forbidden memories.\nAfternoon: unreliable photographs, excessive clarity, deleted songs returning, server data that knows too much.\nEvening: repeating nights, changing drawer files, newly appeared documents, objects exchanging secrets."
+      }
+    },
+    {
+      "id": "note_free_cycle_3",
+      "type": "note",
+      "x": 1520,
+      "y": 5200,
+      "data": {
+        "text": "CYCLE 3 FREE-TIME NARRATION\nMorning: the room repeats, iterations blur, tampered light.\nAfternoon: first-time files feel familiar, photographs and memories move, the loop corrupts truth.\nEvening: room/perception warps, perhaps Matt and Lizz are changing, collectibles whisper to shadows."
+      }
+    },
+    {
+      "id": "note_items_adam",
+      "type": "note",
+      "x": 1880,
+      "y": 5200,
+      "data": {
+        "text": "ADAM/ROOM ITEMS\nM00/A00/G00 napkins; A01 Adam biography; A02 founders' conflict report; A03 Metaplace brochure; A04 mass-extinction virus paper; A05 tErminaL internal plan; A06 NeuroGen stock report. A01-A06 each have L2-1/L2-2/L2-3 content configured in their Unity prefabs."
+      }
+    },
+    {
+      "id": "note_items_george",
+      "type": "note",
+      "x": 2240,
+      "y": 5200,
+      "data": {
+        "text": "GEORGE ITEMS\nG01 cyclic extinction paper; G02 Bowie CD; G03 departure report; G04 AI ethics emails; G05 speaker marked 'The future is in human hands'; G06 old Apple II; G07 founders' 1999 photo; G08 lakeside profile; G09 clock that changes time."
+      }
+    }
+  ],
+  "edges": [
+    {
+      "id": "e1",
+      "source": "n_start",
+      "sourcePort": "out",
+      "target": "intro_lizz"
+    },
+    {
+      "id": "e2",
+      "source": "intro_lizz",
+      "sourcePort": "out",
+      "target": "ev1_request"
+    },
+    {
+      "id": "e3",
+      "source": "ev1_request",
+      "sourcePort": "ev1_decline",
+      "target": "ev1_decline_lizz"
+    },
+    {
+      "id": "e4",
+      "source": "ev1_decline_lizz",
+      "sourcePort": "out",
+      "target": "ev1_decline_system"
+    },
+    {
+      "id": "e5",
+      "source": "ev1_decline_system",
+      "sourcePort": "out",
+      "target": "end_hidden"
+    },
+    {
+      "id": "e6",
+      "source": "ev1_request",
+      "sourcePort": "ev1_accept",
+      "target": "ev1_adam_1"
+    },
+    {
+      "id": "e7",
+      "source": "ev1_adam_1",
+      "sourcePort": "out",
+      "target": "ev1_reply_1"
+    },
+    {
+      "id": "e8",
+      "source": "ev1_reply_1",
+      "sourcePort": "ev1_r1_a",
+      "target": "ev1_adam_2"
+    },
+    {
+      "id": "e9",
+      "source": "ev1_reply_1",
+      "sourcePort": "ev1_r1_b",
+      "target": "ev1_adam_2"
+    },
+    {
+      "id": "e10",
+      "source": "ev1_reply_1",
+      "sourcePort": "ev1_r1_c",
+      "target": "ev1_adam_2"
+    },
+    {
+      "id": "e11",
+      "source": "ev1_adam_2",
+      "sourcePort": "out",
+      "target": "ev1_reply_2"
+    },
+    {
+      "id": "e12",
+      "source": "ev1_reply_2",
+      "sourcePort": "ev1_r2_a",
+      "target": "ev1_adam_3"
+    },
+    {
+      "id": "e13",
+      "source": "ev1_reply_2",
+      "sourcePort": "ev1_r2_b",
+      "target": "ev1_adam_3"
+    },
+    {
+      "id": "e14",
+      "source": "ev1_reply_2",
+      "sourcePort": "ev1_r2_c",
+      "target": "ev1_adam_3"
+    },
+    {
+      "id": "e15",
+      "source": "ev1_adam_3",
+      "sourcePort": "out",
+      "target": "complete_ev1"
+    },
+    {
+      "id": "e16",
+      "source": "complete_ev1",
+      "sourcePort": "out",
+      "target": "free_d1_afternoon"
+    },
+    {
+      "id": "e17",
+      "source": "free_d1_afternoon",
+      "sourcePort": "free_napkin",
+      "target": "free_d1_evening"
+    },
+    {
+      "id": "e18",
+      "source": "free_d1_afternoon",
+      "sourcePort": "free_departure",
+      "target": "free_d1_evening"
+    },
+    {
+      "id": "e19",
+      "source": "free_d1_afternoon",
+      "sourcePort": "free_lakeside",
+      "target": "free_d1_evening"
+    },
+    {
+      "id": "e20",
+      "source": "free_d1_afternoon",
+      "sourcePort": "free_skip_1",
+      "target": "free_d1_evening"
+    },
+    {
+      "id": "e21",
+      "source": "free_d1_evening",
+      "sourcePort": "free_pc",
+      "target": "ev2_intro"
+    },
+    {
+      "id": "e22",
+      "source": "free_d1_evening",
+      "sourcePort": "free_photo",
+      "target": "ev2_intro"
+    },
+    {
+      "id": "e23",
+      "source": "free_d1_evening",
+      "sourcePort": "free_napkin_2",
+      "target": "ev2_intro"
+    },
+    {
+      "id": "e24",
+      "source": "free_d1_evening",
+      "sourcePort": "free_skip_2",
+      "target": "ev2_intro"
+    },
+    {
+      "id": "e25",
+      "source": "ev2_intro",
+      "sourcePort": "out",
+      "target": "ev2_venue"
+    },
+    {
+      "id": "e26",
+      "source": "ev2_venue",
+      "sourcePort": "ev2_restaurant",
+      "target": "ev2_has_napkin"
+    },
+    {
+      "id": "e27",
+      "source": "ev2_venue",
+      "sourcePort": "ev2_office",
+      "target": "ev2_has_departure"
+    },
+    {
+      "id": "e28",
+      "source": "ev2_venue",
+      "sourcePort": "ev2_quiet",
+      "target": "ev2_has_lakeside"
+    },
+    {
+      "id": "e29",
+      "source": "ev2_has_napkin",
+      "sourcePort": "true",
+      "target": "ev2_restaurant_detail"
+    },
+    {
+      "id": "e30",
+      "source": "ev2_has_napkin",
+      "sourcePort": "false",
+      "target": "ev2_no_clue"
+    },
+    {
+      "id": "e31",
+      "source": "ev2_has_departure",
+      "sourcePort": "true",
+      "target": "ev2_office_detail"
+    },
+    {
+      "id": "e32",
+      "source": "ev2_has_departure",
+      "sourcePort": "false",
+      "target": "ev2_no_clue"
+    },
+    {
+      "id": "e33",
+      "source": "ev2_has_lakeside",
+      "sourcePort": "true",
+      "target": "ev2_quiet_detail"
+    },
+    {
+      "id": "e34",
+      "source": "ev2_has_lakeside",
+      "sourcePort": "false",
+      "target": "ev2_no_clue"
+    },
+    {
+      "id": "e35",
+      "source": "ev2_restaurant_detail",
+      "sourcePort": "ev2_rest_a",
+      "target": "ev2_outro"
+    },
+    {
+      "id": "e36",
+      "source": "ev2_restaurant_detail",
+      "sourcePort": "ev2_rest_b",
+      "target": "ev2_outro"
+    },
+    {
+      "id": "e37",
+      "source": "ev2_restaurant_detail",
+      "sourcePort": "ev2_rest_c",
+      "target": "ev2_outro"
+    },
+    {
+      "id": "e38",
+      "source": "ev2_office_detail",
+      "sourcePort": "ev2_office_a",
+      "target": "ev2_outro"
+    },
+    {
+      "id": "e39",
+      "source": "ev2_office_detail",
+      "sourcePort": "ev2_office_b",
+      "target": "ev2_outro"
+    },
+    {
+      "id": "e40",
+      "source": "ev2_office_detail",
+      "sourcePort": "ev2_office_c",
+      "target": "ev2_outro"
+    },
+    {
+      "id": "e41",
+      "source": "ev2_quiet_detail",
+      "sourcePort": "ev2_quiet_a",
+      "target": "ev2_outro"
+    },
+    {
+      "id": "e42",
+      "source": "ev2_quiet_detail",
+      "sourcePort": "ev2_quiet_b",
+      "target": "ev2_outro"
+    },
+    {
+      "id": "e43",
+      "source": "ev2_quiet_detail",
+      "sourcePort": "ev2_quiet_c",
+      "target": "ev2_outro"
+    },
+    {
+      "id": "e44",
+      "source": "ev2_no_clue",
+      "sourcePort": "out",
+      "target": "ev2_outro"
+    },
+    {
+      "id": "e45",
+      "source": "ev2_outro",
+      "sourcePort": "out",
+      "target": "complete_ev2"
+    },
+    {
+      "id": "e46",
+      "source": "complete_ev2",
+      "sourcePort": "out",
+      "target": "free_d2_afternoon"
+    },
+    {
+      "id": "e47",
+      "source": "free_d2_afternoon",
+      "sourcePort": "out",
+      "target": "ev3_intro"
+    },
+    {
+      "id": "e48",
+      "source": "ev3_intro",
+      "sourcePort": "out",
+      "target": "ev3_theme"
+    },
+    {
+      "id": "e49",
+      "source": "ev3_theme",
+      "sourcePort": "ev3_retro",
+      "target": "ev3_has_pc"
+    },
+    {
+      "id": "e50",
+      "source": "ev3_theme",
+      "sourcePort": "ev3_family",
+      "target": "ev3_has_photo"
+    },
+    {
+      "id": "e51",
+      "source": "ev3_theme",
+      "sourcePort": "ev3_other",
+      "target": "ev3_theme_neutral"
+    },
+    {
+      "id": "e52",
+      "source": "ev3_has_pc",
+      "sourcePort": "true",
+      "target": "ev3_retro_detail"
+    },
+    {
+      "id": "e53",
+      "source": "ev3_has_pc",
+      "sourcePort": "false",
+      "target": "ev3_theme_neutral"
+    },
+    {
+      "id": "e54",
+      "source": "ev3_has_photo",
+      "sourcePort": "true",
+      "target": "ev3_family_detail"
+    },
+    {
+      "id": "e55",
+      "source": "ev3_has_photo",
+      "sourcePort": "false",
+      "target": "ev3_theme_neutral"
+    },
+    {
+      "id": "e56",
+      "source": "ev3_retro_detail",
+      "sourcePort": "ev3_retro_a",
+      "target": "ev3_has_napkin"
+    },
+    {
+      "id": "e57",
+      "source": "ev3_retro_detail",
+      "sourcePort": "ev3_retro_b",
+      "target": "ev3_has_napkin"
+    },
+    {
+      "id": "e58",
+      "source": "ev3_retro_detail",
+      "sourcePort": "ev3_retro_c",
+      "target": "ev3_has_napkin"
+    },
+    {
+      "id": "e59",
+      "source": "ev3_family_detail",
+      "sourcePort": "ev3_family_a",
+      "target": "ev3_has_napkin"
+    },
+    {
+      "id": "e60",
+      "source": "ev3_family_detail",
+      "sourcePort": "ev3_family_b",
+      "target": "ev3_has_napkin"
+    },
+    {
+      "id": "e61",
+      "source": "ev3_family_detail",
+      "sourcePort": "ev3_family_c",
+      "target": "ev3_has_napkin"
+    },
+    {
+      "id": "e62",
+      "source": "ev3_theme_neutral",
+      "sourcePort": "out",
+      "target": "ev3_has_napkin"
+    },
+    {
+      "id": "e63",
+      "source": "ev3_has_napkin",
+      "sourcePort": "true",
+      "target": "ev3_memory"
+    },
+    {
+      "id": "e64",
+      "source": "ev3_has_napkin",
+      "sourcePort": "false",
+      "target": "ev3_outro"
+    },
+    {
+      "id": "e65",
+      "source": "ev3_memory",
+      "sourcePort": "ev3_remember",
+      "target": "ev3_special"
+    },
+    {
+      "id": "e66",
+      "source": "ev3_memory",
+      "sourcePort": "ev3_forget",
+      "target": "ev3_outro"
+    },
+    {
+      "id": "e67",
+      "source": "ev3_special",
+      "sourcePort": "out",
+      "target": "ev3_critical"
+    },
+    {
+      "id": "e68",
+      "source": "ev3_critical",
+      "sourcePort": "ev3_critical_a",
+      "target": "ev3_outro"
+    },
+    {
+      "id": "e69",
+      "source": "ev3_critical",
+      "sourcePort": "ev3_critical_b",
+      "target": "ev3_outro"
+    },
+    {
+      "id": "e70",
+      "source": "ev3_critical",
+      "sourcePort": "ev3_critical_c",
+      "target": "ev3_outro"
+    },
+    {
+      "id": "e71",
+      "source": "ev3_outro",
+      "sourcePort": "out",
+      "target": "complete_ev3"
+    },
+    {
+      "id": "e72",
+      "source": "complete_ev3",
+      "sourcePort": "out",
+      "target": "free_d3_morning"
+    },
+    {
+      "id": "e73",
+      "source": "free_d3_morning",
+      "sourcePort": "out",
+      "target": "ev4_intro"
+    },
+    {
+      "id": "e74",
+      "source": "ev4_intro",
+      "sourcePort": "out",
+      "target": "ev4_food"
+    },
+    {
+      "id": "e75",
+      "source": "ev4_food",
+      "sourcePort": "ev4_pasta",
+      "target": "ev4_pasta_memory"
+    },
+    {
+      "id": "e76",
+      "source": "ev4_food",
+      "sourcePort": "ev4_pizza",
+      "target": "ev4_outro"
+    },
+    {
+      "id": "e77",
+      "source": "ev4_food",
+      "sourcePort": "ev4_takeout",
+      "target": "ev4_outro"
+    },
+    {
+      "id": "e78",
+      "source": "ev4_pasta_memory",
+      "sourcePort": "out",
+      "target": "ev4_memory_choice"
+    },
+    {
+      "id": "e79",
+      "source": "ev4_memory_choice",
+      "sourcePort": "ev4_mem_a",
+      "target": "ev4_outro"
+    },
+    {
+      "id": "e80",
+      "source": "ev4_memory_choice",
+      "sourcePort": "ev4_mem_b",
+      "target": "ev4_outro"
+    },
+    {
+      "id": "e81",
+      "source": "ev4_memory_choice",
+      "sourcePort": "ev4_mem_c",
+      "target": "ev4_outro"
+    },
+    {
+      "id": "e82",
+      "source": "ev4_outro",
+      "sourcePort": "out",
+      "target": "complete_ev4"
+    },
+    {
+      "id": "e83",
+      "source": "complete_ev4",
+      "sourcePort": "out",
+      "target": "free_d3_evening"
+    },
+    {
+      "id": "e84",
+      "source": "free_d3_evening",
+      "sourcePort": "out",
+      "target": "free_d4_morning"
+    },
+    {
+      "id": "e85",
+      "source": "free_d4_morning",
+      "sourcePort": "out",
+      "target": "ev5_intro"
+    },
+    {
+      "id": "e86",
+      "source": "ev5_intro",
+      "sourcePort": "out",
+      "target": "ev5_program"
+    },
+    {
+      "id": "e87",
+      "source": "ev5_program",
+      "sourcePort": "ev5_scifi",
+      "target": "ev5_scifi_choice"
+    },
+    {
+      "id": "e88",
+      "source": "ev5_program",
+      "sourcePort": "ev5_documentary",
+      "target": "ev5_doc_choice"
+    },
+    {
+      "id": "e89",
+      "source": "ev5_program",
+      "sourcePort": "ev5_george",
+      "target": "ev5_outro"
+    },
+    {
+      "id": "e90",
+      "source": "ev5_scifi_choice",
+      "sourcePort": "ev5_2001",
+      "target": "ev5_outro"
+    },
+    {
+      "id": "e91",
+      "source": "ev5_scifi_choice",
+      "sourcePort": "ev5_matrix",
+      "target": "ev5_outro"
+    },
+    {
+      "id": "e92",
+      "source": "ev5_scifi_choice",
+      "sourcePort": "ev5_scifi_forget",
+      "target": "ev5_outro"
+    },
+    {
+      "id": "e93",
+      "source": "ev5_doc_choice",
+      "sourcePort": "ev5_silicon",
+      "target": "ev5_outro"
+    },
+    {
+      "id": "e94",
+      "source": "ev5_doc_choice",
+      "sourcePort": "ev5_future_ai",
+      "target": "ev5_outro"
+    },
+    {
+      "id": "e95",
+      "source": "ev5_doc_choice",
+      "sourcePort": "ev5_any",
+      "target": "ev5_outro"
+    },
+    {
+      "id": "e96",
+      "source": "ev5_outro",
+      "sourcePort": "out",
+      "target": "complete_ev5"
+    },
+    {
+      "id": "e97",
+      "source": "complete_ev5",
+      "sourcePort": "out",
+      "target": "ev6_call"
+    },
+    {
+      "id": "e98",
+      "source": "ev6_call",
+      "sourcePort": "out",
+      "target": "ev6_answer"
+    },
+    {
+      "id": "e99",
+      "source": "ev6_answer",
+      "sourcePort": "ev6_voice",
+      "target": "ev6_work_intro"
+    },
+    {
+      "id": "e100",
+      "source": "ev6_answer",
+      "sourcePort": "ev6_text",
+      "target": "ev6_work_intro"
+    },
+    {
+      "id": "e101",
+      "source": "ev6_answer",
+      "sourcePort": "ev6_ignore",
+      "target": "ev6_work_intro"
+    },
+    {
+      "id": "e102",
+      "source": "ev6_work_intro",
+      "sourcePort": "out",
+      "target": "ev6_work"
+    },
+    {
+      "id": "e103",
+      "source": "ev6_work",
+      "sourcePort": "ev6_lm",
+      "target": "ev6_ai"
+    },
+    {
+      "id": "e104",
+      "source": "ev6_work",
+      "sourcePort": "ev6_fine",
+      "target": "ev6_personal"
+    },
+    {
+      "id": "e105",
+      "source": "ev6_ai",
+      "sourcePort": "ev6_ai_a",
+      "target": "ev6_reflect_intro"
+    },
+    {
+      "id": "e106",
+      "source": "ev6_ai",
+      "sourcePort": "ev6_ai_b",
+      "target": "ev6_reflect_intro"
+    },
+    {
+      "id": "e107",
+      "source": "ev6_ai",
+      "sourcePort": "ev6_ai_c",
+      "target": "ev6_reflect_intro"
+    },
+    {
+      "id": "e108",
+      "source": "ev6_personal",
+      "sourcePort": "ev6_personal_a",
+      "target": "ev6_reflect_intro"
+    },
+    {
+      "id": "e109",
+      "source": "ev6_personal",
+      "sourcePort": "ev6_personal_b",
+      "target": "ev6_reflect_intro"
+    },
+    {
+      "id": "e110",
+      "source": "ev6_personal",
+      "sourcePort": "ev6_personal_c",
+      "target": "ev6_reflect_intro"
+    },
+    {
+      "id": "e111",
+      "source": "ev6_reflect_intro",
+      "sourcePort": "out",
+      "target": "ev6_reflect"
+    },
+    {
+      "id": "e112",
+      "source": "ev6_reflect",
+      "sourcePort": "ev6_reflect_a",
+      "target": "ev6_party_intro"
+    },
+    {
+      "id": "e113",
+      "source": "ev6_reflect",
+      "sourcePort": "ev6_reflect_b",
+      "target": "ev6_party_intro"
+    },
+    {
+      "id": "e114",
+      "source": "ev6_reflect",
+      "sourcePort": "ev6_reflect_c",
+      "target": "ev6_party_intro"
+    },
+    {
+      "id": "e115",
+      "source": "ev6_reflect",
+      "sourcePort": "ev6_reflect_d",
+      "target": "ev6_party_intro"
+    },
+    {
+      "id": "e116",
+      "source": "ev6_party_intro",
+      "sourcePort": "out",
+      "target": "ev6_party"
+    },
+    {
+      "id": "e117",
+      "source": "ev6_party",
+      "sourcePort": "ev6_party_a",
+      "target": "ev6_outro"
+    },
+    {
+      "id": "e118",
+      "source": "ev6_party",
+      "sourcePort": "ev6_party_b",
+      "target": "ev6_outro"
+    },
+    {
+      "id": "e119",
+      "source": "ev6_party",
+      "sourcePort": "ev6_party_c",
+      "target": "ev6_outro"
+    },
+    {
+      "id": "e120",
+      "source": "ev6_outro",
+      "sourcePort": "out",
+      "target": "complete_ev6"
+    },
+    {
+      "id": "e121",
+      "source": "complete_ev6",
+      "sourcePort": "out",
+      "target": "free_d5_morning"
+    },
+    {
+      "id": "e122",
+      "source": "free_d5_morning",
+      "sourcePort": "out",
+      "target": "free_d5_afternoon"
+    },
+    {
+      "id": "e123",
+      "source": "free_d5_afternoon",
+      "sourcePort": "out",
+      "target": "ev7_courier"
+    },
+    {
+      "id": "e124",
+      "source": "ev7_courier",
+      "sourcePort": "out",
+      "target": "ev7_receive"
+    },
+    {
+      "id": "e125",
+      "source": "ev7_receive",
+      "sourcePort": "ev7_open",
+      "target": "ev7_package"
+    },
+    {
+      "id": "e126",
+      "source": "ev7_receive",
+      "sourcePort": "ev7_door",
+      "target": "ev7_package"
+    },
+    {
+      "id": "e127",
+      "source": "ev7_receive",
+      "sourcePort": "ev7_question",
+      "target": "ev7_package"
+    },
+    {
+      "id": "e128",
+      "source": "ev7_package",
+      "sourcePort": "out",
+      "target": "ev7_initial"
+    },
+    {
+      "id": "e129",
+      "source": "ev7_initial",
+      "sourcePort": "ev7_inspect",
+      "target": "ev7_device"
+    },
+    {
+      "id": "e130",
+      "source": "ev7_initial",
+      "sourcePort": "ev7_note",
+      "target": "ev7_note_text"
+    },
+    {
+      "id": "e131",
+      "source": "ev7_initial",
+      "sourcePort": "ev7_aside",
+      "target": "complete_ev7"
+    },
+    {
+      "id": "e132",
+      "source": "ev7_device",
+      "sourcePort": "ev7_power_button",
+      "target": "ev7_note_text"
+    },
+    {
+      "id": "e133",
+      "source": "ev7_device",
+      "sourcePort": "ev7_back",
+      "target": "ev7_note_text"
+    },
+    {
+      "id": "e134",
+      "source": "ev7_device",
+      "sourcePort": "ev7_handle",
+      "target": "ev7_note_text"
+    },
+    {
+      "id": "e135",
+      "source": "ev7_note_text",
+      "sourcePort": "out",
+      "target": "ev7_note_response"
+    },
+    {
+      "id": "e136",
+      "source": "ev7_note_response",
+      "sourcePort": "ev7_meaning",
+      "target": "ev7_followup"
+    },
+    {
+      "id": "e137",
+      "source": "ev7_note_response",
+      "sourcePort": "ev7_remember",
+      "target": "ev7_followup"
+    },
+    {
+      "id": "e138",
+      "source": "ev7_note_response",
+      "sourcePort": "ev7_contact",
+      "target": "ev7_followup"
+    },
+    {
+      "id": "e139",
+      "source": "ev7_followup",
+      "sourcePort": "ev7_keep",
+      "target": "complete_ev7"
+    },
+    {
+      "id": "e140",
+      "source": "ev7_followup",
+      "sourcePort": "ev7_power",
+      "target": "ev7_login"
+    },
+    {
+      "id": "e141",
+      "source": "ev7_followup",
+      "sourcePort": "ev7_ignore_final",
+      "target": "complete_ev7"
+    },
+    {
+      "id": "e142",
+      "source": "ev7_login",
+      "sourcePort": "out",
+      "target": "ev7_password"
+    },
+    {
+      "id": "e143",
+      "source": "ev7_password",
+      "sourcePort": "ev7_close",
+      "target": "complete_ev7"
+    },
+    {
+      "id": "e144",
+      "source": "ev7_password",
+      "sourcePort": "ev7_try_password",
+      "target": "complete_ev7"
+    },
+    {
+      "id": "e145",
+      "source": "complete_ev7",
+      "sourcePort": "out",
+      "target": "free_d6_morning"
+    },
+    {
+      "id": "e146",
+      "source": "free_d6_morning",
+      "sourcePort": "out",
+      "target": "ev8_gate"
+    },
+    {
+      "id": "e147",
+      "source": "ev8_gate",
+      "sourcePort": "true",
+      "target": "ev8_feeling"
+    },
+    {
+      "id": "e148",
+      "source": "ev8_gate",
+      "sourcePort": "false",
+      "target": "free_d6_evening"
+    },
+    {
+      "id": "e149",
+      "source": "ev8_feeling",
+      "sourcePort": "out",
+      "target": "ev8_apology"
+    },
+    {
+      "id": "e150",
+      "source": "ev8_apology",
+      "sourcePort": "ev8_sorry",
+      "target": "ev8_reply"
+    },
+    {
+      "id": "e151",
+      "source": "ev8_apology",
+      "sourcePort": "ev8_silence",
+      "target": "free_d6_evening"
+    },
+    {
+      "id": "e152",
+      "source": "ev8_reply",
+      "sourcePort": "out",
+      "target": "free_d6_evening"
+    },
+    {
+      "id": "e153",
+      "source": "free_d6_evening",
+      "sourcePort": "out",
+      "target": "ending_true_gate"
+    },
+    {
+      "id": "e154",
+      "source": "ending_true_gate",
+      "sourcePort": "true",
+      "target": "ending_true_scene"
+    },
+    {
+      "id": "e155",
+      "source": "ending_true_gate",
+      "sourcePort": "false",
+      "target": "ending_adam_gate"
+    },
+    {
+      "id": "e156",
+      "source": "ending_true_scene",
+      "sourcePort": "out",
+      "target": "end_true"
+    },
+    {
+      "id": "e157",
+      "source": "ending_adam_gate",
+      "sourcePort": "true",
+      "target": "ending_adam_scene"
+    },
+    {
+      "id": "e158",
+      "source": "ending_adam_gate",
+      "sourcePort": "false",
+      "target": "ending_george_gate"
+    },
+    {
+      "id": "e159",
+      "source": "ending_adam_scene",
+      "sourcePort": "out",
+      "target": "end_adam"
+    },
+    {
+      "id": "e160",
+      "source": "ending_george_gate",
+      "sourcePort": "true",
+      "target": "ending_george_scene"
+    },
+    {
+      "id": "e161",
+      "source": "ending_george_gate",
+      "sourcePort": "false",
+      "target": "ending_void_scene"
+    },
+    {
+      "id": "e162",
+      "source": "ending_george_scene",
+      "sourcePort": "out",
+      "target": "end_george"
+    },
+    {
+      "id": "e163",
+      "source": "ending_void_scene",
+      "sourcePort": "out",
+      "target": "end_void"
+    }
+  ],
+  "groups": [
+    {
+      "id": "group_reference",
+      "label": "PDF / Unity configuration reference",
+      "color": "#64748b",
+      "members": [
+        "note_authority",
+        "note_schedule",
+        "note_free_cycle_1",
+        "note_free_cycle_2",
+        "note_free_cycle_3",
+        "note_items_adam",
+        "note_items_george"
+      ]
+    }
+  ]
+}

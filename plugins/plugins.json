@@ -1,0 +1,19 @@
+{
+  "plugins": [
+    {
+      "id": "npc-schedule",
+      "name": "NPC 日程编辑器",
+      "path": "npc-schedule/index.js",
+      "enabled": true,
+      "desc": "用同一套节点图为 NPC 配置一天的「时段 / 活动 / 地点」，可插条件分流并导出日程 JSON。示范：本工具不止能编剧情，也能做模拟经营/大世界的日程配置。"
+    },
+    {
+      "id": "ai-deepseek",
+      "name": "AI 助手 (DeepSeek)",
+      "path": "ai-deepseek/index.js",
+      "enabled": true,
+      "desc": "润色台词 / 续写下一句 / 生成分支选项 / 全篇一致性检查。AI 作为可插拔增强，未配置 Key 或余额不足也不影响核心编辑与导出。"
+    }
+  ],
+  "_note": "插件清单。enabled 改为 false 即停用；新增插件在此登记入口路径（相对 plugins/ 目录）。name/desc 会显示在「🧩 插件」管理面板里。"
+}

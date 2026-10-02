@@ -1,0 +1,79 @@
+{
+  "meta": { "name": "生日派对（示例切片）", "version": 1 },
+  "variables": [
+    { "name": "affection_adam", "type": "number", "initial": 0 },
+    { "name": "affection_george", "type": "number", "initial": 0 },
+    { "name": "found_napkin", "type": "boolean", "initial": false }
+  ],
+  "nodes": [
+    { "id": "n_start", "type": "start", "x": 80, "y": 280, "data": { "label": "开始" } },
+    { "id": "n_lizz1", "type": "dialogue", "x": 300, "y": 260, "data": { "speaker": "Lizz", "text": "早安，Matt。又是一个平静的早晨……你的电脑上有一条新消息。也许你该去看看？" } },
+    { "id": "n_req", "type": "choice", "x": 560, "y": 250, "data": { "prompt": "电脑上是 Adam 发来的好友申请。", "options": [
+      { "id": "o_accept", "text": "接受申请", "effects": [] },
+      { "id": "o_decline", "text": "拒绝", "effects": [] }
+    ] } },
+    { "id": "n_decline", "type": "dialogue", "x": 560, "y": 520, "data": { "speaker": "Lizz", "text": "看来还是让你什么都不知道最好。" } },
+    { "id": "n_end_hidden", "type": "end", "x": 840, "y": 540, "data": { "ending": "隐藏结局 · 一无所知" } },
+    { "id": "n_adam1", "type": "dialogue", "x": 840, "y": 220, "data": { "speaker": "Adam", "text": "Matt，谢谢你愿意接受申请。George 的生日快到了，一起给他个惊喜吧，就像以前那样。" } },
+    { "id": "n_free", "type": "choice", "x": 1110, "y": 220, "data": { "prompt": "下午的自由时间，你想看看房间里的什么？", "options": [
+      { "id": "o_napkin", "text": "查看桌上的餐巾纸", "effects": [] },
+      { "id": "o_rest", "text": "先休息一下", "effects": [] }
+    ] } },
+    { "id": "n_setnapkin", "type": "setvar", "x": 1390, "y": 400, "data": { "assignments": [ { "var": "found_napkin", "op": "set", "value": "true" } ] } },
+    { "id": "n_note", "type": "note", "x": 1100, "y": 470, "data": { "text": "《生日派对》剧情切片示例\n演示：对话 / 选择 / 赋值 / 条件 / 多结局。\n好感度阈值此处设为 2（演示用），实际可改为 8。" } },
+    { "id": "n_venue", "type": "dialogue", "x": 1640, "y": 220, "data": { "speaker": "Adam", "text": "关于派对场地，我们得好好想想。你有什么建议吗？" } },
+    { "id": "n_venue_choice", "type": "choice", "x": 1900, "y": 210, "data": { "prompt": "选择派对场地：", "options": [
+      { "id": "o_terminal", "text": "我们常去的 The Terminal 餐厅", "effects": [] },
+      { "id": "o_youdecide", "text": "你来定吧", "effects": [ { "var": "affection_adam", "op": "sub", "value": "1" } ] }
+    ] } },
+    { "id": "n_cond_napkin", "type": "condition", "x": 2180, "y": 110, "data": { "match": "all", "clauses": [ { "var": "found_napkin", "op": "==", "value": "true" } ] } },
+    { "id": "n_rest_good", "type": "choice", "x": 2450, "y": 40, "data": { "prompt": "你想起了什么？", "options": [
+      { "id": "o_origin", "text": "对，我们的创意就是从那里开始的。", "effects": [ { "var": "affection_adam", "op": "add", "value": "2" } ] },
+      { "id": "o_nice", "text": "是啊，那里氛围不错。", "effects": [ { "var": "affection_adam", "op": "add", "value": "1" } ] }
+    ] } },
+    { "id": "n_rest_plain", "type": "dialogue", "x": 2450, "y": 280, "data": { "speaker": "Adam", "text": "嗯……其实 George 最近不太想去那种地方。算了，换一个吧。" } },
+    { "id": "n_george1", "type": "dialogue", "x": 2730, "y": 210, "data": { "speaker": "George", "text": "Matt，好久不见。如果……我们当初可以重来一次就好了。" } },
+    { "id": "n_george_choice", "type": "choice", "x": 2990, "y": 200, "data": { "prompt": "如何回应 George？", "options": [
+      { "id": "o_friend", "text": "无论过去发生什么，你都是我重要的朋友。", "effects": [ { "var": "affection_george", "op": "add", "value": "2" } ] },
+      { "id": "o_past", "text": "过去的事就让它过去吧。", "effects": [ { "var": "affection_george", "op": "sub", "value": "1" } ] }
+    ] } },
+    { "id": "n_eval1", "type": "condition", "x": 3270, "y": 200, "data": { "match": "all", "clauses": [
+      { "var": "affection_adam", "op": ">=", "value": "2" },
+      { "var": "affection_george", "op": ">=", "value": "2" }
+    ] } },
+    { "id": "n_end_true", "type": "end", "x": 3540, "y": 70, "data": { "ending": "真结局 · Beyond The Terminal" } },
+    { "id": "n_eval2", "type": "condition", "x": 3540, "y": 250, "data": { "match": "all", "clauses": [ { "var": "affection_adam", "op": ">=", "value": "2" } ] } },
+    { "id": "n_end_adam", "type": "end", "x": 3810, "y": 170, "data": { "ending": "结局 II-A · 与 Adam 和解" } },
+    { "id": "n_eval3", "type": "condition", "x": 3810, "y": 350, "data": { "match": "all", "clauses": [ { "var": "affection_george", "op": ">=", "value": "2" } ] } },
+    { "id": "n_end_george", "type": "end", "x": 4080, "y": 290, "data": { "ending": "结局 II-B · 与 George 和解" } },
+    { "id": "n_end_void", "type": "end", "x": 4080, "y": 450, "data": { "ending": "结局 I · The Void Party" } }
+  ],
+  "edges": [
+    { "id": "e_1", "source": "n_start", "sourcePort": "out", "target": "n_lizz1" },
+    { "id": "e_2", "source": "n_lizz1", "sourcePort": "out", "target": "n_req" },
+    { "id": "e_3", "source": "n_req", "sourcePort": "o_accept", "target": "n_adam1" },
+    { "id": "e_4", "source": "n_req", "sourcePort": "o_decline", "target": "n_decline" },
+    { "id": "e_5", "source": "n_decline", "sourcePort": "out", "target": "n_end_hidden" },
+    { "id": "e_6", "source": "n_adam1", "sourcePort": "out", "target": "n_free" },
+    { "id": "e_7", "source": "n_free", "sourcePort": "o_napkin", "target": "n_setnapkin" },
+    { "id": "e_8", "source": "n_free", "sourcePort": "o_rest", "target": "n_venue" },
+    { "id": "e_9", "source": "n_setnapkin", "sourcePort": "out", "target": "n_venue" },
+    { "id": "e_10", "source": "n_venue", "sourcePort": "out", "target": "n_venue_choice" },
+    { "id": "e_11", "source": "n_venue_choice", "sourcePort": "o_terminal", "target": "n_cond_napkin" },
+    { "id": "e_12", "source": "n_venue_choice", "sourcePort": "o_youdecide", "target": "n_george1" },
+    { "id": "e_13", "source": "n_cond_napkin", "sourcePort": "true", "target": "n_rest_good" },
+    { "id": "e_14", "source": "n_cond_napkin", "sourcePort": "false", "target": "n_rest_plain" },
+    { "id": "e_15", "source": "n_rest_good", "sourcePort": "o_origin", "target": "n_george1" },
+    { "id": "e_16", "source": "n_rest_good", "sourcePort": "o_nice", "target": "n_george1" },
+    { "id": "e_17", "source": "n_rest_plain", "sourcePort": "out", "target": "n_george1" },
+    { "id": "e_18", "source": "n_george1", "sourcePort": "out", "target": "n_george_choice" },
+    { "id": "e_19", "source": "n_george_choice", "sourcePort": "o_friend", "target": "n_eval1" },
+    { "id": "e_20", "source": "n_george_choice", "sourcePort": "o_past", "target": "n_eval1" },
+    { "id": "e_21", "source": "n_eval1", "sourcePort": "true", "target": "n_end_true" },
+    { "id": "e_22", "source": "n_eval1", "sourcePort": "false", "target": "n_eval2" },
+    { "id": "e_23", "source": "n_eval2", "sourcePort": "true", "target": "n_end_adam" },
+    { "id": "e_24", "source": "n_eval2", "sourcePort": "false", "target": "n_eval3" },
+    { "id": "e_25", "source": "n_eval3", "sourcePort": "true", "target": "n_end_george" },
+    { "id": "e_26", "source": "n_eval3", "sourcePort": "false", "target": "n_end_void" }
+  ]
+}

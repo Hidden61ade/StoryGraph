@@ -1,0 +1,11 @@
+# Local configuration and credentials
+config.local.json
+.env
+.env.*
+!.env.example
+
+# Generated/local files
+.DS_Store
+Thumbs.db
+node_modules/
+*.log

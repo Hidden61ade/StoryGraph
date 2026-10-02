@@ -1,0 +1,12 @@
+{
+  "name": "storygraph",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "A visual branching narrative editor with previews, validation, and Unity-oriented JSON export.",
+  "scripts": {
+    "start": "node serve.mjs",
+    "check": "node scripts/check.mjs"
+  },
+  "engines": { "node": ">=20" }
+}

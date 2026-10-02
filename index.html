@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>StoryGraph · 剧情节点编辑器</title>
+  <link rel="stylesheet" href="src/ui/styles.css" />
+</head>
+<body>
+  <div id="app">
+    <header class="topbar" id="topbar"></header>
+    <div class="workspace">
+      <aside class="palette" id="palette"></aside>
+      <main class="canvas-wrap">
+        <div id="canvas"></div>
+      </main>
+      <aside class="sidebar">
+        <div class="sidebar__tabs" id="sidebarTabs">
+          <button class="tab is-active" data-tab="inspector">属性</button>
+          <button class="tab" data-tab="assets">资产库</button>
+        </div>
+        <section class="panel" id="inspector"></section>
+        <section class="panel" id="assets" hidden></section>
+        <section class="panel" id="variables"></section>
+      </aside>
+    </div>
+    <footer class="statusbar" id="statusbar"></footer>
+  </div>
+
+  <div id="toast" class="toast-container"></div>
+  <input type="file" id="fileInput" accept="application/json,.sg,.json" hidden />
+
+  <script>
+    // 兜底引导：若有人直接双击 index.html（file:// 协议），多数浏览器会用 CORS 拦截 ES 模块，
+    // 应用无法启动。此时显示清晰的启动指引，而不是一片空白。
+    // 判据：应用正常启动会把 window.__sgBooted 置为 true（见 src/main.js）；
+    // 1.8 秒后若仍未启动，就展示引导页——这样在能正常运行的环境里完全不打扰。
+    window.addEventListener('DOMContentLoaded', function () {
+      setTimeout(function () {
+        if (window.__sgBooted) return;
+        document.body.innerHTML =
+          '<div style="max-width:680px;margin:8vh auto;padding:32px 36px;font-family:\'Segoe UI\',system-ui,sans-serif;color:#1f2740;background:#fff;border-radius:16px;box-shadow:0 10px 40px rgba(20,28,56,.12)">' +
+          '<h1 style="margin:0 0 4px;font-size:22px">StoryGraph 需要通过本地服务器打开</h1>' +
+          '<p style="color:#8b93a7;margin:0 0 20px">浏览器安全策略不允许从 <code>file://</code> 直接运行本应用（这就是双击打开后空白的原因）。一键启动即可：</p>' +
+          '<div style="background:#f4f6fb;border-radius:12px;padding:18px 20px;margin-bottom:16px">' +
+          '<div style="font-weight:800;margin-bottom:6px">✅ 推荐：双击 <code>启动.bat</code></div>' +
+          '<div style="color:#58607a;font-size:14px;line-height:1.7">就在本文件同一个文件夹里。它会自动开启本地服务器并打开浏览器。</div>' +
+          '</div>' +
+          '<div style="background:#f4f6fb;border-radius:12px;padding:18px 20px">' +
+          '<div style="font-weight:800;margin-bottom:6px">或：手动命令行启动</div>' +
+          '<pre style="margin:8px 0 0;background:#0f1730;color:#cdd6f4;padding:12px 14px;border-radius:8px;font-size:13px;overflow:auto">cd StoryGraph\npython -m http.server 8123\n# 然后浏览器打开 http://localhost:8123</pre>' +
+          '<div style="color:#58607a;font-size:13px;margin-top:8px">没有 Python？改用 <code>node serve.mjs 8123</code>（仅需 Node.js，无需联网）。</div>' +
+          '</div>' +
+          '</div>';
+      }, 1800);
+    });
+  </script>
+  <script type="module" src="src/main.js"></script>
+</body>
+</html>

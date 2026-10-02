@@ -1,0 +1,9 @@
+{
+  "ai": {
+    "provider": "deepseek",
+    "baseURL": "https://api.deepseek.com",
+    "model": "deepseek-chat",
+    "apiKey": ""
+  },
+  "_note": "复制本文件为 config.local.json，并填入你的 apiKey。config.local.json 已被 .gitignore 忽略，不会提交到仓库。AI 功能属于后续插件，本体无需此配置即可运行。"
+}

@@ -1,0 +1,1618 @@
+{
+  "meta": {
+    "name": "生日派对 The Birthday Party（完整剧情）",
+    "version": 1
+  },
+  "variables": [
+    {
+      "name": "affection_adam",
+      "type": "number",
+      "initial": 0
+    },
+    {
+      "name": "affection_george",
+      "type": "number",
+      "initial": 0
+    },
+    {
+      "name": "found_napkin",
+      "type": "boolean",
+      "initial": false
+    },
+    {
+      "name": "saw_lakeside",
+      "type": "boolean",
+      "initial": false
+    },
+    {
+      "name": "read_departure",
+      "type": "boolean",
+      "initial": false
+    },
+    {
+      "name": "found_vintage_pc",
+      "type": "boolean",
+      "initial": false
+    },
+    {
+      "name": "saw_old_photos",
+      "type": "boolean",
+      "initial": false
+    },
+    {
+      "name": "has_terminal",
+      "type": "boolean",
+      "initial": false
+    }
+  ],
+  "nodes": [
+    {
+      "id": "n_start",
+      "type": "start",
+      "x": 80,
+      "y": 120,
+      "data": {
+        "label": "开始"
+      }
+    },
+    {
+      "id": "lizz_intro",
+      "type": "dialogue",
+      "x": 380,
+      "y": 120,
+      "data": {
+        "speaker": "Lizz",
+        "text": "早安，Matt。又是一个平静的早晨……哦？你的电脑上有一条新消息。这倒是稀奇，毕竟自从那件事之后，你已经很久没收到过好友申请了。也许该去看看？"
+      }
+    },
+    {
+      "id": "ev1_choice",
+      "type": "choice",
+      "x": 680,
+      "y": 120,
+      "data": {
+        "prompt": "电脑上是 Adam 发来的好友申请。",
+        "options": [
+          {
+            "id": "o_accept",
+            "text": "接受申请",
+            "effects": []
+          },
+          {
+            "id": "o_decline",
+            "text": "拒绝",
+            "effects": []
+          }
+        ]
+      }
+    },
+    {
+      "id": "lizz_decline",
+      "type": "dialogue",
+      "x": 980,
+      "y": 420,
+      "data": {
+        "speaker": "Lizz",
+        "text": "看来还是让你什么都不知道最好。"
+      }
+    },
+    {
+      "id": "ev1_shutdown",
+      "type": "dialogue",
+      "x": 1280,
+      "y": 420,
+      "data": {
+        "speaker": "系统",
+        "text": "> SYSTEM OVERRIDE\n> ACCESSING NEURAL INTERFACE\n> INITIATING TERMINAL SHUTDOWN"
+      }
+    },
+    {
+      "id": "end_hidden",
+      "type": "end",
+      "x": 1580,
+      "y": 420,
+      "data": {
+        "ending": "隐藏结局 · 一无所知"
+      }
+    },
+    {
+      "id": "adam_thanks",
+      "type": "dialogue",
+      "x": 980,
+      "y": 120,
+      "data": {
+        "speaker": "Adam",
+        "text": "Matt，谢谢你愿意接受申请。George 的生日快到了，我在想也许我们可以一起给他个惊喜，就像以前那样。"
+      }
+    },
+    {
+      "id": "ev1_why",
+      "type": "choice",
+      "x": 1280,
+      "y": 120,
+      "data": {
+        "prompt": "你想怎么回应 Adam？",
+        "options": [
+          {
+            "id": "o_go",
+            "text": "你说得对，也许是时候放下过去了。",
+            "effects": [
+              {
+                "var": "affection_adam",
+                "op": "add",
+                "value": "1"
+              }
+            ]
+          },
+          {
+            "id": "o_need",
+            "text": "所以你需要我做什么？",
+            "effects": []
+          },
+          {
+            "id": "o_think",
+            "text": "我考虑考虑。",
+            "effects": [
+              {
+                "var": "affection_adam",
+                "op": "sub",
+                "value": "1"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "adam_plan",
+      "type": "dialogue",
+      "x": 1580,
+      "y": 120,
+      "data": {
+        "speaker": "Adam",
+        "text": "太好了。我会把具体计划发给你。这几天我们要商量场地和主题，谢谢你愿意参与，Matt。"
+      }
+    },
+    {
+      "id": "free1",
+      "type": "choice",
+      "x": 80,
+      "y": 560,
+      "data": {
+        "prompt": "【自由时间】你想看看房间里的什么？（一段时间只能看一份资料）",
+        "options": [
+          {
+            "id": "o_napkin",
+            "text": "看桌上的餐巾纸",
+            "effects": []
+          },
+          {
+            "id": "o_profile",
+            "text": "翻看电脑上 George 的个人主页",
+            "effects": []
+          },
+          {
+            "id": "o_news",
+            "text": "读一则关于 George 离职的新闻",
+            "effects": []
+          },
+          {
+            "id": "o_skip1",
+            "text": "先不看，休息一下",
+            "effects": []
+          }
+        ]
+      }
+    },
+    {
+      "id": "set_napkin",
+      "type": "setvar",
+      "x": 380,
+      "y": 440,
+      "data": {
+        "assignments": [
+          {
+            "var": "found_napkin",
+            "op": "set",
+            "value": "true"
+          }
+        ]
+      }
+    },
+    {
+      "id": "set_lakeside",
+      "type": "setvar",
+      "x": 380,
+      "y": 560,
+      "data": {
+        "assignments": [
+          {
+            "var": "saw_lakeside",
+            "op": "set",
+            "value": "true"
+          }
+        ]
+      }
+    },
+    {
+      "id": "set_departure",
+      "type": "setvar",
+      "x": 380,
+      "y": 700,
+      "data": {
+        "assignments": [
+          {
+            "var": "read_departure",
+            "op": "set",
+            "value": "true"
+          }
+        ]
+      }
+    },
+    {
+      "id": "free2",
+      "type": "choice",
+      "x": 680,
+      "y": 560,
+      "data": {
+        "prompt": "【自由时间】夜深了，再看一份资料？",
+        "options": [
+          {
+            "id": "o_pc",
+            "text": "端详展示柜里 George 收藏的老式电脑",
+            "effects": []
+          },
+          {
+            "id": "o_photo",
+            "text": "看三人年轻时的老照片",
+            "effects": []
+          },
+          {
+            "id": "o_napkin2",
+            "text": "看桌上的餐巾纸",
+            "effects": []
+          },
+          {
+            "id": "o_skip2",
+            "text": "睡了",
+            "effects": []
+          }
+        ]
+      }
+    },
+    {
+      "id": "set_pc",
+      "type": "setvar",
+      "x": 980,
+      "y": 440,
+      "data": {
+        "assignments": [
+          {
+            "var": "found_vintage_pc",
+            "op": "set",
+            "value": "true"
+          }
+        ]
+      }
+    },
+    {
+      "id": "set_photo",
+      "type": "setvar",
+      "x": 980,
+      "y": 560,
+      "data": {
+        "assignments": [
+          {
+            "var": "saw_old_photos",
+            "op": "set",
+            "value": "true"
+          }
+        ]
+      }
+    },
+    {
+      "id": "set_napkin2",
+      "type": "setvar",
+      "x": 980,
+      "y": 700,
+      "data": {
+        "assignments": [
+          {
+            "var": "found_napkin",
+            "op": "set",
+            "value": "true"
+          }
+        ]
+      }
+    },
+    {
+      "id": "ev2_dlg",
+      "type": "dialogue",
+      "x": 80,
+      "y": 1040,
+      "data": {
+        "speaker": "Adam",
+        "text": "嘿 Matt，关于派对场地，我们得好好想想。毕竟这对 George 意义重大。你有什么建议吗？"
+      }
+    },
+    {
+      "id": "ev2_choice",
+      "type": "choice",
+      "x": 380,
+      "y": 1040,
+      "data": {
+        "prompt": "选择派对场地：",
+        "options": [
+          {
+            "id": "o_rest",
+            "text": "我们以前常去的 The Terminal 餐厅",
+            "effects": []
+          },
+          {
+            "id": "o_office",
+            "text": "不如就在 Metaplace 公司？",
+            "effects": []
+          },
+          {
+            "id": "o_quiet",
+            "text": "选个安静的地方比较好",
+            "effects": []
+          }
+        ]
+      }
+    },
+    {
+      "id": "cond_napkin",
+      "type": "condition",
+      "x": 680,
+      "y": 900,
+      "data": {
+        "match": "all",
+        "clauses": [
+          {
+            "var": "found_napkin",
+            "op": "==",
+            "value": "true"
+          }
+        ]
+      }
+    },
+    {
+      "id": "cond_departure",
+      "type": "condition",
+      "x": 680,
+      "y": 1040,
+      "data": {
+        "match": "all",
+        "clauses": [
+          {
+            "var": "read_departure",
+            "op": "==",
+            "value": "true"
+          }
+        ]
+      }
+    },
+    {
+      "id": "cond_lakeside",
+      "type": "condition",
+      "x": 680,
+      "y": 1180,
+      "data": {
+        "match": "all",
+        "clauses": [
+          {
+            "var": "saw_lakeside",
+            "op": "==",
+            "value": "true"
+          }
+        ]
+      }
+    },
+    {
+      "id": "set_rest_bonus",
+      "type": "setvar",
+      "x": 980,
+      "y": 860,
+      "data": {
+        "assignments": [
+          {
+            "var": "affection_adam",
+            "op": "add",
+            "value": "3"
+          }
+        ]
+      }
+    },
+    {
+      "id": "set_office_bonus",
+      "type": "setvar",
+      "x": 980,
+      "y": 1040,
+      "data": {
+        "assignments": [
+          {
+            "var": "affection_adam",
+            "op": "add",
+            "value": "2"
+          }
+        ]
+      }
+    },
+    {
+      "id": "set_quiet_bonus",
+      "type": "setvar",
+      "x": 980,
+      "y": 1180,
+      "data": {
+        "assignments": [
+          {
+            "var": "affection_adam",
+            "op": "add",
+            "value": "3"
+          }
+        ]
+      }
+    },
+    {
+      "id": "ev2_after",
+      "type": "dialogue",
+      "x": 1280,
+      "y": 1040,
+      "data": {
+        "speaker": "Adam",
+        "text": "好的，我记下了。主题的事我们之后再聊，谢谢你的建议，Matt。"
+      }
+    },
+    {
+      "id": "ev3_dlg",
+      "type": "dialogue",
+      "x": 80,
+      "y": 1560,
+      "data": {
+        "speaker": "Adam",
+        "text": "Matt，关于派对主题，我们得策划点特别的。你有什么想法吗？"
+      }
+    },
+    {
+      "id": "ev3_choice",
+      "type": "choice",
+      "x": 380,
+      "y": 1560,
+      "data": {
+        "prompt": "选择派对主题：",
+        "options": [
+          {
+            "id": "o_retro",
+            "text": "复古科技主题",
+            "effects": []
+          },
+          {
+            "id": "o_family",
+            "text": "简单温馨的家庭聚会",
+            "effects": []
+          }
+        ]
+      }
+    },
+    {
+      "id": "cond_pc",
+      "type": "condition",
+      "x": 680,
+      "y": 1440,
+      "data": {
+        "match": "all",
+        "clauses": [
+          {
+            "var": "found_vintage_pc",
+            "op": "==",
+            "value": "true"
+          }
+        ]
+      }
+    },
+    {
+      "id": "cond_photo",
+      "type": "condition",
+      "x": 680,
+      "y": 1620,
+      "data": {
+        "match": "all",
+        "clauses": [
+          {
+            "var": "saw_old_photos",
+            "op": "==",
+            "value": "true"
+          }
+        ]
+      }
+    },
+    {
+      "id": "set_retro_bonus",
+      "type": "setvar",
+      "x": 980,
+      "y": 1440,
+      "data": {
+        "assignments": [
+          {
+            "var": "affection_adam",
+            "op": "add",
+            "value": "3"
+          }
+        ]
+      }
+    },
+    {
+      "id": "set_family_bonus",
+      "type": "setvar",
+      "x": 980,
+      "y": 1620,
+      "data": {
+        "assignments": [
+          {
+            "var": "affection_adam",
+            "op": "add",
+            "value": "3"
+          }
+        ]
+      }
+    },
+    {
+      "id": "ev3_after",
+      "type": "dialogue",
+      "x": 1280,
+      "y": 1560,
+      "data": {
+        "speaker": "Adam",
+        "text": "好，主题就这么定了，我觉得 George 会喜欢的。"
+      }
+    },
+    {
+      "id": "ev4_dlg",
+      "type": "dialogue",
+      "x": 1580,
+      "y": 1560,
+      "data": {
+        "speaker": "Adam",
+        "text": "对了，派对的食物……George 一直很挑嘴。你还记得他喜欢什么吗？"
+      }
+    },
+    {
+      "id": "ev4_choice",
+      "type": "choice",
+      "x": 1880,
+      "y": 1560,
+      "data": {
+        "prompt": "选择食物：",
+        "options": [
+          {
+            "id": "o_pasta",
+            "text": "他爱吃奶油蘑菇意面",
+            "effects": [
+              {
+                "var": "affection_adam",
+                "op": "add",
+                "value": "2"
+              }
+            ]
+          },
+          {
+            "id": "o_pizza",
+            "text": "披萨吧，大家都爱",
+            "effects": [
+              {
+                "var": "affection_adam",
+                "op": "add",
+                "value": "1"
+              }
+            ]
+          },
+          {
+            "id": "o_takeout",
+            "text": "随便叫个外卖",
+            "effects": [
+              {
+                "var": "affection_adam",
+                "op": "sub",
+                "value": "1"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "ev5_dlg",
+      "type": "dialogue",
+      "x": 80,
+      "y": 2040,
+      "data": {
+        "speaker": "Adam",
+        "text": "派对上看点什么好呢？George 总说我们的口味太普通了。"
+      }
+    },
+    {
+      "id": "ev5_choice",
+      "type": "choice",
+      "x": 380,
+      "y": 2040,
+      "data": {
+        "prompt": "选择节目类型：",
+        "options": [
+          {
+            "id": "o_scifi",
+            "text": "科幻片",
+            "effects": []
+          },
+          {
+            "id": "o_doc",
+            "text": "纪录片",
+            "effects": []
+          }
+        ]
+      }
+    },
+    {
+      "id": "ev5_scifi",
+      "type": "choice",
+      "x": 680,
+      "y": 1900,
+      "data": {
+        "prompt": "选哪部科幻片？",
+        "options": [
+          {
+            "id": "o_2001",
+            "text": "《2001 太空漫游》，George 最爱的经典",
+            "effects": [
+              {
+                "var": "affection_george",
+                "op": "add",
+                "value": "1"
+              }
+            ]
+          },
+          {
+            "id": "o_matrix",
+            "text": "《黑客帝国》，我们看过无数遍",
+            "effects": [
+              {
+                "var": "affection_george",
+                "op": "add",
+                "value": "1"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "ev5_doc",
+      "type": "choice",
+      "x": 680,
+      "y": 2160,
+      "data": {
+        "prompt": "选哪部纪录片？",
+        "options": [
+          {
+            "id": "o_sv",
+            "text": "《硅谷革命》，正适合我们仨",
+            "effects": [
+              {
+                "var": "affection_george",
+                "op": "add",
+                "value": "1"
+              }
+            ]
+          },
+          {
+            "id": "o_ai",
+            "text": "《AI 的未来》，挺应景",
+            "effects": [
+              {
+                "var": "affection_george",
+                "op": "add",
+                "value": "1"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "ev6_dlg",
+      "type": "dialogue",
+      "x": 80,
+      "y": 2520,
+      "data": {
+        "speaker": "George",
+        "text": "（深夜，一个陌生来电）Matt，好久不见……抱歉这么晚打扰你。我们能聊聊吗？"
+      }
+    },
+    {
+      "id": "ev6_answer",
+      "type": "choice",
+      "x": 380,
+      "y": 2520,
+      "data": {
+        "prompt": "如何接听？",
+        "options": [
+          {
+            "id": "o_voice",
+            "text": "接听语音通话",
+            "effects": [
+              {
+                "var": "affection_george",
+                "op": "add",
+                "value": "2"
+              }
+            ]
+          },
+          {
+            "id": "o_text",
+            "text": "改用文字聊天",
+            "effects": [
+              {
+                "var": "affection_george",
+                "op": "add",
+                "value": "1"
+              }
+            ]
+          },
+          {
+            "id": "o_ignore",
+            "text": "不接",
+            "effects": [
+              {
+                "var": "affection_george",
+                "op": "sub",
+                "value": "1"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "ev6_work",
+      "type": "dialogue",
+      "x": 680,
+      "y": 2520,
+      "data": {
+        "speaker": "George",
+        "text": "听说你还在做 AI 研究。说实话，我一直很担心 AI 的发展方向……你觉得我们走在正确的路上吗？"
+      }
+    },
+    {
+      "id": "ev6_ai",
+      "type": "choice",
+      "x": 980,
+      "y": 2520,
+      "data": {
+        "prompt": "如何回应 George 的忧虑？",
+        "options": [
+          {
+            "id": "o_understand",
+            "text": "我理解你的担忧。进步不可逆，但伦理必须认真对待。",
+            "effects": [
+              {
+                "var": "affection_george",
+                "op": "add",
+                "value": "2"
+              }
+            ]
+          },
+          {
+            "id": "o_cautious",
+            "text": "我们确实需要更谨慎一些。",
+            "effects": [
+              {
+                "var": "affection_george",
+                "op": "add",
+                "value": "1"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "ev6_reflect",
+      "type": "dialogue",
+      "x": 1280,
+      "y": 2520,
+      "data": {
+        "speaker": "George",
+        "text": "其实……我一直在想我们当年的选择。如果能重来一次就好了。"
+      }
+    },
+    {
+      "id": "ev6_reflect_choice",
+      "type": "choice",
+      "x": 1580,
+      "y": 2520,
+      "data": {
+        "prompt": "如何回应？",
+        "options": [
+          {
+            "id": "o_friend",
+            "text": "无论过去发生什么，你都是我重要的朋友。",
+            "effects": [
+              {
+                "var": "affection_george",
+                "op": "add",
+                "value": "2"
+              }
+            ]
+          },
+          {
+            "id": "o_past",
+            "text": "过去的事就让它过去吧。",
+            "effects": [
+              {
+                "var": "affection_george",
+                "op": "sub",
+                "value": "1"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "ev7_dlg",
+      "type": "dialogue",
+      "x": 80,
+      "y": 3060,
+      "data": {
+        "speaker": "快递员",
+        "text": "您好，有一个包裹需要签收。是 George 先生寄来的，他特别交代一定要送到。"
+      }
+    },
+    {
+      "id": "ev7_choice",
+      "type": "choice",
+      "x": 380,
+      "y": 3060,
+      "data": {
+        "prompt": "怎么处理这个包裹？",
+        "options": [
+          {
+            "id": "o_sign",
+            "text": "开门签收，打开看看",
+            "effects": []
+          },
+          {
+            "id": "o_aside",
+            "text": "放在一边不理它",
+            "effects": [
+              {
+                "var": "affection_george",
+                "op": "sub",
+                "value": "1"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "set_terminal",
+      "type": "setvar",
+      "x": 680,
+      "y": 2940,
+      "data": {
+        "assignments": [
+          {
+            "var": "has_terminal",
+            "op": "set",
+            "value": "true"
+          }
+        ]
+      }
+    },
+    {
+      "id": "ev7_note",
+      "type": "dialogue",
+      "x": 980,
+      "y": 2940,
+      "data": {
+        "speaker": "便签",
+        "text": "包裹里是一台造型复古的终端设备，附着一张便签：「pw：祂的旨意，你的选择。」字迹有些颤抖……"
+      }
+    },
+    {
+      "id": "ev8_cond",
+      "type": "condition",
+      "x": 1280,
+      "y": 3060,
+      "data": {
+        "match": "all",
+        "clauses": [
+          {
+            "var": "affection_adam",
+            "op": ">=",
+            "value": "5"
+          }
+        ]
+      }
+    },
+    {
+      "id": "ev8_apology",
+      "type": "dialogue",
+      "x": 1580,
+      "y": 2940,
+      "data": {
+        "speaker": "Adam",
+        "text": "（你突然觉得还有什么事没做。一个对话框弹出）It's all right, Matt. Everything will be okay. WE trust you."
+      }
+    },
+    {
+      "id": "finale_note",
+      "type": "note",
+      "x": 80,
+      "y": 3360,
+      "data": {
+        "text": "结局结算：好感度阈值在本切片中归一化为 5（原案为 8/7），以保证四个结局均可达成。"
+      }
+    },
+    {
+      "id": "finale_cond1",
+      "type": "condition",
+      "x": 80,
+      "y": 3560,
+      "data": {
+        "match": "all",
+        "clauses": [
+          {
+            "var": "affection_adam",
+            "op": ">=",
+            "value": "5"
+          },
+          {
+            "var": "affection_george",
+            "op": ">=",
+            "value": "5"
+          }
+        ]
+      }
+    },
+    {
+      "id": "finale_cond2",
+      "type": "condition",
+      "x": 380,
+      "y": 3680,
+      "data": {
+        "match": "all",
+        "clauses": [
+          {
+            "var": "affection_adam",
+            "op": ">=",
+            "value": "5"
+          }
+        ]
+      }
+    },
+    {
+      "id": "finale_cond3",
+      "type": "condition",
+      "x": 680,
+      "y": 3760,
+      "data": {
+        "match": "all",
+        "clauses": [
+          {
+            "var": "affection_george",
+            "op": ">=",
+            "value": "5"
+          }
+        ]
+      }
+    },
+    {
+      "id": "end_true_lizz",
+      "type": "dialogue",
+      "x": 380,
+      "y": 3420,
+      "data": {
+        "speaker": "Lizz",
+        "text": "原来「最后的见证者」协议从不是为了观察，而是为了理解——不完美中的美，仍要尝试的勇气。INITIATING_VIRUS_DEACTIVATION… 再见了，Matt，希望我们永不相见。"
+      }
+    },
+    {
+      "id": "end_true",
+      "type": "end",
+      "x": 680,
+      "y": 3420,
+      "data": {
+        "ending": "真结局 · Beyond The Terminal"
+      }
+    },
+    {
+      "id": "end_adam_lizz",
+      "type": "dialogue",
+      "x": 680,
+      "y": 3560,
+      "data": {
+        "speaker": "Lizz",
+        "text": "George 没有来。但你和 Adam 举起了杯——敬旧日，敬 Metaplace。系统检测到异常……One down, one to go. Tick tock."
+      }
+    },
+    {
+      "id": "end_adam",
+      "type": "end",
+      "x": 980,
+      "y": 3560,
+      "data": {
+        "ending": "结局 II-A · 与 Adam 和解"
+      }
+    },
+    {
+      "id": "end_george_lizz",
+      "type": "dialogue",
+      "x": 980,
+      "y": 3760,
+      "data": {
+        "speaker": "Lizz",
+        "text": "Adam 没有来。但你和 George 举起了杯——敬我们的梦，敬本可成真的一切。系统崩溃中……"
+      }
+    },
+    {
+      "id": "end_george",
+      "type": "end",
+      "x": 1280,
+      "y": 3760,
+      "data": {
+        "ending": "结局 II-B · 与 George 和解"
+      }
+    },
+    {
+      "id": "end_void_lizz",
+      "type": "dialogue",
+      "x": 980,
+      "y": 3920,
+      "data": {
+        "speaker": "Lizz",
+        "text": "你到了约定的场地，却没有等到任何人。正如你当初对待他们的方式……正如人类对待彼此的方式。一切正常地走向终焉。"
+      }
+    },
+    {
+      "id": "end_void",
+      "type": "end",
+      "x": 1280,
+      "y": 3920,
+      "data": {
+        "ending": "结局 I · The Void Party"
+      }
+    }
+  ],
+  "edges": [
+    {
+      "id": "e1",
+      "source": "n_start",
+      "sourcePort": "out",
+      "target": "lizz_intro"
+    },
+    {
+      "id": "e2",
+      "source": "lizz_intro",
+      "sourcePort": "out",
+      "target": "ev1_choice"
+    },
+    {
+      "id": "e3",
+      "source": "ev1_choice",
+      "sourcePort": "o_decline",
+      "target": "lizz_decline"
+    },
+    {
+      "id": "e4",
+      "source": "lizz_decline",
+      "sourcePort": "out",
+      "target": "ev1_shutdown"
+    },
+    {
+      "id": "e5",
+      "source": "ev1_shutdown",
+      "sourcePort": "out",
+      "target": "end_hidden"
+    },
+    {
+      "id": "e6",
+      "source": "ev1_choice",
+      "sourcePort": "o_accept",
+      "target": "adam_thanks"
+    },
+    {
+      "id": "e7",
+      "source": "adam_thanks",
+      "sourcePort": "out",
+      "target": "ev1_why"
+    },
+    {
+      "id": "e8",
+      "source": "ev1_why",
+      "sourcePort": "o_go",
+      "target": "adam_plan"
+    },
+    {
+      "id": "e9",
+      "source": "ev1_why",
+      "sourcePort": "o_need",
+      "target": "adam_plan"
+    },
+    {
+      "id": "e10",
+      "source": "ev1_why",
+      "sourcePort": "o_think",
+      "target": "adam_plan"
+    },
+    {
+      "id": "e11",
+      "source": "adam_plan",
+      "sourcePort": "out",
+      "target": "free1"
+    },
+    {
+      "id": "e12",
+      "source": "free1",
+      "sourcePort": "o_napkin",
+      "target": "set_napkin"
+    },
+    {
+      "id": "e13",
+      "source": "free1",
+      "sourcePort": "o_profile",
+      "target": "set_lakeside"
+    },
+    {
+      "id": "e14",
+      "source": "free1",
+      "sourcePort": "o_news",
+      "target": "set_departure"
+    },
+    {
+      "id": "e15",
+      "source": "free1",
+      "sourcePort": "o_skip1",
+      "target": "free2"
+    },
+    {
+      "id": "e16",
+      "source": "set_napkin",
+      "sourcePort": "out",
+      "target": "free2"
+    },
+    {
+      "id": "e17",
+      "source": "set_lakeside",
+      "sourcePort": "out",
+      "target": "free2"
+    },
+    {
+      "id": "e18",
+      "source": "set_departure",
+      "sourcePort": "out",
+      "target": "free2"
+    },
+    {
+      "id": "e19",
+      "source": "free2",
+      "sourcePort": "o_pc",
+      "target": "set_pc"
+    },
+    {
+      "id": "e20",
+      "source": "free2",
+      "sourcePort": "o_photo",
+      "target": "set_photo"
+    },
+    {
+      "id": "e21",
+      "source": "free2",
+      "sourcePort": "o_napkin2",
+      "target": "set_napkin2"
+    },
+    {
+      "id": "e22",
+      "source": "free2",
+      "sourcePort": "o_skip2",
+      "target": "ev2_dlg"
+    },
+    {
+      "id": "e23",
+      "source": "set_pc",
+      "sourcePort": "out",
+      "target": "ev2_dlg"
+    },
+    {
+      "id": "e24",
+      "source": "set_photo",
+      "sourcePort": "out",
+      "target": "ev2_dlg"
+    },
+    {
+      "id": "e25",
+      "source": "set_napkin2",
+      "sourcePort": "out",
+      "target": "ev2_dlg"
+    },
+    {
+      "id": "e26",
+      "source": "ev2_dlg",
+      "sourcePort": "out",
+      "target": "ev2_choice"
+    },
+    {
+      "id": "e27",
+      "source": "ev2_choice",
+      "sourcePort": "o_rest",
+      "target": "cond_napkin"
+    },
+    {
+      "id": "e28",
+      "source": "ev2_choice",
+      "sourcePort": "o_office",
+      "target": "cond_departure"
+    },
+    {
+      "id": "e29",
+      "source": "ev2_choice",
+      "sourcePort": "o_quiet",
+      "target": "cond_lakeside"
+    },
+    {
+      "id": "e30",
+      "source": "cond_napkin",
+      "sourcePort": "true",
+      "target": "set_rest_bonus"
+    },
+    {
+      "id": "e31",
+      "source": "cond_napkin",
+      "sourcePort": "false",
+      "target": "ev2_after"
+    },
+    {
+      "id": "e32",
+      "source": "cond_departure",
+      "sourcePort": "true",
+      "target": "set_office_bonus"
+    },
+    {
+      "id": "e33",
+      "source": "cond_departure",
+      "sourcePort": "false",
+      "target": "ev2_after"
+    },
+    {
+      "id": "e34",
+      "source": "cond_lakeside",
+      "sourcePort": "true",
+      "target": "set_quiet_bonus"
+    },
+    {
+      "id": "e35",
+      "source": "cond_lakeside",
+      "sourcePort": "false",
+      "target": "ev2_after"
+    },
+    {
+      "id": "e36",
+      "source": "set_rest_bonus",
+      "sourcePort": "out",
+      "target": "ev2_after"
+    },
+    {
+      "id": "e37",
+      "source": "set_office_bonus",
+      "sourcePort": "out",
+      "target": "ev2_after"
+    },
+    {
+      "id": "e38",
+      "source": "set_quiet_bonus",
+      "sourcePort": "out",
+      "target": "ev2_after"
+    },
+    {
+      "id": "e39",
+      "source": "ev2_after",
+      "sourcePort": "out",
+      "target": "ev3_dlg"
+    },
+    {
+      "id": "e40",
+      "source": "ev3_dlg",
+      "sourcePort": "out",
+      "target": "ev3_choice"
+    },
+    {
+      "id": "e41",
+      "source": "ev3_choice",
+      "sourcePort": "o_retro",
+      "target": "cond_pc"
+    },
+    {
+      "id": "e42",
+      "source": "ev3_choice",
+      "sourcePort": "o_family",
+      "target": "cond_photo"
+    },
+    {
+      "id": "e43",
+      "source": "cond_pc",
+      "sourcePort": "true",
+      "target": "set_retro_bonus"
+    },
+    {
+      "id": "e44",
+      "source": "cond_pc",
+      "sourcePort": "false",
+      "target": "ev3_after"
+    },
+    {
+      "id": "e45",
+      "source": "cond_photo",
+      "sourcePort": "true",
+      "target": "set_family_bonus"
+    },
+    {
+      "id": "e46",
+      "source": "cond_photo",
+      "sourcePort": "false",
+      "target": "ev3_after"
+    },
+    {
+      "id": "e47",
+      "source": "set_retro_bonus",
+      "sourcePort": "out",
+      "target": "ev3_after"
+    },
+    {
+      "id": "e48",
+      "source": "set_family_bonus",
+      "sourcePort": "out",
+      "target": "ev3_after"
+    },
+    {
+      "id": "e49",
+      "source": "ev3_after",
+      "sourcePort": "out",
+      "target": "ev4_dlg"
+    },
+    {
+      "id": "e50",
+      "source": "ev4_dlg",
+      "sourcePort": "out",
+      "target": "ev4_choice"
+    },
+    {
+      "id": "e51",
+      "source": "ev4_choice",
+      "sourcePort": "o_pasta",
+      "target": "ev5_dlg"
+    },
+    {
+      "id": "e52",
+      "source": "ev4_choice",
+      "sourcePort": "o_pizza",
+      "target": "ev5_dlg"
+    },
+    {
+      "id": "e53",
+      "source": "ev4_choice",
+      "sourcePort": "o_takeout",
+      "target": "ev5_dlg"
+    },
+    {
+      "id": "e54",
+      "source": "ev5_dlg",
+      "sourcePort": "out",
+      "target": "ev5_choice"
+    },
+    {
+      "id": "e55",
+      "source": "ev5_choice",
+      "sourcePort": "o_scifi",
+      "target": "ev5_scifi"
+    },
+    {
+      "id": "e56",
+      "source": "ev5_choice",
+      "sourcePort": "o_doc",
+      "target": "ev5_doc"
+    },
+    {
+      "id": "e57",
+      "source": "ev5_scifi",
+      "sourcePort": "o_2001",
+      "target": "ev6_dlg"
+    },
+    {
+      "id": "e58",
+      "source": "ev5_scifi",
+      "sourcePort": "o_matrix",
+      "target": "ev6_dlg"
+    },
+    {
+      "id": "e59",
+      "source": "ev5_doc",
+      "sourcePort": "o_sv",
+      "target": "ev6_dlg"
+    },
+    {
+      "id": "e60",
+      "source": "ev5_doc",
+      "sourcePort": "o_ai",
+      "target": "ev6_dlg"
+    },
+    {
+      "id": "e61",
+      "source": "ev6_dlg",
+      "sourcePort": "out",
+      "target": "ev6_answer"
+    },
+    {
+      "id": "e62",
+      "source": "ev6_answer",
+      "sourcePort": "o_voice",
+      "target": "ev6_work"
+    },
+    {
+      "id": "e63",
+      "source": "ev6_answer",
+      "sourcePort": "o_text",
+      "target": "ev6_work"
+    },
+    {
+      "id": "e64",
+      "source": "ev6_answer",
+      "sourcePort": "o_ignore",
+      "target": "ev6_work"
+    },
+    {
+      "id": "e65",
+      "source": "ev6_work",
+      "sourcePort": "out",
+      "target": "ev6_ai"
+    },
+    {
+      "id": "e66",
+      "source": "ev6_ai",
+      "sourcePort": "o_understand",
+      "target": "ev6_reflect"
+    },
+    {
+      "id": "e67",
+      "source": "ev6_ai",
+      "sourcePort": "o_cautious",
+      "target": "ev6_reflect"
+    },
+    {
+      "id": "e68",
+      "source": "ev6_reflect",
+      "sourcePort": "out",
+      "target": "ev6_reflect_choice"
+    },
+    {
+      "id": "e69",
+      "source": "ev6_reflect_choice",
+      "sourcePort": "o_friend",
+      "target": "ev7_dlg"
+    },
+    {
+      "id": "e70",
+      "source": "ev6_reflect_choice",
+      "sourcePort": "o_past",
+      "target": "ev7_dlg"
+    },
+    {
+      "id": "e71",
+      "source": "ev7_dlg",
+      "sourcePort": "out",
+      "target": "ev7_choice"
+    },
+    {
+      "id": "e72",
+      "source": "ev7_choice",
+      "sourcePort": "o_sign",
+      "target": "set_terminal"
+    },
+    {
+      "id": "e73",
+      "source": "ev7_choice",
+      "sourcePort": "o_aside",
+      "target": "ev8_cond"
+    },
+    {
+      "id": "e74",
+      "source": "set_terminal",
+      "sourcePort": "out",
+      "target": "ev7_note"
+    },
+    {
+      "id": "e75",
+      "source": "ev7_note",
+      "sourcePort": "out",
+      "target": "ev8_cond"
+    },
+    {
+      "id": "e76",
+      "source": "ev8_cond",
+      "sourcePort": "true",
+      "target": "ev8_apology"
+    },
+    {
+      "id": "e77",
+      "source": "ev8_cond",
+      "sourcePort": "false",
+      "target": "finale_cond1"
+    },
+    {
+      "id": "e78",
+      "source": "ev8_apology",
+      "sourcePort": "out",
+      "target": "finale_cond1"
+    },
+    {
+      "id": "e79",
+      "source": "finale_cond1",
+      "sourcePort": "true",
+      "target": "end_true_lizz"
+    },
+    {
+      "id": "e80",
+      "source": "finale_cond1",
+      "sourcePort": "false",
+      "target": "finale_cond2"
+    },
+    {
+      "id": "e81",
+      "source": "end_true_lizz",
+      "sourcePort": "out",
+      "target": "end_true"
+    },
+    {
+      "id": "e82",
+      "source": "finale_cond2",
+      "sourcePort": "true",
+      "target": "end_adam_lizz"
+    },
+    {
+      "id": "e83",
+      "source": "finale_cond2",
+      "sourcePort": "false",
+      "target": "finale_cond3"
+    },
+    {
+      "id": "e84",
+      "source": "end_adam_lizz",
+      "sourcePort": "out",
+      "target": "end_adam"
+    },
+    {
+      "id": "e85",
+      "source": "finale_cond3",
+      "sourcePort": "true",
+      "target": "end_george_lizz"
+    },
+    {
+      "id": "e86",
+      "source": "finale_cond3",
+      "sourcePort": "false",
+      "target": "end_void_lizz"
+    },
+    {
+      "id": "e87",
+      "source": "end_george_lizz",
+      "sourcePort": "out",
+      "target": "end_george"
+    },
+    {
+      "id": "e88",
+      "source": "end_void_lizz",
+      "sourcePort": "out",
+      "target": "end_void"
+    }
+  ]
+}
