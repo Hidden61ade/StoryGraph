@@ -57,3 +57,9 @@ node scripts/check.mjs
 The check parses the JavaScript modules, validates all three shipped graphs, exercises both JSON exporters, checks an editing round-trip, and plays a route through each graph. It also checks the revised graph's hidden-ending route. These are headless data and preview checks; they do not claim browser interaction coverage or Unity runtime equivalence.
 
 See [the technical design notes](docs/technical-design.md) for the model, export decisions, and current boundaries.
+
+## License
+
+The StoryGraph editor, included plugins, Unity integration code, and tool documentation are available under the [MIT License](LICENSE), copyright 2026 Baohua Fang.
+
+The example dialogue and game narrative content are included to demonstrate the editor; their rights remain with their respective creators. The software license does not grant rights to game artwork, audio, or branding.
