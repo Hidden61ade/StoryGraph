@@ -1,17 +1,13 @@
 // 导出器与校验：把编辑器里的图，转成「引擎可直接读取」的运行时格式。
 // 运行时格式是扁平的 id->节点 字典，任何引擎（Unity / Godot / 网页）都能顺序执行。
 import { OP_SYMBOL, NODE_TYPES } from './nodeTypes.js';
+import { parseValue } from './runtimeContract.js';
 
 /** 把字符串值按变量类型转成真实类型 */
 function coerce(variables, varName, raw) {
   const v = variables.find((x) => x.name === varName);
-  const type = v ? v.type : 'number';
-  if (type === 'number') {
-    const n = Number(raw);
-    return Number.isFinite(n) ? n : 0;
-  }
-  if (type === 'boolean') return raw === true || raw === 'true' || raw === '1';
-  return String(raw ?? '');
+  if (!v) throw new Error(`Undefined variable ${varName}.`);
+  return parseValue(v.type, raw);
 }
 
 /** Unity 友好：把顶层基础类型字段统一成字符串（数组/对象原样保留）。 */
@@ -25,11 +21,9 @@ function stringifyValues(obj) {
 
 /** 初始变量表 { name: initialValue } */
 function buildVariables(model) {
-  const out = {};
+  const out = Object.create(null);
   for (const v of model.variables) {
-    if (v.type === 'number') out[v.name] = Number(v.initial) || 0;
-    else if (v.type === 'boolean') out[v.name] = v.initial === true || v.initial === 'true';
-    else out[v.name] = v.initial ?? '';
+    out[v.name] = parseValue(v.type, v.initial);
   }
   return out;
 }
@@ -40,7 +34,7 @@ function buildVariables(model) {
  */
 export function toEngineJSON(model) {
   const variables = buildVariables(model);
-  const nodes = {};
+  const nodes = Object.create(null);
   let start = null;
 
   for (const node of model.nodes.values()) {
@@ -124,7 +118,7 @@ export function toUnityJSON(model) {
   const variables = model.variables.map((v) => ({
     name: v.name,
     type: v.type || 'number',
-    value: String(v.initial ?? ''),
+    value: String(parseValue(v.type, v.initial)),
   }));
 
   let start = '';
@@ -150,7 +144,7 @@ export function toUnityJSON(model) {
             text: o.text || '',
             next: model.targetOf(node.id, o.id) || '',
             effects: (o.effects || []).map((e) => ({
-              variable: e.var, op: e.op, value: String(e.value),
+              variable: e.var, op: e.op, value: String(coerce(model.variables, e.var, e.value)),
             })),
           })),
         });
@@ -160,7 +154,7 @@ export function toUnityJSON(model) {
           id: node.id, type: 'condition',
           match: node.data.match || 'all',
           clauses: (node.data.clauses || []).map((c) => ({
-            variable: c.var, op: c.op, value: String(c.value),
+            variable: c.var, op: c.op, value: String(coerce(model.variables, c.var, c.value)),
           })),
           whenTrue: model.targetOf(node.id, 'true') || '',
           whenFalse: model.targetOf(node.id, 'false') || '',
@@ -170,7 +164,7 @@ export function toUnityJSON(model) {
         nodes.push({
           id: node.id, type: 'set',
           assignments: (node.data.assignments || []).map((a) => ({
-            variable: a.var, op: a.op, value: String(a.value),
+            variable: a.var, op: a.op, value: String(coerce(model.variables, a.var, a.value)),
           })),
           next: model.targetOf(node.id, 'out') || '',
         });

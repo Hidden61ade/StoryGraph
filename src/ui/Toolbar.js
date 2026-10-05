@@ -1,7 +1,7 @@
 // 顶部工具栏 + 左侧节点调色板的装配。
 import { NODE_TYPES, pluginNodeTypesByCategory } from '../core/nodeTypes.js';
 
-export function setupToolbar(root, actions) {
+export function setupToolbar(root, actions, { canSaveInPlace = true } = {}) {
   root.innerHTML = `
     <div class="brand">
       <span class="brand__logo">🕸️</span>
@@ -15,7 +15,8 @@ export function setupToolbar(root, actions) {
       <div class="btn-group">
         <button class="btn" data-act="new" title="Create a blank story">🆕 New</button>
         <button class="btn" data-act="open" title="Open a local .sg or .json story">📂 Open</button>
-        <button class="btn" data-act="save" title="Save as .sg (also opens as .json)">💾 Save</button>
+        <button class="btn" data-act="save" title="${canSaveInPlace ? 'Save changes to the current file (Ctrl+S)' : 'Download an updated .sg copy (Ctrl+S); replace the Unity source file manually'}">${canSaveInPlace ? '💾 Save' : '⬇ Download'}</button>
+        ${canSaveInPlace ? '<button class="btn" data-act="saveas" title="Choose a new .sg file (Ctrl+Shift+S). Save inside your Unity project’s Assets folder for automatic import.">Save As…</button>' : ''}
       </div>
       <span class="sep"></span>
       <div class="btn-group">

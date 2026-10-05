@@ -1,0 +1,76 @@
+{
+  "meta": {
+    "name": "match-nand-empty",
+    "version": 1
+  },
+  "variables": [
+    {
+      "name": "count",
+      "type": "number",
+      "initial": "2e0"
+    },
+    {
+      "name": "enabled",
+      "type": "boolean",
+      "initial": "0"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "n_start",
+      "type": "start",
+      "x": 0,
+      "y": 0,
+      "data": {}
+    },
+    {
+      "id": "n_condition",
+      "type": "condition",
+      "x": 0,
+      "y": 0,
+      "data": {
+        "match": "nand",
+        "clauses": []
+      }
+    },
+    {
+      "id": "n_true",
+      "type": "end",
+      "x": 0,
+      "y": 0,
+      "data": {
+        "ending": "true branch"
+      }
+    },
+    {
+      "id": "n_false",
+      "type": "end",
+      "x": 0,
+      "y": 0,
+      "data": {
+        "ending": "false branch"
+      }
+    }
+  ],
+  "edges": [
+    {
+      "id": "e_0",
+      "source": "n_start",
+      "sourcePort": "out",
+      "target": "n_condition"
+    },
+    {
+      "id": "e_1",
+      "source": "n_condition",
+      "sourcePort": "true",
+      "target": "n_true"
+    },
+    {
+      "id": "e_2",
+      "source": "n_condition",
+      "sourcePort": "false",
+      "target": "n_false"
+    }
+  ],
+  "groups": []
+}

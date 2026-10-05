@@ -1,6 +1,9 @@
 // 应用入口：把模型、画布、检查器、变量面板、工具栏装配起来，
 // 并处理撤销/重做、文件读写、导出、快捷键、提示气泡等“外壳”逻辑。
 import { GraphModel } from './core/GraphModel.js';
+import { ProjectFile, assertEditableProject } from './core/ProjectFile.js';
+import { NODE_TYPES } from './core/nodeTypes.js';
+import { validateRuntime } from './core/runtimeContract.js';
 import { Canvas } from './canvas/Canvas.js';
 import { Inspector } from './ui/Inspector.js';
 import { VariablesPanel } from './ui/VariablesPanel.js';
@@ -15,6 +18,10 @@ import { AssetLibrary } from './ui/AssetLibrary.js';
 window.__sgBooted = true;
 
 const model = new GraphModel();
+let dirty = false;
+let revision = 0;
+let lastSaveKind = null;
+const projectFile = new ProjectFile({ download, getRevision: () => revision });
 const canvas = new Canvas(model, document.getElementById('canvas'), (sel) => handleSelect(sel));
 const inspector = new Inspector(model, document.getElementById('inspector'));
 new VariablesPanel(model, document.getElementById('variables'));
@@ -42,8 +49,9 @@ setupSidebarTabs();
 
 const toolbar = setupToolbar(document.getElementById('topbar'), {
   new: () => confirmReset(),
-  open: () => document.getElementById('fileInput').click(),
+  open: () => openFile(),
   save: () => saveFile(),
+  saveas: () => saveFile(true),
   export: () => openExportDialog(),
   preview: () => openPreview(),
   group: () => groupSelection(),
@@ -57,7 +65,7 @@ const toolbar = setupToolbar(document.getElementById('topbar'), {
   sample: () => loadSample(),
   help: () => openHelp(),
   rename: (name) => model.setMeta({ name }),
-});
+}, { canSaveInPlace: projectFile.supportsSave });
 setupPalette(document.getElementById('palette'), (type) => addCenteredNode(type));
 function refreshPalette() { setupPalette(document.getElementById('palette'), (type) => addCenteredNode(type)); }
 
@@ -97,9 +105,10 @@ function updateStatus() {
     <span class="status__item">🔗 Edges ${model.edges.size}</span>
     <span class="status__item">🔢 Variables ${model.variables.length}</span>
     <span class="status__item status__item--right">🔎 ${Math.round(canvas.zoom * 100)}%</span>
-    <span class="status__item">${dirty ? '● Unsaved' : '✓ Saved'}</span>`;
+    <span class="status__item">${dirty ? '● Unsaved' : lastSaveKind === 'downloaded' ? '✓ Downloaded copy' : projectFile.hasHandle ? '✓ Saved' : 'No local file'}</span>
+    ${projectFile.fileName ? `<span class="status__item">📄 ${escapeHtml(projectFile.fileName)}</span>` : ''}`;
 }
-model.on('changed', () => { dirty = true; updateStatus(); });
+model.on('changed', () => { revision++; dirty = true; updateStatus(); });
 model.on('viewChanged', updateStatus);
 model.on('loaded', () => { toolbar.setTitle(model.meta.name); updateStatus(); });
 
@@ -107,36 +116,106 @@ model.on('loaded', () => { toolbar.setTitle(model.meta.name); updateStatus(); })
 const history = createHistory(model);
 
 // ---------- 文件读写 ----------
-let dirty = false;
-document.getElementById('fileInput').addEventListener('change', (e) => {
+let openingFile = false;
+let fallbackOpenRevision = null;
+let fallbackOpenGeneration = null;
+async function openFile() {
+  if (openingFile) return;
+  if (dirty && !confirm('This story has unsaved changes. Open another file and discard them?')) return;
+  const approvedRevision = revision;
+  const approvedGeneration = projectFile.generation;
+  if (!projectFile.supportsOpen) {
+    fallbackOpenRevision = approvedRevision;
+    fallbackOpenGeneration = approvedGeneration;
+    document.getElementById('fileInput').click();
+    return;
+  }
+  openingFile = true;
+  try {
+    const candidate = await projectFile.open();
+    if (candidate) applyOpenedProject(candidate, approvedRevision, approvedGeneration);
+  } catch (error) {
+    toast('Could not open this project: ' + error.message, 'error');
+  } finally {
+    openingFile = false;
+  }
+}
+
+document.getElementById('fileInput').addEventListener('change', async (e) => {
   const file = e.target.files[0];
-  if (!file) return;
-  const reader = new FileReader();
-  reader.onload = () => {
-    try {
-      model.fromJSON(JSON.parse(reader.result));
-      history.reset();
-      const result = canvas.autoLayout();
-      canvas.fitView();
-      dirty = result.count > 0; updateStatus();
-      toast(`Opened ${file.name} and arranged ${result.count} nodes`, 'success');
-    } catch (err) {
-      toast('Could not open this file. Check its format.', 'error');
-    }
-  };
-  reader.readAsText(file);
+  const approvedRevision = fallbackOpenRevision;
+  const approvedGeneration = fallbackOpenGeneration;
+  fallbackOpenRevision = null;
+  fallbackOpenGeneration = null;
   e.target.value = '';
+  if (!file) return;
+  openingFile = true;
+  try {
+    applyOpenedProject(await projectFile.read(file), approvedRevision, approvedGeneration);
+  } catch (error) {
+    toast('Could not open this project: ' + error.message, 'error');
+  } finally {
+    openingFile = false;
+  }
 });
 
-function saveFile() {
-  const data = JSON.stringify(model.toJSON(), null, 2);
-  download(data, safeName(model.meta.name) + '.sg', 'application/json');
-  dirty = false; updateStatus();
-  toast('Project saved', 'success');
+function applyOpenedProject(candidate, approvedRevision, approvedGeneration) {
+  if (projectFile.generation !== approvedGeneration) {
+    toast('Open cancelled because another project was loaded.');
+    return;
+  }
+  assertEditableProject(candidate.data, { isNodeTypeAvailable: (type) => Object.hasOwn(NODE_TYPES, type) });
+  if (revision !== approvedRevision && dirty &&
+      !confirm('This story has new unsaved changes. Discard them and open the selected file?')) return;
+  model.fromJSON(candidate.data);
+  projectFile.adopt(candidate);
+  lastSaveKind = null;
+  history.reset();
+  const result = canvas.autoLayout();
+  canvas.fitView();
+  dirty = result.count > 0;
+  updateStatus();
+  toast(`Opened ${candidate.name} and arranged ${result.count} nodes`, 'success');
+}
+
+async function saveFile(saveAs = false) {
+  try {
+    const data = JSON.stringify(model.toJSON(), null, 2);
+    const result = await projectFile.save(data, {
+      suggestedName: projectFile.fileName || safeName(model.meta.name) + '.sg', saveAs,
+    });
+    if (result.kind === 'busy') { toast('A project save is already in progress.'); return; }
+    if (result.kind === 'cancelled') return;
+    if (result.unchanged) dirty = false;
+    if (result.kind === 'written') {
+      if (result.unchanged) lastSaveKind = 'written';
+      toast(`Saved ${result.name}${result.unchanged ? '' : '; newer edits remain unsaved.'}`, 'success');
+    } else {
+      if (result.unchanged) lastSaveKind = 'downloaded';
+      toast('Downloaded an .sg copy. Replace the file in Unity Assets to update the imported story.', 'success');
+    }
+    updateStatus();
+  } catch (error) {
+    toast('Could not save the project: ' + error.message, 'error');
+    updateStatus();
+  }
 }
 
 // ---------- 导出引擎文件 ----------
 function openExportDialog() {
+  try {
+    const errors = validateRuntime(model).filter((issue) => issue.level === 'error');
+    if (errors.length) {
+      toast(`Cannot export: ${errors[0].msg} Use Check for all issues.`, 'error');
+      return;
+    }
+    buildExportDialog();
+  } catch (error) {
+    toast('Could not export this story: ' + error.message, 'error');
+  }
+}
+
+function buildExportDialog() {
   const issues = validate(model);
   const errors = issues.filter((i) => i.level === 'error');
   const engine = JSON.stringify(toEngineJSON(model), null, 2);
@@ -151,17 +230,23 @@ function openExportDialog() {
     ${errors.length ? `<div class="dialog__warn">⚠ ${errors.length} errors found. Use Check to fix them before running the export.</div>` : '<div class="dialog__ok">✓ No structural errors found.</div>'}
     <details class="export-preview"><summary>Preview runtime JSON</summary><pre>${escapeHtml(engine.slice(0, 4000))}${engine.length > 4000 ? '\n…(Preview truncated)' : ''}</pre></details>`;
   const dlg = openDialog('Export', body);
+  const exportData = (makeText, suffix, mime, message) => {
+    try {
+      download(makeText(), safeName(model.meta.name) + suffix, mime);
+      toast(message, 'success');
+      dlg.close();
+    } catch (error) {
+      toast('Could not export this story: ' + error.message, 'error');
+    }
+  };
   body.querySelector('#expEngine').addEventListener('click', () => {
-    download(engine, safeName(model.meta.name) + '.engine.json', 'application/json');
-    toast('Runtime JSON exported', 'success'); dlg.close();
+    exportData(() => engine, '.engine.json', 'application/json', 'Runtime JSON exported');
   });
   body.querySelector('#expUnity').addEventListener('click', () => {
-    download(JSON.stringify(toUnityJSON(model), null, 2), safeName(model.meta.name) + '.unity.json', 'application/json');
-    toast('Unity JSON exported (use with the C# scripts in unity/)', 'success'); dlg.close();
+    exportData(() => JSON.stringify(toUnityJSON(model), null, 2), '.unity.json', 'application/json', 'Unity JSON exported');
   });
   body.querySelector('#expYarn').addEventListener('click', () => {
-    download(toYarn(model), safeName(model.meta.name) + '.yarn', 'text/plain');
-    toast('Yarn-style text exported', 'success'); dlg.close();
+    exportData(() => toYarn(model), '.yarn', 'text/plain', 'Yarn-style text exported');
   });
 }
 
@@ -237,16 +322,22 @@ function openPluginsManager() {
 
 // ---------- 校验 ----------
 function runValidate() {
-  const issues = validate(model);
+  const issues = [...validateRuntime(model), ...validate(model)];
   // 合并插件注册的校验器（如 NPC 日程时间检查）
   for (const v of (pluginHost.validators || [])) {
     try { issues.push(...(v.run(model) || [])); } catch (e) { console.error('Validator failed:', v.id, e); }
   }
+  const seen = new Set();
+  const uniqueIssues = issues.filter((issue) => {
+    if (seen.has(issue.msg)) return false;
+    seen.add(issue.msg);
+    return true;
+  });
   const body = document.createElement('div');
-  if (!issues.length) {
-    body.innerHTML = `<div class="dialog__ok">🎉 No structural issues found.</div>`;
+  if (!uniqueIssues.length) {
+    body.innerHTML = `<div class="dialog__ok">🎉 No story issues found.</div>`;
   } else {
-    body.innerHTML = `<ul class="issue-list">${issues.map((i) =>
+    body.innerHTML = `<ul class="issue-list">${uniqueIssues.map((i) =>
       `<li class="issue issue--${i.level}"><span class="issue__tag">${i.level === 'error' ? 'Error' : 'Warning'}</span>${escapeHtml(i.msg)}</li>`
     ).join('')}</ul>`;
   }
@@ -265,9 +356,11 @@ function openHelp() {
       <li><b>Variables:</b> add shared values in the lower-right panel, then select them in choices and conditions.</li>
       <li><b>Pan and zoom:</b> drag the empty canvas, scroll to zoom, or choose Fit view.</li>
       <li><b>Auto layout:</b> arrange nodes by story flow and widen nodes with long text.</li>
-      <li><b>Save and export:</b> save editable projects as .sg (or open .json), then export Runtime JSON for an interpreter.</li>
+      <li><b>Save:</b> Save As chooses a local .sg file; Save updates that same file. Put it in your Unity project’s Assets folder for automatic import.</li>
+      <li><b>Download:</b> when local file writing is unavailable, Download creates a copy. Replace the Unity source file manually.</li>
+      <li><b>Export:</b> export Runtime JSON or Unity JSON when you need a separate runtime file.</li>
     </ul>
-    <p class="muted">Shortcuts: Ctrl+S save · Ctrl+Z undo · Ctrl+Shift+L auto layout · Delete remove selection.</p>`;
+    <p class="muted">Shortcuts: Ctrl+S save · Ctrl+Shift+S save as · Ctrl+Z undo · Ctrl+Shift+L auto layout · Delete remove selection.</p>`;
   openDialog('How to use StoryGraph', body);
 }
 
@@ -278,6 +371,8 @@ async function loadSample() {
     if (!res.ok) throw new Error();
     const data = await res.json();
     if (dirty && !confirm('This story has unsaved changes. Replace it with the example?')) return;
+    projectFile.detach();
+    lastSaveKind = null;
     model.fromJSON(data);
     history.reset();
     const result = canvas.autoLayout();
@@ -292,6 +387,8 @@ async function loadSample() {
 // ---------- 新建 ----------
 function confirmReset() {
   if (dirty && !confirm('This story has unsaved changes. Create a blank story?')) return;
+  projectFile.detach();
+  lastSaveKind = null;
   model.reset();
   model.addNode('start', 80, 200);
   dirty = false; updateStatus(); history.reset();
@@ -347,9 +444,17 @@ function setupSidebarTabs() {
 
 // ---------- 预览（像玩 galgame 一样试玩）----------
 function openPreview() {
-  const compiled = toEngineJSON(model);
-  if (!compiled.start) { toast('No entry point. Connect Start to the first dialogue node.', 'error'); return; }
-  new PreviewOverlay(compiled, {});
+  try {
+    const errors = validateRuntime(model).filter((issue) => issue.level === 'error');
+    if (errors.length) {
+      toast(`Cannot preview: ${errors[0].msg} Use Check for all issues.`, 'error');
+      return;
+    }
+    const compiled = toEngineJSON(model);
+    new PreviewOverlay(compiled, {});
+  } catch (error) {
+    toast('Could not preview this story: ' + error.message, 'error');
+  }
 }
 
 // ---------- 组合 / 存为资产 ----------
@@ -394,7 +499,7 @@ function promptDialog(title, defaultValue = '') {
 // ---------- 键盘 ----------
 window.addEventListener('keydown', (e) => {
   const typing = /^(INPUT|TEXTAREA|SELECT)$/.test(document.activeElement?.tagName);
-  if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 's') { e.preventDefault(); saveFile(); return; }
+  if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 's') { e.preventDefault(); saveFile(e.shiftKey); return; }
   if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'z') { e.preventDefault(); history.undo(); return; }
   if ((e.ctrlKey || e.metaKey) && (e.key.toLowerCase() === 'y' || (e.shiftKey && e.key.toLowerCase() === 'z'))) { e.preventDefault(); history.redo(); return; }
   if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'g') { e.preventDefault(); groupSelection(); return; }
@@ -412,11 +517,18 @@ window.addEventListener('beforeunload', (e) => {
 
 // ---------- 启动：尝试加载示例，失败则给空白开始 ----------
 (async function boot() {
+  const initialRevision = revision;
   try {
     const res = await fetch('examples/birthday-party-revised.sg');
-    if (res.ok) { model.fromJSON(await res.json()); canvas.autoLayout(); canvas.fitView(); }
+    if (revision !== initialRevision) return;
+    if (res.ok) {
+      const data = await res.json();
+      if (revision !== initialRevision) return;
+      model.fromJSON(data); canvas.autoLayout(); canvas.fitView();
+    }
     else throw new Error();
   } catch {
+    if (revision !== initialRevision) return;
     model.addNode('start', 80, 220);
   }
   dirty = false; history.reset(); updateStatus();

@@ -1,0 +1,27 @@
+{
+  "meta": { "name": "A small reconnection", "version": 1 },
+  "variables": [
+    { "name": "connection", "type": "number", "initial": 0 },
+    { "name": "listened", "type": "boolean", "initial": false }
+  ],
+  "nodes": [
+    { "id": "start", "type": "start", "data": {} },
+    { "id": "hello", "type": "dialogue", "data": { "speaker": "George", "text": "It has been a while. Can we talk?" } },
+    { "id": "reply", "type": "choice", "data": { "prompt": "How will you respond?", "options": [
+      { "id": "listen", "text": "I'm listening.", "effects": [{ "var": "connection", "op": "add", "value": "1" }, { "var": "listened", "op": "set", "value": "true" }] },
+      { "id": "later", "text": "Maybe another time.", "effects": [] }
+    ] } },
+    { "id": "check", "type": "condition", "data": { "match": "all", "clauses": [{ "var": "listened", "op": "==", "value": "true" }] } },
+    { "id": "connected", "type": "end", "data": { "ending": "A conversation begins." } },
+    { "id": "waiting", "type": "end", "data": { "ending": "There is still another chance." } }
+  ],
+  "edges": [
+    { "id": "e1", "source": "start", "sourcePort": "out", "target": "hello" },
+    { "id": "e2", "source": "hello", "sourcePort": "out", "target": "reply" },
+    { "id": "e3", "source": "reply", "sourcePort": "listen", "target": "check" },
+    { "id": "e4", "source": "reply", "sourcePort": "later", "target": "check" },
+    { "id": "e5", "source": "check", "sourcePort": "true", "target": "connected" },
+    { "id": "e6", "source": "check", "sourcePort": "false", "target": "waiting" }
+  ],
+  "groups": []
+}

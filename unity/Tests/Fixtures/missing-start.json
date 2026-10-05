@@ -1,0 +1,37 @@
+{
+  "meta": {
+    "name": "Reimport fixture",
+    "version": 1
+  },
+  "variables": [],
+  "nodes": [
+    {
+      "id": "n_intro",
+      "type": "dialogue",
+      "x": 0,
+      "y": 0,
+      "data": {
+        "speaker": "Narrator",
+        "text": "Original opening."
+      }
+    },
+    {
+      "id": "n_end",
+      "type": "end",
+      "x": 0,
+      "y": 0,
+      "data": {
+        "ending": "finished"
+      }
+    }
+  ],
+  "edges": [
+    {
+      "id": "e_1",
+      "source": "n_intro",
+      "sourcePort": "out",
+      "target": "n_end"
+    }
+  ],
+  "groups": []
+}

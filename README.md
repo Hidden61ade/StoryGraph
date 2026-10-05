@@ -30,6 +30,7 @@ The earlier 63-node graph and a 23-node slice remain in `examples/` for comparis
 - A reusable asset library that stores subgraphs and brings their variable definitions into another graph.
 - A story preview that follows choices and shows the current variable values.
 - Graph checks for missing starts, empty dialogue, unconnected branches, undefined variables, and unreachable nodes.
+- Open and save the same project file in supported Chromium browsers. **Save As** selects a new location; **Ctrl+S** writes subsequent edits there. Other browsers offer a labelled download fallback.
 
 ## Files and engine integration
 
@@ -40,7 +41,11 @@ The earlier 63-node graph and a 23-node slice remain in `examples/` for comparis
 | Unity JSON | Arrays and string-encoded values for Unity's `JsonUtility`. |
 | Yarn-style text | An experimental readable export; compatibility with Yarn Spinner has not been certified. |
 
-The `unity/` folder contains a data model and an event-driven C# interpreter. Dialogue, choice, and ending events can be connected to a game's UI. This is a separate integration prototype. The released *The Birthday Party* still uses its own ScriptableObject dialogue assets and C# narrative systems; its `.sg` file is not automatically imported or synchronized with that runtime.
+The [`unity/` package](unity/README.md) imports original `.sg` projects into `StoryGraphAsset` assets. Install it through Unity's Package Manager (**Install package from disk**, select `unity/package.json`), then use **Save As** in the browser to put a graph under your Unity project's `Assets` folder. Later saves update that file. With Unity's Auto Refresh enabled, returning to Unity reimports it while preserving scene references. No separate export is required; older `.sg` files also work.
+
+Import the **Minimal Dialogue** sample from Package Manager for a small graph and a working dialogue/choice UI. The package provides an event-driven player and a component for connecting other UIs. A running session keeps a snapshot of its graph; restart the runner to use newly imported content. This is file-to-asset synchronisation, not live migration of an active playthrough or reverse editing from Unity.
+
+The released *The Birthday Party* continues to use its existing ScriptableObject dialogue assets and C# narrative systems. This generic package does not migrate that game's dialogue or saves.
 
 ## Plugins
 
@@ -52,9 +57,11 @@ Core editing, checking, preview, and export work without an API key. To use the 
 
 ```sh
 node scripts/check.mjs
+node scripts/check-file-session.mjs
+node scripts/check-runtime-contract.mjs
 ```
 
-The check parses the JavaScript modules, validates all three shipped graphs, exercises both JSON exporters, checks an editing round-trip, and plays a route through each graph. It also checks the revised graph's hidden-ending route. These are headless data and preview checks; they do not claim browser interaction coverage or Unity runtime equivalence.
+The checks cover JavaScript syntax, the shipped graphs, JSON exports, editing round-trips, selected routes, file save/cancel/failure handling and shared runtime fixtures. Unity EditMode tests in `unity/Tests` cover the compiler, player, source import and reimport. See the [Unity instructions](unity/README.md) for enabling those tests. Core contract coverage does not establish every possible story route or game-specific save behaviour.
 
 See [the technical design notes](docs/technical-design.md) for the model, export decisions, and current boundaries.
 

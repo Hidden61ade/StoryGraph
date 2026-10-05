@@ -8,11 +8,11 @@ export class PreviewOverlay {
     this.onClose = onClose || (() => {});
     this.name = compiled.name || 'Untitled story';
     this._build();
-    this._render(this.player.begin());
+    this._advance(() => this.player.begin());
     this._onKey = (e) => {
       if (e.key === 'Escape') this.close();
       else if (this._mode === 'dialogue' && (e.key === ' ' || e.key === 'Enter')) {
-        e.preventDefault(); this._render(this.player.next());
+        e.preventDefault(); this._advance(() => this.player.next());
       }
     };
     window.addEventListener('keydown', this._onKey, true);
@@ -45,13 +45,26 @@ export class PreviewOverlay {
     document.body.appendChild(el);
     this.el = el;
     el.querySelector('[data-act="close"]').addEventListener('click', () => this.close());
-    el.querySelector('[data-act="restart"]').addEventListener('click', () => { this._endShown = false; this._render(this.player.begin()); });
+    el.querySelector('[data-act="restart"]').addEventListener('click', () => { this._endShown = false; this._advance(() => this.player.begin()); });
     el.querySelector('[data-act="vars"]').addEventListener('click', () => this._toggleVars());
     this.box = el.querySelector('#pvBox');
     this.box.addEventListener('click', (e) => {
       if (e.target.closest('.preview__choice')) return; // 选项自己处理
-      if (this._mode === 'dialogue') this._render(this.player.next());
+      if (this._mode === 'dialogue') this._advance(() => this.player.next());
     });
+  }
+
+  _advance(action) {
+    try { this._render(action()); }
+    catch (error) {
+      this._mode = 'error';
+      this.el.querySelector('#pvSpeaker').textContent = 'Preview stopped';
+      this.el.querySelector('#pvSpeaker').style.visibility = 'visible';
+      this.el.querySelector('#pvText').textContent = error.message;
+      this.el.querySelector('#pvChoices').replaceChildren();
+      this.el.querySelector('#pvCont').hidden = true;
+      this._refreshVars();
+    }
   }
 
   _render(state) {
@@ -81,7 +94,7 @@ export class PreviewOverlay {
         const b = document.createElement('button');
         b.className = 'preview__choice';
         b.textContent = c.text || ('Option ' + (i + 1));
-        b.addEventListener('click', () => this._render(this.player.choose(i)));
+        b.addEventListener('click', () => this._advance(() => this.player.choose(i)));
         choices.appendChild(b);
       });
     } else { // end
@@ -91,7 +104,7 @@ export class PreviewOverlay {
       const again = document.createElement('button');
       again.className = 'preview__choice';
       again.textContent = '↺ Play again';
-      again.addEventListener('click', () => this._render(this.player.begin()));
+      again.addEventListener('click', () => this._advance(() => this.player.begin()));
       choices.appendChild(again);
     }
   }

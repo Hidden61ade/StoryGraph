@@ -18,13 +18,19 @@ A graph keeps editor data such as coordinates and groups. Exporters remove that 
 
 The validator reports common authoring mistakes before export. Its checks are structural. An unreachable-node check cannot prove that every condition is satisfiable, and a connected route cannot prove that its dialogue makes sense. The author still needs to review choices and play the relevant routes.
 
-## Unity-oriented export
+## Unity source import and runtime contract
 
 Unity's `JsonUtility` does not deserialize the dictionary-shaped runtime format directly. `toUnityJSON()` therefore writes arrays of nodes and variables, and stores values as strings alongside their declared types. `StoryGraphData.cs` describes that schema; `StoryGraphPlayer.cs` converts the values and raises events for dialogue, choices, and endings.
 
+The Unity package also compiles the original `.sg` source with an Editor-only Newtonsoft JSON parser. A `ScriptedImporter` resolves its output ports into runtime node IDs and creates a `StoryGraphAsset` with a stable main-object identifier. Keeping the `.sg` path and its Unity `.meta` file preserves asset references across reimports. Compiling source directly avoids storing a second, potentially stale runtime graph inside the editable project.
+
+The browser's file session retains the handle selected through Open or Save As. Save writes the current source to that file; an edit made while the write is pending remains unsaved. Unsupported browsers clearly fall back to downloading a copy. Unity's Auto Refresh sees the changed source when the Editor regains focus. An incomplete graph can still be saved; the importer records a validation error, clears the asset's compiled data and prevents new sessions from starting with stale content.
+
 The C# example is separate from the shipped game's custom narrative code. It does not handle room interaction, collection triggers, save migration, multi-loop environmental changes, or the game's external ending executable. Those responsibilities remain in The Birthday Party's Unity project.
 
-The browser and C# players implement the same core node types, but this release has not been tested for complete behavioral parity. For example, the browser preview resets variables when restarted, while the C# example's `Begin()` currently resets the entry node only. A production integration should define restart and save/load behavior explicitly.
+Both players reset initial variables on Begin and limit consecutive automatic condition/assignment steps to 10,000. Numbers are finite decimal values with set/add/sub and numerical comparisons. Booleans accept exact true/false or string 1/0; booleans and strings support assignment and equality comparisons. Strings preserve their content and use case-sensitive equality. Unknown variables, unsupported operations and broken references are rejected. Shared fixtures exercise the same choices and expected state in JavaScript and C#.
+
+A player owns a snapshot of the graph. Reimport updates the asset for future sessions; it does not rewrite a running player's state. The supplied runner creates a fresh player on Begin, while calling Begin on an existing player resets that player's snapshot. A batch of choice effects or assignments commits only after every operation succeeds. Runtime errors stop the session until Begin, so retrying a failed choice cannot repeatedly retain its partial effects. Neither API supplies save/load, rewind or arbitrary-jump semantics. Revisiting an assignment through a graph cycle applies it again, so game-specific persistence still needs an explicit policy.
 
 ## Reuse and extensions
 
@@ -40,4 +46,4 @@ The tool is part of my work toward technical design: taking an authoring problem
 
 `node scripts/check.mjs` passes for the 23-node slice, the earlier 63-node graph, and the revised 103-node graph. Each graph has valid references and passes the editor's validator. Both JSON exports and the editable round-trip pass. The preview interpreter reaches a named ending through each graph and reaches the hidden ending through the revised graph's initial refusal.
 
-The release copy contains the editor, examples, plugin source, and Unity integration prototype. It excludes local credentials and the surrounding recruitment-test documents. The original working directory is unchanged.
+The release copy contains the editor, examples, plugin source, and Unity integration package. It excludes local credentials and the surrounding recruitment-test documents. The original working directory is unchanged.

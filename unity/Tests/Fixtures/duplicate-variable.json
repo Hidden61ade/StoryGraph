@@ -1,0 +1,234 @@
+{
+  "meta": {
+    "name": "Typed flow fixture",
+    "version": 1
+  },
+  "variables": [
+    {
+      "name": "score",
+      "type": "number",
+      "initial": "2"
+    },
+    {
+      "name": "flag",
+      "type": "boolean",
+      "initial": false
+    },
+    {
+      "name": "message",
+      "type": "string",
+      "initial": "pending"
+    },
+    {
+      "name": "score",
+      "type": "number",
+      "initial": "2"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "n_start",
+      "type": "start",
+      "x": 0,
+      "y": 0,
+      "data": {}
+    },
+    {
+      "id": "n_setup",
+      "type": "setvar",
+      "x": 0,
+      "y": 0,
+      "data": {
+        "assignments": [
+          {
+            "var": "score",
+            "op": "set",
+            "value": "1.25"
+          }
+        ]
+      }
+    },
+    {
+      "id": "n_intro",
+      "type": "dialogue",
+      "x": 0,
+      "y": 0,
+      "data": {
+        "speaker": "Narrator",
+        "text": "Fixture opening: 八爪 λ"
+      }
+    },
+    {
+      "id": "n_choice",
+      "type": "choice",
+      "x": 0,
+      "y": 0,
+      "data": {
+        "prompt": "Choose a branch.",
+        "options": [
+          {
+            "id": "o_a",
+            "text": "Eight arms",
+            "effects": [
+              {
+                "var": "score",
+                "op": "add",
+                "value": "2.5"
+              },
+              {
+                "var": "flag",
+                "op": "set",
+                "value": "1"
+              },
+              {
+                "var": "message",
+                "op": "set",
+                "value": "8 arms"
+              }
+            ]
+          },
+          {
+            "id": "o_b",
+            "text": "Two hands",
+            "effects": [
+              {
+                "var": "score",
+                "op": "add",
+                "value": ".75"
+              },
+              {
+                "var": "flag",
+                "op": "set",
+                "value": "0"
+              },
+              {
+                "var": "message",
+                "op": "set",
+                "value": "two hands"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "n_subtract",
+      "type": "setvar",
+      "x": 0,
+      "y": 0,
+      "data": {
+        "assignments": [
+          {
+            "var": "score",
+            "op": "sub",
+            "value": "0.25"
+          }
+        ]
+      }
+    },
+    {
+      "id": "n_condition",
+      "type": "condition",
+      "x": 0,
+      "y": 0,
+      "data": {
+        "match": "all",
+        "clauses": [
+          {
+            "var": "score",
+            "op": ">=",
+            "value": "3.5"
+          },
+          {
+            "var": "flag",
+            "op": "==",
+            "value": true
+          },
+          {
+            "var": "message",
+            "op": "==",
+            "value": "8 arms"
+          }
+        ]
+      }
+    },
+    {
+      "id": "n_good",
+      "type": "end",
+      "x": 0,
+      "y": 0,
+      "data": {
+        "ending": "understood"
+      }
+    },
+    {
+      "id": "n_bad",
+      "type": "end",
+      "x": 0,
+      "y": 0,
+      "data": {
+        "ending": "not yet"
+      }
+    },
+    {
+      "id": "n_note",
+      "type": "note",
+      "x": 0,
+      "y": 0,
+      "data": {
+        "text": "Authoring-only note, excluded from the runtime."
+      }
+    }
+  ],
+  "edges": [
+    {
+      "id": "e_0",
+      "source": "n_start",
+      "sourcePort": "out",
+      "target": "n_setup"
+    },
+    {
+      "id": "e_1",
+      "source": "n_setup",
+      "sourcePort": "out",
+      "target": "n_intro"
+    },
+    {
+      "id": "e_2",
+      "source": "n_intro",
+      "sourcePort": "out",
+      "target": "n_choice"
+    },
+    {
+      "id": "e_3",
+      "source": "n_choice",
+      "sourcePort": "o_a",
+      "target": "n_subtract"
+    },
+    {
+      "id": "e_4",
+      "source": "n_choice",
+      "sourcePort": "o_b",
+      "target": "n_subtract"
+    },
+    {
+      "id": "e_5",
+      "source": "n_subtract",
+      "sourcePort": "out",
+      "target": "n_condition"
+    },
+    {
+      "id": "e_6",
+      "source": "n_condition",
+      "sourcePort": "true",
+      "target": "n_good"
+    },
+    {
+      "id": "e_7",
+      "source": "n_condition",
+      "sourcePort": "false",
+      "target": "n_bad"
+    }
+  ],
+  "groups": []
+}

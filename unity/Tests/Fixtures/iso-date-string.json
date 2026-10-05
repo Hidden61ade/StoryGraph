@@ -1,0 +1,105 @@
+{
+  "meta": {
+    "name": "ISO date remains a string",
+    "version": 1
+  },
+  "variables": [
+    {
+      "name": "stamp",
+      "type": "string",
+      "initial": "2024-01-02T03:04:05.000Z"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "n_start",
+      "type": "start",
+      "x": 0,
+      "y": 0,
+      "data": {}
+    },
+    {
+      "id": "n_choice",
+      "type": "choice",
+      "x": 0,
+      "y": 0,
+      "data": {
+        "prompt": "Keep the exact string.",
+        "options": [
+          {
+            "id": "o_keep",
+            "text": "Set timestamp text",
+            "effects": [
+              {
+                "var": "stamp",
+                "op": "set",
+                "value": "2026-10-05T12:34:56+08:00"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "n_condition",
+      "type": "condition",
+      "x": 0,
+      "y": 0,
+      "data": {
+        "match": "all",
+        "clauses": [
+          {
+            "var": "stamp",
+            "op": "==",
+            "value": "2026-10-05T12:34:56+08:00"
+          }
+        ]
+      }
+    },
+    {
+      "id": "n_true",
+      "type": "end",
+      "x": 0,
+      "y": 0,
+      "data": {
+        "ending": "exact string"
+      }
+    },
+    {
+      "id": "n_false",
+      "type": "end",
+      "x": 0,
+      "y": 0,
+      "data": {
+        "ending": "changed string"
+      }
+    }
+  ],
+  "edges": [
+    {
+      "id": "e_0",
+      "source": "n_start",
+      "sourcePort": "out",
+      "target": "n_choice"
+    },
+    {
+      "id": "e_1",
+      "source": "n_choice",
+      "sourcePort": "o_keep",
+      "target": "n_condition"
+    },
+    {
+      "id": "e_2",
+      "source": "n_condition",
+      "sourcePort": "true",
+      "target": "n_true"
+    },
+    {
+      "id": "e_3",
+      "source": "n_condition",
+      "sourcePort": "false",
+      "target": "n_false"
+    }
+  ],
+  "groups": []
+}

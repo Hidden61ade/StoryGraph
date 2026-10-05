@@ -1,0 +1,66 @@
+{
+  "meta": {
+    "name": "Reimport fixture",
+    "version": 1
+  },
+  "variables": [],
+  "nodes": [
+    {
+      "id": "n_start",
+      "type": "start",
+      "x": 0,
+      "y": 0,
+      "data": {}
+    },
+    {
+      "id": "n_intro",
+      "type": "dialogue",
+      "x": 0,
+      "y": 0,
+      "data": {
+        "speaker": "Narrator",
+        "text": "Updated opening."
+      }
+    },
+    {
+      "id": "n_added",
+      "type": "dialogue",
+      "x": 0,
+      "y": 0,
+      "data": {
+        "speaker": "New speaker",
+        "text": "A newly added dialogue."
+      }
+    },
+    {
+      "id": "n_end",
+      "type": "end",
+      "x": 0,
+      "y": 0,
+      "data": {
+        "ending": "finished"
+      }
+    }
+  ],
+  "edges": [
+    {
+      "id": "e_0",
+      "source": "n_start",
+      "sourcePort": "out",
+      "target": "n_intro"
+    },
+    {
+      "id": "e_1",
+      "source": "n_intro",
+      "sourcePort": "out",
+      "target": "n_added"
+    },
+    {
+      "id": "e_2",
+      "source": "n_added",
+      "sourcePort": "out",
+      "target": "n_end"
+    }
+  ],
+  "groups": []
+}

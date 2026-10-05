@@ -1,0 +1,13 @@
+{
+  "name": "com.hidden61ade.storygraph",
+  "version": "0.2.0",
+  "displayName": "StoryGraph",
+  "license": "MIT",
+  "description": "Import original StoryGraph .sg projects automatically and run their core narrative graphs in Unity.",
+  "unity": "2022.3",
+  "author": { "name": "Hidden61ade" },
+  "dependencies": { "com.unity.nuget.newtonsoft-json": "3.2.2" },
+  "samples": [
+    { "displayName": "Minimal Dialogue", "description": "A small English graph and an OnGUI dialogue UI.", "path": "Samples~/MinimalDialogue" }
+  ]
+}

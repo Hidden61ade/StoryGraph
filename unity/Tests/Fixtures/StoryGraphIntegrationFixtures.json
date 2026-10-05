@@ -1,0 +1,746 @@
+{
+  "version": 1,
+  "runtimeCases": [
+    {
+      "name": "typed-flow",
+      "file": "typed-flow.json",
+      "steps": [
+        {
+          "command": "begin",
+          "choiceIndex": 0,
+          "currentNodeId": "n_intro",
+          "state": {
+            "kind": "dialogue",
+            "speaker": "Narrator",
+            "text": "Fixture opening: 八爪 λ"
+          },
+          "variables": [
+            {
+              "name": "score",
+              "type": "number",
+              "value": "1.25"
+            },
+            {
+              "name": "flag",
+              "type": "boolean",
+              "value": "false"
+            },
+            {
+              "name": "message",
+              "type": "string",
+              "value": "pending"
+            }
+          ]
+        },
+        {
+          "command": "next",
+          "choiceIndex": 0,
+          "currentNodeId": "n_choice",
+          "state": {
+            "kind": "choice",
+            "prompt": "Choose a branch.",
+            "choices": [
+              "Eight arms",
+              "Two hands"
+            ]
+          },
+          "variables": [
+            {
+              "name": "score",
+              "type": "number",
+              "value": "1.25"
+            },
+            {
+              "name": "flag",
+              "type": "boolean",
+              "value": "false"
+            },
+            {
+              "name": "message",
+              "type": "string",
+              "value": "pending"
+            }
+          ]
+        },
+        {
+          "command": "choose",
+          "choiceIndex": 0,
+          "currentNodeId": null,
+          "state": {
+            "kind": "end",
+            "ending": "understood"
+          },
+          "variables": [
+            {
+              "name": "score",
+              "type": "number",
+              "value": "3.5"
+            },
+            {
+              "name": "flag",
+              "type": "boolean",
+              "value": "true"
+            },
+            {
+              "name": "message",
+              "type": "string",
+              "value": "8 arms"
+            }
+          ]
+        },
+        {
+          "command": "begin",
+          "choiceIndex": 0,
+          "currentNodeId": "n_intro",
+          "state": {
+            "kind": "dialogue",
+            "speaker": "Narrator",
+            "text": "Fixture opening: 八爪 λ"
+          },
+          "variables": [
+            {
+              "name": "score",
+              "type": "number",
+              "value": "1.25"
+            },
+            {
+              "name": "flag",
+              "type": "boolean",
+              "value": "false"
+            },
+            {
+              "name": "message",
+              "type": "string",
+              "value": "pending"
+            }
+          ]
+        },
+        {
+          "command": "next",
+          "choiceIndex": 0,
+          "currentNodeId": "n_choice",
+          "state": {
+            "kind": "choice",
+            "prompt": "Choose a branch.",
+            "choices": [
+              "Eight arms",
+              "Two hands"
+            ]
+          },
+          "variables": [
+            {
+              "name": "score",
+              "type": "number",
+              "value": "1.25"
+            },
+            {
+              "name": "flag",
+              "type": "boolean",
+              "value": "false"
+            },
+            {
+              "name": "message",
+              "type": "string",
+              "value": "pending"
+            }
+          ]
+        },
+        {
+          "command": "choose",
+          "choiceIndex": 1,
+          "currentNodeId": null,
+          "state": {
+            "kind": "end",
+            "ending": "not yet"
+          },
+          "variables": [
+            {
+              "name": "score",
+              "type": "number",
+              "value": "1.75"
+            },
+            {
+              "name": "flag",
+              "type": "boolean",
+              "value": "false"
+            },
+            {
+              "name": "message",
+              "type": "string",
+              "value": "two hands"
+            }
+          ]
+        },
+        {
+          "command": "begin",
+          "choiceIndex": 0,
+          "currentNodeId": "n_intro",
+          "state": {
+            "kind": "dialogue",
+            "speaker": "Narrator",
+            "text": "Fixture opening: 八爪 λ"
+          },
+          "variables": [
+            {
+              "name": "score",
+              "type": "number",
+              "value": "1.25"
+            },
+            {
+              "name": "flag",
+              "type": "boolean",
+              "value": "false"
+            },
+            {
+              "name": "message",
+              "type": "string",
+              "value": "pending"
+            }
+          ]
+        },
+        {
+          "command": "next",
+          "choiceIndex": 0,
+          "currentNodeId": "n_choice",
+          "state": {
+            "kind": "choice",
+            "prompt": "Choose a branch.",
+            "choices": [
+              "Eight arms",
+              "Two hands"
+            ]
+          },
+          "variables": [
+            {
+              "name": "score",
+              "type": "number",
+              "value": "1.25"
+            },
+            {
+              "name": "flag",
+              "type": "boolean",
+              "value": "false"
+            },
+            {
+              "name": "message",
+              "type": "string",
+              "value": "pending"
+            }
+          ]
+        },
+        {
+          "command": "choose",
+          "choiceIndex": 0,
+          "currentNodeId": null,
+          "state": {
+            "kind": "end",
+            "ending": "understood"
+          },
+          "variables": [
+            {
+              "name": "score",
+              "type": "number",
+              "value": "3.5"
+            },
+            {
+              "name": "flag",
+              "type": "boolean",
+              "value": "true"
+            },
+            {
+              "name": "message",
+              "type": "string",
+              "value": "8 arms"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "iso-date-string",
+      "file": "iso-date-string.json",
+      "steps": [
+        {
+          "command": "begin",
+          "choiceIndex": 0,
+          "currentNodeId": "n_choice",
+          "state": {
+            "kind": "choice",
+            "prompt": "Keep the exact string.",
+            "choices": [
+              "Set timestamp text"
+            ]
+          },
+          "variables": [
+            {
+              "name": "stamp",
+              "type": "string",
+              "value": "2024-01-02T03:04:05.000Z"
+            }
+          ]
+        },
+        {
+          "command": "choose",
+          "choiceIndex": 0,
+          "currentNodeId": null,
+          "state": {
+            "kind": "end",
+            "ending": "exact string"
+          },
+          "variables": [
+            {
+              "name": "stamp",
+              "type": "string",
+              "value": "2026-10-05T12:34:56+08:00"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "match-all",
+      "file": "match-all.json",
+      "steps": [
+        {
+          "command": "begin",
+          "choiceIndex": 0,
+          "currentNodeId": null,
+          "state": {
+            "kind": "end",
+            "ending": "false branch"
+          },
+          "variables": [
+            {
+              "name": "count",
+              "type": "number",
+              "value": "2"
+            },
+            {
+              "name": "enabled",
+              "type": "boolean",
+              "value": "false"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "match-all-empty",
+      "file": "match-all-empty.json",
+      "steps": [
+        {
+          "command": "begin",
+          "choiceIndex": 0,
+          "currentNodeId": null,
+          "state": {
+            "kind": "end",
+            "ending": "true branch"
+          },
+          "variables": [
+            {
+              "name": "count",
+              "type": "number",
+              "value": "2"
+            },
+            {
+              "name": "enabled",
+              "type": "boolean",
+              "value": "false"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "match-any",
+      "file": "match-any.json",
+      "steps": [
+        {
+          "command": "begin",
+          "choiceIndex": 0,
+          "currentNodeId": null,
+          "state": {
+            "kind": "end",
+            "ending": "true branch"
+          },
+          "variables": [
+            {
+              "name": "count",
+              "type": "number",
+              "value": "2"
+            },
+            {
+              "name": "enabled",
+              "type": "boolean",
+              "value": "false"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "match-any-empty",
+      "file": "match-any-empty.json",
+      "steps": [
+        {
+          "command": "begin",
+          "choiceIndex": 0,
+          "currentNodeId": null,
+          "state": {
+            "kind": "end",
+            "ending": "true branch"
+          },
+          "variables": [
+            {
+              "name": "count",
+              "type": "number",
+              "value": "2"
+            },
+            {
+              "name": "enabled",
+              "type": "boolean",
+              "value": "false"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "match-nand",
+      "file": "match-nand.json",
+      "steps": [
+        {
+          "command": "begin",
+          "choiceIndex": 0,
+          "currentNodeId": null,
+          "state": {
+            "kind": "end",
+            "ending": "true branch"
+          },
+          "variables": [
+            {
+              "name": "count",
+              "type": "number",
+              "value": "2"
+            },
+            {
+              "name": "enabled",
+              "type": "boolean",
+              "value": "false"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "match-nand-empty",
+      "file": "match-nand-empty.json",
+      "steps": [
+        {
+          "command": "begin",
+          "choiceIndex": 0,
+          "currentNodeId": null,
+          "state": {
+            "kind": "end",
+            "ending": "true branch"
+          },
+          "variables": [
+            {
+              "name": "count",
+              "type": "number",
+              "value": "2"
+            },
+            {
+              "name": "enabled",
+              "type": "boolean",
+              "value": "false"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "match-nor",
+      "file": "match-nor.json",
+      "steps": [
+        {
+          "command": "begin",
+          "choiceIndex": 0,
+          "currentNodeId": null,
+          "state": {
+            "kind": "end",
+            "ending": "false branch"
+          },
+          "variables": [
+            {
+              "name": "count",
+              "type": "number",
+              "value": "2"
+            },
+            {
+              "name": "enabled",
+              "type": "boolean",
+              "value": "false"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "match-nor-empty",
+      "file": "match-nor-empty.json",
+      "steps": [
+        {
+          "command": "begin",
+          "choiceIndex": 0,
+          "currentNodeId": null,
+          "state": {
+            "kind": "end",
+            "ending": "true branch"
+          },
+          "variables": [
+            {
+              "name": "count",
+              "type": "number",
+              "value": "2"
+            },
+            {
+              "name": "enabled",
+              "type": "boolean",
+              "value": "false"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "reimport-original",
+      "file": "reimport-original.json",
+      "steps": [
+        {
+          "command": "begin",
+          "choiceIndex": 0,
+          "currentNodeId": "n_intro",
+          "state": {
+            "kind": "dialogue",
+            "speaker": "Narrator",
+            "text": "Original opening."
+          },
+          "variables": []
+        },
+        {
+          "command": "next",
+          "choiceIndex": 0,
+          "currentNodeId": null,
+          "state": {
+            "kind": "end",
+            "ending": "finished"
+          },
+          "variables": []
+        }
+      ]
+    },
+    {
+      "name": "reimport-updated",
+      "file": "reimport-updated.json",
+      "steps": [
+        {
+          "command": "begin",
+          "choiceIndex": 0,
+          "currentNodeId": "n_intro",
+          "state": {
+            "kind": "dialogue",
+            "speaker": "Narrator",
+            "text": "Updated opening."
+          },
+          "variables": []
+        },
+        {
+          "command": "next",
+          "choiceIndex": 0,
+          "currentNodeId": "n_added",
+          "state": {
+            "kind": "dialogue",
+            "speaker": "New speaker",
+            "text": "A newly added dialogue."
+          },
+          "variables": []
+        },
+        {
+          "command": "next",
+          "choiceIndex": 0,
+          "currentNodeId": null,
+          "state": {
+            "kind": "end",
+            "ending": "finished"
+          },
+          "variables": []
+        }
+      ]
+    }
+  ],
+  "invalidCases": [
+    {
+      "name": "missing-start",
+      "file": "missing-start.json",
+      "diagnostic": "Start"
+    },
+    {
+      "name": "unknown-effect-variable",
+      "file": "unknown-effect-variable.json",
+      "diagnostic": "missing_score"
+    },
+    {
+      "name": "unknown-condition-variable",
+      "file": "unknown-condition-variable.json",
+      "diagnostic": "missing_score"
+    },
+    {
+      "name": "plugin-node",
+      "file": "plugin-node.json",
+      "diagnostic": "plugin.audio"
+    },
+    {
+      "name": "dangling-edge",
+      "file": "dangling-edge.json",
+      "diagnostic": "target"
+    },
+    {
+      "name": "duplicate-output",
+      "file": "duplicate-output.json",
+      "diagnostic": "out"
+    },
+    {
+      "name": "missing-output",
+      "file": "missing-output.json",
+      "diagnostic": "out"
+    },
+    {
+      "name": "duplicate-variable",
+      "file": "duplicate-variable.json",
+      "diagnostic": "score"
+    },
+    {
+      "name": "hex-number",
+      "file": "hex-number.json",
+      "diagnostic": "finite"
+    },
+    {
+      "name": "boolean-whitespace",
+      "file": "boolean-whitespace.json",
+      "diagnostic": "true"
+    },
+    {
+      "name": "nonstring-string",
+      "file": "nonstring-string.json",
+      "diagnostic": "message"
+    },
+    {
+      "name": "boolean-add-effect",
+      "file": "boolean-add-effect.json",
+      "diagnostic": "boolean"
+    },
+    {
+      "name": "malformed-json",
+      "file": "malformed-json.txt",
+      "diagnostic": ""
+    },
+    {
+      "name": "trailing-json",
+      "file": "trailing-json.txt",
+      "diagnostic": ""
+    }
+  ],
+  "faultCases": [
+    {
+      "name": "choice-overflow",
+      "file": "choice-overflow.json",
+      "choiceIndex": 0,
+      "initial": {
+        "command": "begin",
+        "choiceIndex": 0,
+        "currentNodeId": "n_choice",
+        "state": {
+          "kind": "choice",
+          "prompt": "Run the overflow route.",
+          "choices": [
+            "Run"
+          ]
+        },
+        "variables": [
+          {
+            "name": "count",
+            "type": "number",
+            "value": "0"
+          },
+          {
+            "name": "huge",
+            "type": "number",
+            "value": "1e+308"
+          }
+        ]
+      },
+      "failureVariables": [
+        {
+          "name": "count",
+          "type": "number",
+          "value": "0"
+        },
+        {
+          "name": "huge",
+          "type": "number",
+          "value": "1e+308"
+        }
+      ]
+    },
+    {
+      "name": "automatic-overflow",
+      "file": "automatic-overflow.json",
+      "choiceIndex": 0,
+      "initial": {
+        "command": "begin",
+        "choiceIndex": 0,
+        "currentNodeId": "n_choice",
+        "state": {
+          "kind": "choice",
+          "prompt": "Run the overflow route.",
+          "choices": [
+            "Run"
+          ]
+        },
+        "variables": [
+          {
+            "name": "count",
+            "type": "number",
+            "value": "0"
+          },
+          {
+            "name": "huge",
+            "type": "number",
+            "value": "1e+308"
+          }
+        ]
+      },
+      "failureVariables": [
+        {
+          "name": "count",
+          "type": "number",
+          "value": "1"
+        },
+        {
+          "name": "huge",
+          "type": "number",
+          "value": "1e+308"
+        }
+      ]
+    }
+  ],
+  "automaticLoop": {
+    "file": "automatic-loop.json",
+    "automaticStepLimit": 10000
+  },
+  "reimport": {
+    "original": "reimport-original.json",
+    "updated": "reimport-updated.json"
+  }
+}

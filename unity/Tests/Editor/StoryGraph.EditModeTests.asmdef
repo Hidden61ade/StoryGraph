@@ -1,0 +1,8 @@
+{
+  "name": "StoryGraph.EditModeTests",
+  "rootNamespace": "StoryGraph.Tests",
+  "references": ["StoryGraph.Runtime", "StoryGraph.Editor"],
+  "includePlatforms": ["Editor"],
+  "optionalUnityReferences": ["TestAssemblies"],
+  "autoReferenced": false
+}

@@ -1,0 +1,67 @@
+{
+  "meta": {
+    "name": "Automatic loop fixture",
+    "version": 1
+  },
+  "variables": [
+    {
+      "name": "ticks",
+      "type": "number",
+      "initial": 0
+    }
+  ],
+  "nodes": [
+    {
+      "id": "n_start",
+      "type": "start",
+      "x": 0,
+      "y": 0,
+      "data": {}
+    },
+    {
+      "id": "n_loop_a",
+      "type": "setvar",
+      "x": 0,
+      "y": 0,
+      "data": {
+        "assignments": [
+          {
+            "var": "ticks",
+            "op": "add",
+            "value": "1"
+          }
+        ]
+      }
+    },
+    {
+      "id": "n_loop_b",
+      "type": "setvar",
+      "x": 0,
+      "y": 0,
+      "data": {
+        "assignments": []
+      }
+    }
+  ],
+  "edges": [
+    {
+      "id": "e_0",
+      "source": "n_start",
+      "sourcePort": "out",
+      "target": "n_loop_a"
+    },
+    {
+      "id": "e_1",
+      "source": "n_loop_a",
+      "sourcePort": "out",
+      "target": "n_loop_b"
+    },
+    {
+      "id": "e_2",
+      "source": "n_loop_b",
+      "sourcePort": "out",
+      "target": "n_loop_a"
+    }
+  ],
+  "groups": []
+}
