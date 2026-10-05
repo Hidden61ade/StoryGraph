@@ -11,7 +11,7 @@ export class GraphModel extends EventBus {
   }
 
   reset(emit = true) {
-    this.meta = { name: '未命名剧情', version: 1 };
+    this.meta = { name: 'Untitled story', version: 1 };
     this.variables = []; // [{ name, type:'number'|'boolean'|'string', initial }]
     this.nodes = new Map(); // id -> { id, type, x, y, data }
     this.edges = new Map(); // id -> { id, source, sourcePort, target }
@@ -143,7 +143,7 @@ export class GraphModel extends EventBus {
   addGroup(memberIds, label) {
     const ids = (memberIds || []).filter((id) => this.nodes.has(id));
     if (!ids.length) return null;
-    const group = { id: this._id('g'), label: label || '新建组', color: '#64748b', members: ids };
+    const group = { id: this._id('g'), label: label || 'New group', color: '#64748b', members: ids };
     this.groups.set(group.id, group);
     this.emit('groupsChanged');
     this.emit('changed');
@@ -255,8 +255,8 @@ export class GraphModel extends EventBus {
   _uniqueVarName() {
     let i = 1;
     const names = new Set(this.variables.map((v) => v.name));
-    while (names.has('变量' + i)) i++;
-    return '变量' + i;
+    while (names.has('variable_' + i)) i++;
+    return 'variable_' + i;
   }
 
   setMeta(patch) {

@@ -18,7 +18,7 @@ export class EventBus {
 
   emit(type, payload) {
     this._handlers.get(type)?.forEach((fn) => {
-      try { fn(payload); } catch (err) { console.error(`[EventBus] ${type} 处理出错：`, err); }
+      try { fn(payload); } catch (err) { console.error(`[EventBus] ${type} handler failed:`, err); }
     });
     // '*' 通配监听，便于调试 / 插件统一观察
     if (type !== '*') {

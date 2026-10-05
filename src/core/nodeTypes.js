@@ -3,58 +3,58 @@
 
 export const NODE_TYPES = {
   start: {
-    label: '开始',
+    label: 'Start',
     icon: '▶',
     color: '#16a34a',
     hasInput: false,
-    desc: '剧情的入口。每段剧情有且仅有一个开始节点。',
+    desc: 'The story entry point. Use exactly one Start node.',
   },
   dialogue: {
-    label: '对话',
+    label: 'Dialogue',
     icon: '💬',
     color: '#2563eb',
     hasInput: true,
-    desc: '某个角色说一句话。',
+    desc: 'A line spoken by a character.',
   },
   choice: {
-    label: '选择',
+    label: 'Choice',
     icon: '🔀',
     color: '#d97706',
     hasInput: true,
-    desc: '让玩家在多个选项中选择，每个选项可改变好感度等变量。',
+    desc: 'Player options with optional variable effects.',
   },
   condition: {
-    label: '条件',
+    label: 'Condition',
     icon: '❓',
     color: '#7c3aed',
     hasInput: true,
-    desc: '根据变量判断，走向「是」或「否」两条路。',
+    desc: 'Evaluate variables and follow the True or False branch.',
   },
   setvar: {
-    label: '赋值',
+    label: 'Assignment',
     icon: '🔧',
     color: '#0d9488',
     hasInput: true,
-    desc: '修改变量（如好感度 +1、标记某线索已读）。',
+    desc: 'Change a value or mark a clue as read.',
   },
   end: {
-    label: '结局',
+    label: 'Ending',
     icon: '⏹',
     color: '#dc2626',
     hasInput: true,
-    desc: '剧情的一个结束点。可标注结局名称。',
+    desc: 'A story endpoint with an optional ending name.',
   },
   note: {
-    label: '便签',
+    label: 'Note',
     icon: '📝',
     color: '#ca8a04',
     hasInput: false,
-    desc: '写给自己的注释，不会被导出到引擎。',
+    desc: 'An authoring note, omitted from engine exports.',
   },
 };
 
 let _optSeq = 1;
-export function newOption(text = '新选项') {
+export function newOption(text = 'New option') {
   return { id: 'opt_' + (_optSeq++), text, effects: [] };
 }
 
@@ -66,7 +66,7 @@ export function newOption(text = '新选项') {
 //   defaultData()（默认数据）, fields[]（声明式表单）,
 //   summary(node)（画布上的摘要 HTML）, toEngine(node, helpers)（导出为运行时节点）。
 export function registerNodeType(type, def) {
-  if (NODE_TYPES[type]) { console.warn('[nodeTypes] 类型已存在，忽略重复注册：', type); return; }
+  if (NODE_TYPES[type]) { console.warn('[nodeTypes] Type already exists; registration skipped:', type); return; }
   NODE_TYPES[type] = { hasInput: true, category: 'plugin', desc: '', ...def };
 }
 
@@ -76,7 +76,7 @@ export function pluginNodeTypesByCategory() {
   const groups = new Map();
   for (const [type, def] of Object.entries(NODE_TYPES)) {
     if (builtin.has(type)) continue;
-    const cat = def.categoryLabel || '🧩 插件节点';
+    const cat = def.categoryLabel || '🧩 Plugin nodes';
     if (!groups.has(cat)) groups.set(cat, []);
     groups.get(cat).push(type);
   }
@@ -87,19 +87,19 @@ export function pluginNodeTypesByCategory() {
 export function defaultData(type) {
   switch (type) {
     case 'start':
-      return { label: '开始' };
+      return { label: 'Start' };
     case 'dialogue':
       return { speaker: '', text: '' };
     case 'choice':
-      return { prompt: '', options: [newOption('选项一'), newOption('选项二')] };
+      return { prompt: '', options: [newOption('Option 1'), newOption('Option 2')] };
     case 'condition':
       return { match: 'all', clauses: [{ var: '', op: '>=', value: '0' }] };
     case 'setvar':
       return { assignments: [{ var: '', op: 'add', value: '1' }] };
     case 'end':
-      return { label: '结局', ending: '' };
+      return { label: 'Ending', ending: '' };
     case 'note':
-      return { text: '在这里写注释…' };
+      return { text: 'Write a note here…' };
     default: {
       const def = NODE_TYPES[type];
       if (def && def.defaultData) {
@@ -121,8 +121,8 @@ export function outputPorts(node) {
       return (node.data.options || []).map((o) => ({ id: o.id, label: o.text }));
     case 'condition':
       return [
-        { id: 'true', label: '是', kind: 'true' },
-        { id: 'false', label: '否', kind: 'false' },
+        { id: 'true', label: 'True', kind: 'true' },
+        { id: 'false', label: 'False', kind: 'false' },
       ];
     case 'end':
     case 'note':

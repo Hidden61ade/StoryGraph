@@ -57,9 +57,9 @@ export class PluginHost {
       if (!plugin || typeof plugin.setup !== 'function') continue;
       try {
         await plugin.setup(this.api);
-        console.log('[plugin] 已加载：', plugin.id || '(匿名插件)');
+        console.log('[plugin] Loaded:', plugin.id || '(anonymous plugin)');
       } catch (err) {
-        console.error('[plugin] 加载失败：', plugin.id, err);
+        console.error('[plugin] Failed to load:', plugin.id, err);
       }
     }
   }

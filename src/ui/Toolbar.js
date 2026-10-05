@@ -7,46 +7,46 @@ export function setupToolbar(root, actions) {
       <span class="brand__logo">🕸️</span>
       <div class="brand__text">
         <strong>StoryGraph</strong>
-        <small>剧情节点编辑器</small>
+        <small>Narrative editor</small>
       </div>
     </div>
-    <input class="title-input" id="storyTitle" title="剧情名称" />
+    <input class="title-input" id="storyTitle" title="Story title" />
     <div class="toolbar">
       <div class="btn-group">
-        <button class="btn" data-act="new" title="新建空白剧情">🆕 新建</button>
-        <button class="btn" data-act="open" title="打开本地 .sg 或 .json 剧情文件">📂 打开</button>
-        <button class="btn" data-act="save" title="保存为 .sg（也兼容 .json 读取）">💾 保存</button>
+        <button class="btn" data-act="new" title="Create a blank story">🆕 New</button>
+        <button class="btn" data-act="open" title="Open a local .sg or .json story">📂 Open</button>
+        <button class="btn" data-act="save" title="Save as .sg (also opens as .json)">💾 Save</button>
       </div>
       <span class="sep"></span>
       <div class="btn-group">
-        <button class="btn" data-act="undo" title="撤销 (Ctrl+Z)">↶</button>
-        <button class="btn" data-act="redo" title="重做 (Ctrl+Y)">↷</button>
+        <button class="btn" data-act="undo" title="Undo (Ctrl+Z)">↶</button>
+        <button class="btn" data-act="redo" title="Redo (Ctrl+Y)">↷</button>
       </div>
       <span class="sep"></span>
       <div class="btn-group">
-        <button class="btn" data-act="fit" title="自适应显示全部节点">🔭 全览</button>
-        <button class="btn" data-act="layout" title="按剧情流向分层排列节点，统一修正过窄节点并消除重叠">🧹 整理布局</button>
-        <button class="btn" data-act="validate" title="检查剧情里的断头路、未定义变量等">🔍 检查</button>
+        <button class="btn" data-act="fit" title="Fit all nodes in view">🔭 Fit view</button>
+        <button class="btn" data-act="layout" title="Arrange nodes by story flow, widen narrow nodes, and remove overlaps">🧹 Auto layout</button>
+        <button class="btn" data-act="validate" title="Check dead ends and undefined variables">🔍 Check</button>
       </div>
       <span class="sep"></span>
       <div class="btn-group">
-        <button class="btn btn--primary" data-act="export" title="导出引擎可用的剧情文件">⬇ 导出引擎文件</button>
-        <button class="btn" data-act="preview" title="像玩 galgame 一样试玩当前剧情">▶ 预览</button>
+        <button class="btn btn--primary" data-act="export" title="Export a story for an engine">⬇ Export</button>
+        <button class="btn" data-act="preview" title="Play the current story in the editor">▶ Preview</button>
       </div>
       <span class="sep"></span>
       <div class="btn-group">
-        <button class="btn" data-act="group" title="把多选的节点整合成一个组（可整体移动）">🗚 组合</button>
-        <button class="btn" data-act="asset" title="把多选的节点存成可复用资产（Prefab）">📦 存为资产</button>
+        <button class="btn" data-act="group" title="Group selected nodes to move them together">🗚 Group</button>
+        <button class="btn" data-act="asset" title="Save selected nodes as a reusable asset">📦 Save asset</button>
       </div>
       <span class="sep"></span>
       <span class="plugin-zone">
-        <span class="plugin-zone__label" title="以下能力由插件提供">🧩 插件</span>
+        <span class="plugin-zone__label" title="These features are provided by plugins">🧩 Plugins</span>
         <span class="plugin-slot" id="pluginSlot"></span>
-        <button class="btn" data-act="plugins" title="查看 / 启用 / 停用已安装的插件">管理</button>
+        <button class="btn" data-act="plugins" title="View, enable, or disable installed plugins">Manage</button>
       </span>
       <span class="sep"></span>
-      <button class="btn btn--ghost" data-act="sample" title="载入《生日派对》示例剧情">📖 载入示例</button>
-      <button class="btn btn--ghost" data-act="help" title="使用帮助">❔</button>
+      <button class="btn btn--ghost" data-act="sample" title="Load The Birthday Party example">📖 Load example</button>
+      <button class="btn btn--ghost" data-act="help" title="Help">❔</button>
     </div>`;
 
   root.querySelectorAll('[data-act]').forEach((b) => {
@@ -61,8 +61,8 @@ export function setupToolbar(root, actions) {
 }
 
 export function setupPalette(root, onAdd) {
-  root.innerHTML = `<div class="palette__title">节点</div>
-    <div class="palette__hint">拖到画布，或点击添加</div>`;
+  root.innerHTML = `<div class="palette__title">Nodes</div>
+    <div class="palette__hint">Drag onto the canvas, or click to add</div>`;
   const addItem = (type) => {
     const def = NODE_TYPES[type];
     if (!def) return;

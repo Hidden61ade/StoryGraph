@@ -28,28 +28,28 @@ export class AssetLibrary {
   saveFromSelection(nodeIds, name) {
     const payload = this.model.serializeSubgraph(nodeIds);
     if (!payload || !payload.nodes.length) {
-      this.toast('请先在画布上框选 / Shift 多选若干节点', 'error');
+      this.toast('Select nodes on the canvas with a selection box or Shift-click.', 'error');
       return;
     }
     const asset = {
       id: 'asset_' + Date.now().toString(36),
-      name: name || ('剧情组件 ' + (this.assets.length + 1)),
+      name: name || ('Story asset ' + (this.assets.length + 1)),
       ...payload,
     };
     this.assets.unshift(asset);
     this._save();
     this.render();
-    this.toast(`已存为资产「${asset.name}」`, 'success');
+    this.toast(`Saved asset: ${asset.name}`, 'success');
   }
 
   render() {
     this.root.innerHTML = `
-      <div class="panel__title">资产库 <span class="panel__title-tag">${this.assets.length}</span></div>
-      <div class="panel__hint">把选中的节点存成可复用组件（类似 Unity Prefab）。框选或 Shift 多选后，点顶栏「📦 存为资产」。拖动卡片到画布即可放置。</div>
+      <div class="panel__title">Assets <span class="panel__title-tag">${this.assets.length}</span></div>
+      <div class="panel__hint">Save selected nodes as a reusable asset, like a Unity prefab. Box-select or Shift-click nodes, then choose 📦 Save asset. Drag a card onto the canvas to place it.</div>
       <div class="asset-list" id="assetList"></div>`;
     const list = this.root.querySelector('#assetList');
     if (!this.assets.length) {
-      list.innerHTML = `<div class="muted" style="padding:8px 2px">还没有资产。框选几个节点 → 顶栏「📦 存为资产」。</div>`;
+      list.innerHTML = `<div class="muted" style="padding:8px 2px">No assets yet. Select a few nodes, then choose 📦 Save asset.</div>`;
       return;
     }
     for (const a of this.assets) list.append(this._card(a));
@@ -62,21 +62,21 @@ export class AssetLibrary {
     card.innerHTML = `
       <div class="asset-card__main">
         <div class="asset-card__name">📦 ${esc(asset.name)}</div>
-        <div class="asset-card__meta">${asset.nodes.length} 节点 · ${asset.edges.length} 连线${(asset.variables && asset.variables.length) ? ' · ' + asset.variables.length + ' 变量' : ''}</div>
+        <div class="asset-card__meta">${asset.nodes.length} Nodes · ${asset.edges.length} Edges${(asset.variables && asset.variables.length) ? ' · ' + asset.variables.length + ' Variables' : ''}</div>
       </div>
       <div class="asset-card__ops">
-        <button class="icon-btn" data-act="use" title="实例化到画布中央">➕</button>
-        <button class="icon-btn" data-act="rename" title="重命名">✎</button>
-        <button class="icon-btn icon-btn--danger" data-act="del" title="删除资产">🗑</button>
+        <button class="icon-btn" data-act="use" title="Place a copy at the center of the canvas">➕</button>
+        <button class="icon-btn" data-act="rename" title="Rename">✎</button>
+        <button class="icon-btn icon-btn--danger" data-act="del" title="Delete asset">🗑</button>
       </div>`;
     card.querySelector('[data-act="use"]').addEventListener('click', () => this._instantiate(asset));
     card.querySelector('[data-act="rename"]').addEventListener('click', () => {
-      Promise.resolve(this.promptName('资产名称', asset.name)).then((n) => {
+      Promise.resolve(this.promptName('Asset name', asset.name)).then((n) => {
         if (n && n.trim()) { asset.name = n.trim(); this._save(); this.render(); }
       });
     });
     card.querySelector('[data-act="del"]').addEventListener('click', () => {
-      if (confirm(`删除资产「${asset.name}」？此操作不可撤销。`)) {
+      if (confirm(`Delete asset ${asset.name}? This cannot be undone.`)) {
         this.assets = this.assets.filter((a) => a !== asset);
         this._save(); this.render();
       }
@@ -91,7 +91,7 @@ export class AssetLibrary {
   _instantiate(asset, at) {
     const p = at || this.getPoint();
     const ids = this.model.instantiatePrefab(asset, p.x, p.y);
-    this.toast(`已实例化「${asset.name}」（${ids.length} 个节点）`, 'success');
+    this.toast(`Placed ${asset.name} (${ids.length} nodes)`, 'success');
     if (this.onInstantiated) this.onInstantiated(ids);
     return ids;
   }

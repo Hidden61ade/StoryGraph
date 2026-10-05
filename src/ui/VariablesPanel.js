@@ -13,15 +13,15 @@ export class VariablesPanel {
     const rows = this.model.variables.map((v, i) => this._row(v, i));
     this.root.innerHTML = `
       <div class="panel__title">
-        变量
+        Variables
         <span class="panel__title-tag">${this.model.variables.length}</span>
       </div>
-      <div class="panel__hint">剧情共享的数据：好感度、是否看过某线索等。</div>
+      <div class="panel__hint">Shared story state: relationship values, read clues, and other flags.</div>
       <div class="var-list" id="varList"></div>
-      <button class="add-btn" id="addVar">＋ 新建变量</button>`;
+      <button class="add-btn" id="addVar">＋ Add variable</button>`;
     const list = this.root.querySelector('#varList');
     if (!rows.length) {
-      list.innerHTML = `<div class="muted" style="padding:8px 2px">还没有变量。点下面新建，例如「Adam好感」。</div>`;
+      list.innerHTML = `<div class="muted" style="padding:8px 2px">No variables yet. Add one below, such as affection_adam.</div>`;
     } else {
       rows.forEach((r) => list.append(r));
     }
@@ -35,12 +35,12 @@ export class VariablesPanel {
     const name = document.createElement('input');
     name.className = 'input input--grow';
     name.value = v.name;
-    name.placeholder = '变量名';
+    name.placeholder = 'Variable name';
     name.addEventListener('change', () => {
       const newName = name.value.trim();
       if (!newName) { name.value = v.name; return; }
       if (this.model.variables.some((o, i) => i !== index && o.name === newName)) {
-        alert('变量名不能重复');
+        alert('Variable names must be unique.');
         name.value = v.name;
         return;
       }
@@ -50,9 +50,9 @@ export class VariablesPanel {
     const type = document.createElement('select');
     type.className = 'select select--sm';
     type.innerHTML = `
-      <option value="number" ${v.type === 'number' ? 'selected' : ''}>数字</option>
-      <option value="boolean" ${v.type === 'boolean' ? 'selected' : ''}>开关</option>
-      <option value="string" ${v.type === 'string' ? 'selected' : ''}>文本</option>`;
+      <option value="number" ${v.type === 'number' ? 'selected' : ''}>Number</option>
+      <option value="boolean" ${v.type === 'boolean' ? 'selected' : ''}>Boolean</option>
+      <option value="string" ${v.type === 'string' ? 'selected' : ''}>String</option>`;
     type.addEventListener('change', () => {
       const init = type.value === 'number' ? 0 : type.value === 'boolean' ? false : '';
       this.model.updateVariable(index, { type: type.value, initial: init });
@@ -63,7 +63,7 @@ export class VariablesPanel {
     const del = document.createElement('button');
     del.className = 'icon-btn';
     del.textContent = '🗑';
-    del.title = '删除变量';
+    del.title = 'Delete variable';
     del.addEventListener('click', () => this.model.removeVariable(index));
 
     const top = document.createElement('div');
@@ -74,7 +74,7 @@ export class VariablesPanel {
     bottom.className = 'var-row__bottom';
     const initLabel = document.createElement('span');
     initLabel.className = 'var-row__label';
-    initLabel.textContent = '初始';
+    initLabel.textContent = 'Initial';
     bottom.append(type, initLabel, initial);
 
     row.append(top, bottom);
@@ -85,8 +85,8 @@ export class VariablesPanel {
     if (v.type === 'boolean') {
       const sel = document.createElement('select');
       sel.className = 'select select--sm';
-      sel.innerHTML = `<option value="false" ${!v.initial || v.initial === 'false' ? 'selected' : ''}>否</option>
-                       <option value="true" ${v.initial === true || v.initial === 'true' ? 'selected' : ''}>是</option>`;
+      sel.innerHTML = `<option value="false" ${!v.initial || v.initial === 'false' ? 'selected' : ''}>False</option>
+                       <option value="true" ${v.initial === true || v.initial === 'true' ? 'selected' : ''}>True</option>`;
       sel.addEventListener('change', () => this.model.updateVariable(index, { initial: sel.value === 'true' }));
       return sel;
     }

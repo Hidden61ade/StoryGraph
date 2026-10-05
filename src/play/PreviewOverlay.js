@@ -6,7 +6,7 @@ export class PreviewOverlay {
   constructor(compiled, { onClose } = {}) {
     this.player = new StoryPlayer(compiled);
     this.onClose = onClose || (() => {});
-    this.name = compiled.name || '未命名剧情';
+    this.name = compiled.name || 'Untitled story';
     this._build();
     this._render(this.player.begin());
     this._onKey = (e) => {
@@ -23,12 +23,12 @@ export class PreviewOverlay {
     el.className = 'preview';
     el.innerHTML = `
       <div class="preview__bar">
-        <span class="preview__name">▶ 试玩预览 · ${esc(this.name)}</span>
-        <span class="preview__hint">点击对话框继续 · 空格/回车下一句 · Esc 退出</span>
+        <span class="preview__name">▶ Story preview · ${esc(this.name)}</span>
+        <span class="preview__hint">Click to continue · Space/Enter next line · Esc close</span>
         <span class="preview__tools">
-          <button class="preview__tbtn" data-act="vars" title="查看当前变量">🔢 变量</button>
-          <button class="preview__tbtn" data-act="restart" title="从头开始">↺ 重玩</button>
-          <button class="preview__tbtn preview__tbtn--close" data-act="close" title="关闭 (Esc)">✕</button>
+          <button class="preview__tbtn" data-act="vars" title="Inspect current variables">🔢 Variables</button>
+          <button class="preview__tbtn" data-act="restart" title="Restart from the beginning">↺ Restart</button>
+          <button class="preview__tbtn preview__tbtn--close" data-act="close" title="Close (Esc)">✕</button>
         </span>
       </div>
       <div class="preview__stage">
@@ -71,26 +71,26 @@ export class PreviewOverlay {
       cont.hidden = false;
     } else if (state.kind === 'choice') {
       speaker.style.visibility = 'hidden';
-      text.textContent = state.prompt || '请选择：';
+      text.textContent = state.prompt || 'Choose an option:';
       cont.hidden = true;
       const list = state.choices || [];
       if (!list.length) {
-        text.textContent = '（这里是一个没有选项的选择节点）';
+        text.textContent = '(This Choice node has no options.)';
       }
       list.forEach((c, i) => {
         const b = document.createElement('button');
         b.className = 'preview__choice';
-        b.textContent = c.text || ('选项 ' + (i + 1));
+        b.textContent = c.text || ('Option ' + (i + 1));
         b.addEventListener('click', () => this._render(this.player.choose(i)));
         choices.appendChild(b);
       });
     } else { // end
       speaker.style.visibility = 'hidden';
-      text.innerHTML = `🏁 <b>剧情结束</b>${state.ending ? ' · ' + esc(state.ending) : ''}`;
+      text.innerHTML = `🏁 <b>Story ended</b>${state.ending ? ' · ' + esc(state.ending) : ''}`;
       cont.hidden = true;
       const again = document.createElement('button');
       again.className = 'preview__choice';
-      again.textContent = '↺ 再玩一次';
+      again.textContent = '↺ Play again';
       again.addEventListener('click', () => this._render(this.player.begin()));
       choices.appendChild(again);
     }
@@ -106,9 +106,9 @@ export class PreviewOverlay {
     if (v.hidden) return;
     const entries = Object.entries(this.player.vars);
     v.innerHTML = entries.length
-      ? `<div class="preview__vars-title">当前变量</div>` + entries
+      ? `<div class="preview__vars-title">Current variables</div>` + entries
         .map(([k, val]) => `<div class="preview__var"><span>${esc(k)}</span><b>${esc(String(val))}</b></div>`).join('')
-      : '<div class="preview__var muted">（这段剧情没有变量）</div>';
+      : '<div class="preview__var muted">(This story has no variables.)</div>';
   }
 
   close() {

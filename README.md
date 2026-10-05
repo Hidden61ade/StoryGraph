@@ -2,7 +2,7 @@
 
 StoryGraph is a visual editor for branching narratives. I built it while revising *The Birthday Party* so I could see how a conversation, a collected clue, or a relationship value changes the route through the story.
 
-The editor runs locally in a browser. It has a node canvas, a form-based inspector, a variable panel, and an in-editor story preview. The interface is in Chinese; the revised birthday-party example contains English dialogue.
+The editor runs locally in a browser. It has a node canvas, a form-based inspector, a variable panel, and an in-editor story preview. The interface, help, plugin controls, and optional AI prompts are in English. The revised birthday-party example contains English dialogue; the two earlier examples preserve their original Chinese content.
 
 ## Run locally
 
@@ -12,11 +12,11 @@ No packages need to be installed. With Node.js 20 or later:
 node serve.mjs 8123
 ```
 
-Open `http://localhost:8123`. On Windows, `启动.bat` can also start a local server. The app uses ES modules, so opening `index.html` directly from disk will show startup instructions.
+Open `http://localhost:8123`. On Windows, `launch.bat` can also start a local server; `启动.bat` remains as a compatible launcher. The app uses ES modules, so opening `index.html` directly from disk will show startup instructions.
 
 ## Try the birthday-party example
 
-The app opens `examples/birthday-party-revised.sg`, the revised story source for *The Birthday Party*. It contains 103 nodes, 163 edges, and 16 variables. Choose a node to inspect its text, conditions, or effects. Click **▶ 预览** to play a route, and **🔢 变量** in the preview to inspect its state. **🔍 检查** reports missing connections and undefined variables.
+The app opens `examples/birthday-party-revised.sg`, the revised story source for *The Birthday Party*. It contains 103 nodes, 163 edges, and 16 variables. Choose a node to inspect its text, conditions, or effects. Click **▶ Preview** to play a route, and **🔢 Variables** in the preview to inspect its state. **🔍 Check** reports missing connections and undefined variables.
 
 The first choice gives a short test: accept Adam's friend request to continue the story, or decline it to reach the hidden ending. The graph describes the dialogue route; the preview does not perform the game's operating-system effects.
 

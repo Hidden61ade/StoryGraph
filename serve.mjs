@@ -36,6 +36,6 @@ http.createServer((req, res) => {
     res.end(data);
   });
 }).listen(port, () => {
-  console.log('StoryGraph 本地服务器已启动： http://localhost:' + port + '/index.html');
-  console.log('按 Ctrl+C 停止。');
+  console.log('StoryGraph local server started: http://localhost:' + port + '/index.html');
+  console.log('Press Ctrl+C to stop.');
 });

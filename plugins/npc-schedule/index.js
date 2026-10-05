@@ -6,44 +6,44 @@
 
 export default {
   id: 'npc-schedule',
-  name: 'NPC 日程编辑器',
+  name: 'NPC schedule editor',
 
   setup(api) {
     // ① 注册自定义节点类型（声明式字段 → 检查器自动生成表单；summary → 画布摘要；toEngine → 导出）
     api.nodeTypes.register('npc_day', {
-      label: '日程起点',
+      label: 'Schedule start',
       icon: '🗓',
       color: '#0ea5e9',
-      categoryLabel: '🗓 NPC 日程',
+      categoryLabel: '🗓 NPC schedules',
       hasInput: false,
-      desc: '一个 NPC 在某一天/某种条件下的作息起点。',
-      defaultData: () => ({ npc: '', day: '每天' }),
+      desc: 'The entry point for an NPC schedule on a given day or condition.',
+      defaultData: () => ({ npc: '', day: 'Every day' }),
       fields: [
-        { key: 'npc', label: 'NPC 名称', type: 'text', placeholder: '如：面包师 Sam' },
-        { key: 'day', label: '适用日 / 条件', type: 'text', placeholder: '如：每天 / 周一 / 晴天' },
+        { key: 'npc', label: 'NPC name', type: 'text', placeholder: 'e.g. Sam the baker' },
+        { key: 'day', label: 'Day / condition', type: 'text', placeholder: 'e.g. Every day / Monday / Sunny' },
       ],
       summary: (n, esc) =>
-        `<b>${esc(n.data.npc) || '<span class="node__muted">未命名 NPC</span>'}</b>` +
-        `<div class="node__muted">${esc(n.data.day) || '每天'}</div>`,
-      toEngine: (n, h) => ({ type: 'npc_day', npc: n.data.npc || '', day: n.data.day || '每天', next: h.next('out') }),
+        `<b>${esc(n.data.npc) || '<span class="node__muted">Unnamed NPC</span>'}</b>` +
+        `<div class="node__muted">${esc(n.data.day) || 'Every day'}</div>`,
+      toEngine: (n, h) => ({ type: 'npc_day', npc: n.data.npc || '', day: n.data.day || 'Every day', next: h.next('out') }),
     });
 
     api.nodeTypes.register('time_block', {
-      label: '时段',
+      label: 'Time block',
       icon: '⏰',
       color: '#0d9488',
-      categoryLabel: '🗓 NPC 日程',
+      categoryLabel: '🗓 NPC schedules',
       hasInput: true,
-      desc: '某个时间点，NPC 去哪里、做什么。',
+      desc: 'An activity and location at a specific time.',
       defaultData: () => ({ time: '08:00', activity: '', location: '', anim: '' }),
       fields: [
-        { key: 'time', label: '时间', type: 'time' },
-        { key: 'activity', label: '活动', type: 'text', placeholder: '如：烤面包' },
-        { key: 'location', label: '地点', type: 'text', placeholder: '如：面包房' },
-        { key: 'anim', label: '动作 / 动画（可选）', type: 'text', placeholder: '如：work_bake' },
+        { key: 'time', label: 'Time', type: 'time' },
+        { key: 'activity', label: 'Activity', type: 'text', placeholder: 'e.g. Bake bread' },
+        { key: 'location', label: 'Location', type: 'text', placeholder: 'e.g. Bakery' },
+        { key: 'anim', label: 'Action / animation (optional)', type: 'text', placeholder: 'e.g. work_bake' },
       ],
       summary: (n, esc) =>
-        `<b>${esc(n.data.time) || '--:--'}</b> ${esc(n.data.activity) || '<span class="node__muted">未设活动</span>'}` +
+        `<b>${esc(n.data.time) || '--:--'}</b> ${esc(n.data.activity) || '<span class="node__muted">No activity</span>'}` +
         `${n.data.location ? `<div class="node__muted">📍 ${esc(n.data.location)}</div>` : ''}`,
       toEngine: (n, h) => ({
         type: 'time_block',
@@ -56,36 +56,36 @@ export default {
     // ② 工具栏：一键插入示例日程
     api.toolbar.addButton({
       id: 'npc.sample',
-      label: '🗓 插入 NPC 日程示例',
-      title: '在画布中央生成一个示例 NPC 一天的作息（日程起点 + 若干时段）',
+      label: '🗓 Add NPC sample',
+      title: 'Add an example daily NPC schedule at the center of the canvas',
       run: () => insertSample(api),
     });
 
     // ③ 工具栏：导出 NPC 日程 JSON
     api.toolbar.addButton({
       id: 'npc.export',
-      label: '🗓 导出 NPC 日程',
-      title: '把所有 NPC 日程导出为引擎可读的 JSON',
+      label: '🗓 Export NPC schedule',
+      title: 'Export NPC schedules as JSON for an engine',
       run: () => exportSchedule(api),
     });
 
     // 顺手注册一个校验器：时段时间为空 / 格式不对会提示
     api.validators.register({
       id: 'npc.timecheck',
-      label: 'NPC 日程时间检查',
+      label: 'NPC schedule time check',
       run: (model) => {
         const issues = [];
         for (const n of model.nodes.values()) {
           if (n.type !== 'time_block') continue;
           const t = (n.data.time || '').trim();
-          if (!t) issues.push({ level: 'warn', msg: `[时段]：未填写时间。`, nodeId: n.id });
-          else if (!/^\d{1,2}:\d{2}$/.test(t)) issues.push({ level: 'warn', msg: `[时段] 时间「${t}」格式应为 HH:MM。`, nodeId: n.id });
+          if (!t) issues.push({ level: 'warn', msg: `[Time block]: time is missing.`, nodeId: n.id });
+          else if (!/^\d{1,2}:\d{2}$/.test(t)) issues.push({ level: 'warn', msg: `[Time block]: time ${t} must use HH:MM format.`, nodeId: n.id });
         }
         return issues;
       },
     });
 
-    console.log('[npc-schedule] 已注册日程节点类型与工具按钮。');
+    console.log('[npc-schedule] Schedule node types and toolbar actions registered.');
   },
 };
 
@@ -93,11 +93,11 @@ export default {
 function insertSample(api) {
   const c = api.canvas.viewportCenterContent ? api.canvas.viewportCenterContent() : { x: 200, y: 160 };
   const x0 = Math.round(c.x) - 120, y0 = Math.round(c.y) - 120;
-  const day = api.model.addNode('npc_day', x0, y0, { npc: '面包师 Sam', day: '晴天' });
+  const day = api.model.addNode('npc_day', x0, y0, { npc: 'Sam the baker', day: 'Sunny' });
   const blocks = [
-    { time: '08:00', activity: '开店烤面包', location: '面包房', anim: 'work_bake' },
-    { time: '12:00', activity: '广场吃午饭', location: '镇广场', anim: 'eat' },
-    { time: '18:00', activity: '回家休息', location: '家', anim: 'idle' },
+    { time: '08:00', activity: 'Open the shop and bake bread', location: 'Bakery', anim: 'work_bake' },
+    { time: '12:00', activity: 'Have lunch in the square', location: 'Town square', anim: 'eat' },
+    { time: '18:00', activity: 'Go home and rest', location: 'Home', anim: 'idle' },
   ];
   let prev = day, prevPort = 'out', y = y0;
   const ids = [day.id];
@@ -109,14 +109,14 @@ function insertSample(api) {
     ids.push(node.id);
   }
   if (api.canvas.selectNodes) api.canvas.selectNodes(ids);
-  api.ui.toast('已插入示例 NPC 日程（可继续编辑/插入条件分流）', 'success');
+  api.ui.toast('Added the NPC sample. Edit it or add condition branches.', 'success');
 }
 
 // 导出所有 NPC 日程为 JSON
 function exportSchedule(api) {
   const model = api.model;
   const days = [...model.nodes.values()].filter((n) => n.type === 'npc_day');
-  if (!days.length) { api.ui.toast('没有「日程起点」节点，先插入示例或新建一个', 'error'); return; }
+  if (!days.length) { api.ui.toast('No Schedule start node. Add one or insert the sample first.', 'error'); return; }
 
   const npcs = days.map((day) => {
     const blocks = [];
@@ -140,18 +140,18 @@ function exportSchedule(api) {
         break;
       }
     }
-    return { npc: day.data.npc || '未命名NPC', day: day.data.day || '每天', blocks };
+    return { npc: day.data.npc || 'Unnamed NPC', day: day.data.day || 'Every day', blocks };
   });
 
   const json = JSON.stringify({ schedules: npcs }, null, 2);
   const name = (model.meta.name || 'npc').replace(/[\\/:*?"<>|\s]+/g, '_');
   if (api.ui.download) {
     api.ui.download(json, name + '.npc-schedule.json', 'application/json');
-    api.ui.toast(`已导出 ${npcs.length} 个 NPC 的日程`, 'success');
+    api.ui.toast(`Exported schedules for ${npcs.length} NPCs`, 'success');
   } else {
     const body = document.createElement('div');
     body.innerHTML = `<pre class="export-preview">${escapeHtml(json)}</pre>`;
-    api.ui.openDialog('NPC 日程 JSON', body);
+    api.ui.openDialog('NPC schedules JSON', body);
   }
 }
 

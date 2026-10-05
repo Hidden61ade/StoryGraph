@@ -31,11 +31,11 @@ canvas.onAssetDrop = (assetId, p) => {
   if (!a) return;
   const ids = model.instantiatePrefab(a, p.x, p.y);
   canvas.selectNodes(ids);
-  toast('已放置资产', 'success');
+  toast('Asset placed', 'success');
 };
 // 组「存为组件」→ 存入资产库（可跨工程复用）
 canvas.onGroupSaveAsset = (memberIds, label) => {
-  assetLib.saveFromSelection(memberIds, label || '组件');
+  assetLib.saveFromSelection(memberIds, label || 'Asset');
   switchTab('assets');
 };
 setupSidebarTabs();
@@ -93,11 +93,11 @@ function addToolbarPluginButton(btn) {
 const statusbar = document.getElementById('statusbar');
 function updateStatus() {
   statusbar.innerHTML = `
-    <span class="status__item">📦 节点 ${model.nodes.size}</span>
-    <span class="status__item">🔗 连线 ${model.edges.size}</span>
-    <span class="status__item">🔢 变量 ${model.variables.length}</span>
+    <span class="status__item">📦 Nodes ${model.nodes.size}</span>
+    <span class="status__item">🔗 Edges ${model.edges.size}</span>
+    <span class="status__item">🔢 Variables ${model.variables.length}</span>
     <span class="status__item status__item--right">🔎 ${Math.round(canvas.zoom * 100)}%</span>
-    <span class="status__item">${dirty ? '● 未保存' : '✓ 已同步'}</span>`;
+    <span class="status__item">${dirty ? '● Unsaved' : '✓ Saved'}</span>`;
 }
 model.on('changed', () => { dirty = true; updateStatus(); });
 model.on('viewChanged', updateStatus);
@@ -119,9 +119,9 @@ document.getElementById('fileInput').addEventListener('change', (e) => {
       const result = canvas.autoLayout();
       canvas.fitView();
       dirty = result.count > 0; updateStatus();
-      toast(`已打开并整理 ${result.count} 个节点：${file.name}`, 'success');
+      toast(`Opened ${file.name} and arranged ${result.count} nodes`, 'success');
     } catch (err) {
-      toast('打开失败：文件格式不正确', 'error');
+      toast('Could not open this file. Check its format.', 'error');
     }
   };
   reader.readAsText(file);
@@ -132,7 +132,7 @@ function saveFile() {
   const data = JSON.stringify(model.toJSON(), null, 2);
   download(data, safeName(model.meta.name) + '.sg', 'application/json');
   dirty = false; updateStatus();
-  toast('已保存工程文件', 'success');
+  toast('Project saved', 'success');
 }
 
 // ---------- 导出引擎文件 ----------
@@ -142,26 +142,26 @@ function openExportDialog() {
   const engine = JSON.stringify(toEngineJSON(model), null, 2);
   const body = document.createElement('div');
   body.innerHTML = `
-    <p>选择导出格式，导出后即可交给引擎/程序读取：</p>
+    <p>Choose a format for your engine or interpreter:</p>
     <div class="export-grid">
-      <button class="btn btn--primary" id="expEngine">⬇ 引擎运行时 JSON</button>
-      <button class="btn" id="expUnity">⬇ Unity 数据（.json）</button>
-      <button class="btn" id="expYarn">⬇ Yarn 脚本（.yarn）</button>
+      <button class="btn btn--primary" id="expEngine">⬇ Runtime JSON</button>
+      <button class="btn" id="expUnity">⬇ Unity JSON (.json)</button>
+      <button class="btn" id="expYarn">⬇ Yarn-style text (.yarn)</button>
     </div>
-    ${errors.length ? `<div class="dialog__warn">⚠ 有 ${errors.length} 个错误，建议先「检查」修复，否则引擎可能无法正确运行。</div>` : '<div class="dialog__ok">✓ 未发现致命错误。</div>'}
-    <details class="export-preview"><summary>预览引擎 JSON</summary><pre>${escapeHtml(engine.slice(0, 4000))}${engine.length > 4000 ? '\n…（已截断预览）' : ''}</pre></details>`;
-  const dlg = openDialog('导出', body);
+    ${errors.length ? `<div class="dialog__warn">⚠ ${errors.length} errors found. Use Check to fix them before running the export.</div>` : '<div class="dialog__ok">✓ No structural errors found.</div>'}
+    <details class="export-preview"><summary>Preview runtime JSON</summary><pre>${escapeHtml(engine.slice(0, 4000))}${engine.length > 4000 ? '\n…(Preview truncated)' : ''}</pre></details>`;
+  const dlg = openDialog('Export', body);
   body.querySelector('#expEngine').addEventListener('click', () => {
     download(engine, safeName(model.meta.name) + '.engine.json', 'application/json');
-    toast('已导出引擎 JSON', 'success'); dlg.close();
+    toast('Runtime JSON exported', 'success'); dlg.close();
   });
   body.querySelector('#expUnity').addEventListener('click', () => {
     download(JSON.stringify(toUnityJSON(model), null, 2), safeName(model.meta.name) + '.unity.json', 'application/json');
-    toast('已导出 Unity 数据 JSON（配合 unity/ 里的 C# 脚本使用）', 'success'); dlg.close();
+    toast('Unity JSON exported (use with the C# scripts in unity/)', 'success'); dlg.close();
   });
   body.querySelector('#expYarn').addEventListener('click', () => {
     download(toYarn(model), safeName(model.meta.name) + '.yarn', 'text/plain');
-    toast('已导出 Yarn 脚本', 'success'); dlg.close();
+    toast('Yarn-style text exported', 'success'); dlg.close();
   });
 }
 
@@ -186,13 +186,13 @@ function openExportDialog() {
     for (const entry of pluginManifest.plugins || []) {
       if (entry.enabled === false || disabled.has(entry.id)) continue;
       try { mods.push(await import('../plugins/' + entry.path)); }
-      catch (err) { console.error('插件载入失败：', entry, err); }
+      catch (err) { console.error('Plugin failed to load:', entry, err); }
     }
     await pluginHost.loadAll(mods);
     refreshPalette(); // 插件可能注册了新节点类型
     inspector.render(inspector.selection); // 让已选中节点立即显示插件动作
   } catch (err) {
-    console.error('插件系统初始化失败：', err);
+    console.error('Plugin initialization failed:', err);
   }
 })();
 
@@ -214,17 +214,17 @@ function openPluginsManager() {
     return `<div class="plugin-card">
       <div class="plugin-card__head">
         <span class="plugin-card__name">🧩 ${escapeHtml(p.name || p.id)}</span>
-        <label class="switch"><input type="checkbox" data-plugin="${escapeHtml(p.id)}" ${on ? 'checked' : ''}/><span>${on ? '已启用' : '已停用'}</span></label>
+        <label class="switch"><input type="checkbox" data-plugin="${escapeHtml(p.id)}" ${on ? 'checked' : ''}/><span>${on ? 'Enabled' : 'Disabled'}</span></label>
       </div>
       <div class="plugin-card__desc">${escapeHtml(p.desc || '')}</div>
-      <div class="plugin-card__path">入口：plugins/${escapeHtml(p.path)}</div>
+      <div class="plugin-card__path">Entry: plugins/${escapeHtml(p.path)}</div>
     </div>`;
   }).join('');
   body.innerHTML = `
-    <p class="muted">以下能力都是「插件」——核心不依赖它们也能完整运行。在 <code>plugins/plugins.json</code> 登记新插件即生效。</p>
-    <div class="plugin-cards">${list || '<div class="muted">未发现插件。</div>'}</div>
-    <div class="dialog__ok" style="margin-top:12px">切换启用状态后，页面会重新加载以生效。</div>`;
-  openDialog('🧩 插件管理', body);
+    <p class="muted">These optional plugins extend the editor. Register new plugins in <code>plugins/plugins.json</code>.</p>
+    <div class="plugin-cards">${list || '<div class="muted">No plugins found.</div>'}</div>
+    <div class="dialog__ok" style="margin-top:12px">Changing a plugin reloads the page to apply the setting.</div>`;
+  openDialog('🧩 Plugin manager', body);
   body.querySelectorAll('input[data-plugin]').forEach((cb) => {
     cb.addEventListener('change', () => {
       const set = loadDisabledPlugins();
@@ -240,17 +240,17 @@ function runValidate() {
   const issues = validate(model);
   // 合并插件注册的校验器（如 NPC 日程时间检查）
   for (const v of (pluginHost.validators || [])) {
-    try { issues.push(...(v.run(model) || [])); } catch (e) { console.error('校验器出错：', v.id, e); }
+    try { issues.push(...(v.run(model) || [])); } catch (e) { console.error('Validator failed:', v.id, e); }
   }
   const body = document.createElement('div');
   if (!issues.length) {
-    body.innerHTML = `<div class="dialog__ok">🎉 剧情结构完整，没有发现问题！</div>`;
+    body.innerHTML = `<div class="dialog__ok">🎉 No structural issues found.</div>`;
   } else {
     body.innerHTML = `<ul class="issue-list">${issues.map((i) =>
-      `<li class="issue issue--${i.level}"><span class="issue__tag">${i.level === 'error' ? '错误' : '提醒'}</span>${escapeHtml(i.msg)}</li>`
+      `<li class="issue issue--${i.level}"><span class="issue__tag">${i.level === 'error' ? 'Error' : 'Warning'}</span>${escapeHtml(i.msg)}</li>`
     ).join('')}</ul>`;
   }
-  openDialog('检查结果', body);
+  openDialog('Check results', body);
 }
 
 // ---------- 帮助 ----------
@@ -258,17 +258,17 @@ function openHelp() {
   const body = document.createElement('div');
   body.innerHTML = `
     <ul class="help-list">
-      <li><b>加节点</b>：左侧点击或拖拽「对话/选择…」到画布。</li>
-      <li><b>连线</b>：按住节点右侧的小圆点，拖到下一个节点上松开。</li>
-      <li><b>删连线</b>：点连线中点出现的 ✕。</li>
-      <li><b>编辑</b>：选中节点后，在右侧填空即可（无需写代码）。</li>
-      <li><b>变量</b>：右下角新建好感度等变量，选择节点里可下拉引用。</li>
-      <li><b>移动/缩放</b>：拖空白处平移，滚轮缩放，「全览」回到全貌。</li>
-      <li><b>整理布局</b>：点击「🧹 整理布局」，会按剧情流向分层排开节点，并自动加宽长文本节点。</li>
-      <li><b>保存与导出</b>：工程建议保存为 .sg（也兼容 .json 打开）；发布时导出引擎 JSON。</li>
+      <li><b>Add nodes:</b> click a palette item or drag it onto the canvas.</li>
+      <li><b>Connect:</b> drag an output port to the next node.</li>
+      <li><b>Delete connections:</b> click the ✕ at the center of a connection.</li>
+      <li><b>Edit:</b> select a node and fill in the inspector on the right.</li>
+      <li><b>Variables:</b> add shared values in the lower-right panel, then select them in choices and conditions.</li>
+      <li><b>Pan and zoom:</b> drag the empty canvas, scroll to zoom, or choose Fit view.</li>
+      <li><b>Auto layout:</b> arrange nodes by story flow and widen nodes with long text.</li>
+      <li><b>Save and export:</b> save editable projects as .sg (or open .json), then export Runtime JSON for an interpreter.</li>
     </ul>
-    <p class="muted">快捷键：Ctrl+S 保存 · Ctrl+Z 撤销 · Ctrl+Shift+L 整理布局 · Delete 删除选中。</p>`;
-  openDialog('怎么用', body);
+    <p class="muted">Shortcuts: Ctrl+S save · Ctrl+Z undo · Ctrl+Shift+L auto layout · Delete remove selection.</p>`;
+  openDialog('How to use StoryGraph', body);
 }
 
 // ---------- 载入示例 ----------
@@ -277,25 +277,25 @@ async function loadSample() {
     const res = await fetch('examples/birthday-party-revised.sg');
     if (!res.ok) throw new Error();
     const data = await res.json();
-    if (dirty && !confirm('当前剧情未保存，载入示例会覆盖，确定吗？')) return;
+    if (dirty && !confirm('This story has unsaved changes. Replace it with the example?')) return;
     model.fromJSON(data);
     history.reset();
     const result = canvas.autoLayout();
     canvas.fitView();
     dirty = result.count > 0; updateStatus();
-    toast(`已载入并整理《生日派对》修订剧情（${result.count} 个节点）`, 'success');
+    toast(`Loaded The Birthday Party revised story and arranged ${result.count} nodes`, 'success');
   } catch {
-    toast('载入示例失败（请用本地服务器打开，而非直接双击 html）', 'error');
+    toast('Could not load the example. Open the app through a local server.', 'error');
   }
 }
 
 // ---------- 新建 ----------
 function confirmReset() {
-  if (dirty && !confirm('当前剧情未保存，确定新建空白剧情吗？')) return;
+  if (dirty && !confirm('This story has unsaved changes. Create a blank story?')) return;
   model.reset();
   model.addNode('start', 80, 200);
   dirty = false; updateStatus(); history.reset();
-  toast('已新建空白剧情', 'success');
+  toast('Created a blank story', 'success');
 }
 
 function addCenteredNode(type) {
@@ -307,9 +307,9 @@ function addCenteredNode(type) {
 
 function organizeLayout() {
   const result = canvas.autoLayout();
-  if (!result.count) { toast('当前没有可整理的节点'); return; }
+  if (!result.count) { toast('There are no nodes to arrange.'); return; }
   canvas.fitView();
-  toast(`已按剧情流向整理 ${result.count} 个节点，共 ${result.columns} 列`, 'success');
+  toast(`Arranged ${result.count} nodes by story flow in ${result.columns} columns`, 'success');
 }
 
 // ---------- 选择分发：单选→检查器；多选→组合/存资产面板 ----------
@@ -321,12 +321,12 @@ function handleSelect(sel) {
 function renderMultiInspector(ids) {
   const r = document.getElementById('inspector');
   r.innerHTML = `
-    <div class="panel__title">已选中 ${ids.length} 个节点</div>
-    <div class="panel__hint">可整体拖动；或把它们组合成组、或存成可复用资产（Prefab）。</div>
+    <div class="panel__title">${ids.length} nodes selected</div>
+    <div class="panel__hint">Move these nodes together, group them, or save them as a reusable asset.</div>
     <div class="multi-actions">
-      <button class="add-btn" id="miGroup">🗚 组合成组</button>
-      <button class="add-btn" id="miAsset">📦 存为资产（可复用）</button>
-      <button class="add-btn" id="miClear">取消选择</button>
+      <button class="add-btn" id="miGroup">🗚 Group nodes</button>
+      <button class="add-btn" id="miAsset">📦 Save reusable asset</button>
+      <button class="add-btn" id="miClear">Clear selection</button>
     </div>`;
   r.querySelector('#miGroup').addEventListener('click', groupSelection);
   r.querySelector('#miAsset').addEventListener('click', saveSelectionAsAsset);
@@ -348,21 +348,21 @@ function setupSidebarTabs() {
 // ---------- 预览（像玩 galgame 一样试玩）----------
 function openPreview() {
   const compiled = toEngineJSON(model);
-  if (!compiled.start) { toast('没有起点：请把「开始」节点连到第一句对话', 'error'); return; }
+  if (!compiled.start) { toast('No entry point. Connect Start to the first dialogue node.', 'error'); return; }
   new PreviewOverlay(compiled, {});
 }
 
 // ---------- 组合 / 存为资产 ----------
 function groupSelection() {
   const ids = canvas.getSelectedNodeIds();
-  if (ids.length < 2) { toast('请先框选（或 Shift 多选）至少 2 个节点', 'error'); return; }
-  model.addGroup(ids, '新建组');
-  toast('已组合成组：拖动组标题可整体移动', 'success');
+  if (ids.length < 2) { toast('Select at least two nodes with a selection box or Shift-click.', 'error'); return; }
+  model.addGroup(ids, 'New group');
+  toast('Nodes grouped. Drag the group title to move them together.', 'success');
 }
 function saveSelectionAsAsset() {
   const ids = canvas.getSelectedNodeIds();
-  if (!ids.length) { toast('请先选中（框选 / Shift 多选）要保存的节点', 'error'); return; }
-  promptDialog('给这个可复用资产起个名字', '剧情组件').then((name) => {
+  if (!ids.length) { toast('Select the nodes to save with a selection box or Shift-click.', 'error'); return; }
+  promptDialog('Name this reusable asset', 'Story asset').then((name) => {
     if (name === null) return;
     assetLib.saveFromSelection(ids, name.trim() || undefined);
     switchTab('assets');
@@ -375,8 +375,8 @@ function promptDialog(title, defaultValue = '') {
     const body = document.createElement('div');
     body.innerHTML = `<input class="input" id="pmInput" value="${escapeHtml(defaultValue)}" />
       <div class="export-grid" style="margin-top:14px">
-        <button class="btn btn--primary" id="pmOk">确定</button>
-        <button class="btn" id="pmCancel">取消</button>
+        <button class="btn btn--primary" id="pmOk">Confirm</button>
+        <button class="btn" id="pmCancel">Cancel</button>
       </div>`;
     const dlg = openDialog(title, body);
     const input = body.querySelector('#pmInput');
@@ -447,8 +447,8 @@ function createHistory(model) {
   }
   return {
     reset() { stack = [JSON.stringify(model.toJSON())]; index = 0; },
-    undo() { if (index > 0) { index--; restore(); toast('已撤销'); } },
-    redo() { if (index < stack.length - 1) { index++; restore(); toast('已重做'); } },
+    undo() { if (index > 0) { index--; restore(); toast('Undone'); } },
+    redo() { if (index < stack.length - 1) { index++; restore(); toast('Redone'); } },
   };
 }
 

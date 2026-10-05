@@ -3,17 +3,17 @@
 import { NODE_TYPES, newOption } from '../core/nodeTypes.js';
 
 const OPERATORS_EFFECT = [
-  { v: 'add', t: '增加 (＋)' },
-  { v: 'sub', t: '减少 (－)' },
-  { v: 'set', t: '设为 (＝)' },
+  { v: 'add', t: 'Add (+)' },
+  { v: 'sub', t: 'Subtract (−)' },
+  { v: 'set', t: 'Set (=)' },
 ];
 const OPERATORS_COND = [
-  { v: '>=', t: '大于等于 ≥' },
-  { v: '>', t: '大于 >' },
-  { v: '<=', t: '小于等于 ≤' },
-  { v: '<', t: '小于 <' },
-  { v: '==', t: '等于 =' },
-  { v: '!=', t: '不等于 ≠' },
+  { v: '>=', t: 'At least ≥' },
+  { v: '>', t: 'Greater than >' },
+  { v: '<=', t: 'At most ≤' },
+  { v: '<', t: 'Less than <' },
+  { v: '==', t: 'Equal =' },
+  { v: '!=', t: 'Not equal ≠' },
 ];
 
 export class Inspector {
@@ -36,11 +36,11 @@ export class Inspector {
     const r = this.root;
     if (!selection || selection.type !== 'node') {
       r.innerHTML = `
-        <div class="panel__title">属性</div>
+        <div class="panel__title">Inspector</div>
         <div class="empty-inspector">
           <div class="empty-inspector__emoji">👈</div>
-          <p>选中一个节点即可在这里编辑它的内容。</p>
-          <p class="muted">小贴士：双击空白处可平移画布，滚轮缩放。</p>
+          <p>Select a node to edit its content here.</p>
+          <p class="muted">Tip: drag the empty canvas to pan; scroll to zoom.</p>
         </div>`;
       return;
     }
@@ -50,8 +50,8 @@ export class Inspector {
     r.innerHTML = `
       <div class="panel__title">
         <span class="panel__title-icon" style="color:${def.color}">${def.icon}</span>
-        ${def.label}节点
-        <button class="icon-btn icon-btn--danger" data-act="delete" title="删除该节点（Delete）">🗑</button>
+        ${def.label} node
+        <button class="icon-btn icon-btn--danger" data-act="delete" title="Delete this node (Delete)">🗑</button>
       </div>
       <div class="panel__hint">${def.desc}</div>
       <div class="inspector__form" id="insForm"></div>`;
@@ -72,7 +72,7 @@ export class Inspector {
     sec.className = 'ai-section';
     const title = document.createElement('div');
     title.className = 'ai-section__title';
-    title.textContent = '🤖 AI 助手';
+    title.textContent = '🤖 AI assistant';
     sec.append(title);
     actions.forEach((a) => {
       const b = document.createElement('button');
@@ -80,7 +80,7 @@ export class Inspector {
       b.textContent = a.label;
       if (a.title) b.title = a.title;
       b.addEventListener('click', () => {
-        try { a.run(node); } catch (err) { console.error('[AI 动作出错]', err); }
+        try { a.run(node); } catch (err) { console.error('[AI action failed]', err); }
       });
       sec.append(b);
     });
@@ -90,16 +90,16 @@ export class Inspector {
   _buildForm(form, node) {
     switch (node.type) {
       case 'start':
-        form.append(this._textField('入口名称（可选）', node.data.label, (v) => this._set(node, { label: v })));
+        form.append(this._textField('Entry label (optional)', node.data.label, (v) => this._set(node, { label: v })));
         break;
       case 'dialogue':
         form.append(
-          this._speakerField('说话角色', node.data.speaker, (v) => this._set(node, { speaker: v })),
-          this._textareaField('对话内容', node.data.text, (v) => this._set(node, { text: v }))
+          this._speakerField('Speaker', node.data.speaker, (v) => this._set(node, { speaker: v })),
+          this._textareaField('Dialogue text', node.data.text, (v) => this._set(node, { text: v }))
         );
         break;
       case 'choice':
-        form.append(this._textField('提示语（可选，问题/旁白）', node.data.prompt, (v) => this._set(node, { prompt: v })));
+        form.append(this._textField('Prompt (optional question or narration)', node.data.prompt, (v) => this._set(node, { prompt: v })));
         form.append(this._choiceEditor(node));
         break;
       case 'condition':
@@ -110,11 +110,11 @@ export class Inspector {
         break;
       case 'end':
         form.append(
-          this._textField('结局名称', node.data.ending, (v) => this._set(node, { ending: v })),
+          this._textField('Ending name', node.data.ending, (v) => this._set(node, { ending: v })),
         );
         break;
       case 'note':
-        form.append(this._textareaField('便签内容', node.data.text, (v) => this._set(node, { text: v })));
+        form.append(this._textareaField('Note text', node.data.text, (v) => this._set(node, { text: v })));
         break;
       default:
         this._buildGenericForm(form, node);
@@ -127,7 +127,7 @@ export class Inspector {
     const def = NODE_TYPES[node.type];
     const fields = (def && def.fields) || [];
     if (!fields.length) {
-      form.append(hint('该节点暂无可编辑字段。'));
+      form.append(hint('This node has no editable fields.'));
       return;
     }
     for (const f of fields) {
@@ -160,12 +160,12 @@ export class Inspector {
   // —— 选项编辑（选择节点）——
   _choiceEditor(node) {
     const wrap = el('div', 'editor-block');
-    wrap.append(label('玩家可选的选项'));
+    wrap.append(label('Player options'));
     const list = el('div', 'list');
     (node.data.options || []).forEach((opt, i) => list.append(this._optionRow(node, opt, i)));
     wrap.append(list);
-    const add = button('＋ 添加选项', 'add-btn', () => {
-      const options = [...(node.data.options || []), newOption('新选项')];
+    const add = button('＋ Add option', 'add-btn', () => {
+      const options = [...(node.data.options || []), newOption('New option')];
       this._setStructural(node, { options });
     });
     wrap.append(add);
@@ -176,10 +176,10 @@ export class Inspector {
     const row = el('div', 'list__item');
     const head = el('div', 'list__head');
     head.append(
-      input(opt.text, '选项文字（玩家看到的）', (v) => {
+      input(opt.text, 'Option text shown to the player', (v) => {
         opt.text = v; this._set(node, { options: node.data.options }, true);
       }, 'input input--grow'),
-      iconBtn('🗑', '删除该选项', () => {
+      iconBtn('🗑', 'Delete option', () => {
         const options = node.data.options.filter((_, i) => i !== index);
         this._setStructural(node, { options });
       })
@@ -189,7 +189,7 @@ export class Inspector {
     // 该选项的好感度/变量效果
     const effWrap = el('div', 'sub-list');
     (opt.effects || []).forEach((eff, ei) => effWrap.append(this._effectRow(node, opt, eff, ei)));
-    const addEff = button('＋ 添加效果（如好感度+1）', 'add-btn add-btn--sm', () => {
+    const addEff = button('＋ Add effect (e.g. affection +1)', 'add-btn add-btn--sm', () => {
       opt.effects = [...(opt.effects || []), { var: this._firstVar(), op: 'add', value: '1' }];
       this._setStructural(node, { options: node.data.options });
     });
@@ -203,8 +203,8 @@ export class Inspector {
     row.append(
       varSelect(this.model, eff.var, (v) => { eff.var = v; this._set(node, { options: node.data.options }); }),
       opSelect(OPERATORS_EFFECT, eff.op, (v) => { eff.op = v; this._set(node, { options: node.data.options }); }),
-      input(eff.value, '值', (v) => { eff.value = v; this._set(node, { options: node.data.options }); }, 'input input--num'),
-      iconBtn('✕', '删除效果', () => {
+      input(eff.value, 'Value', (v) => { eff.value = v; this._set(node, { options: node.data.options }); }, 'input input--num'),
+      iconBtn('✕', 'Delete effect', () => {
         opt.effects = opt.effects.filter((_, i) => i !== index);
         this._setStructural(node, { options: node.data.options });
       })
@@ -216,27 +216,27 @@ export class Inspector {
   _conditionEditor(node) {
     const wrap = el('div', 'editor-block');
     const matchRow = el('div', 'field');
-    matchRow.append(label('满足方式'));
+    matchRow.append(label('Match mode'));
     matchRow.append(opSelect(
       [
-        { v: 'all', t: '满足全部条件（且 AND）' },
-        { v: 'any', t: '满足任一条件（或 OR）' },
-        { v: 'nand', t: '并非全部满足（与非 NAND）' },
-        { v: 'nor', t: '全部都不满足（或非 NOR）' },
+        { v: 'all', t: 'All clauses (AND)' },
+        { v: 'any', t: 'Any clause (OR)' },
+        { v: 'nand', t: 'Not all clauses (NAND)' },
+        { v: 'nor', t: 'No clauses (NOR)' },
       ],
       node.data.match, (v) => this._set(node, { match: v })
     ));
     wrap.append(matchRow);
 
-    wrap.append(label('条件'));
+    wrap.append(label('Condition'));
     const list = el('div', 'list');
     (node.data.clauses || []).forEach((c, i) => list.append(this._clauseRow(node, c, i)));
     wrap.append(list);
-    wrap.append(button('＋ 添加条件', 'add-btn', () => {
+    wrap.append(button('＋ Add clause', 'add-btn', () => {
       const clauses = [...(node.data.clauses || []), { var: this._firstVar(), op: '>=', value: '0' }];
       this._setStructural(node, { clauses });
     }));
-    wrap.append(hint('「是」走绿色端口，「否」走红色端口。'));
+    wrap.append(hint('True uses the green port; False uses the red port.'));
     return wrap;
   }
 
@@ -245,8 +245,8 @@ export class Inspector {
     row.append(
       varSelect(this.model, clause.var, (v) => { clause.var = v; this._set(node, { clauses: node.data.clauses }); }),
       opSelect(OPERATORS_COND, clause.op, (v) => { clause.op = v; this._set(node, { clauses: node.data.clauses }); }),
-      input(clause.value, '值', (v) => { clause.value = v; this._set(node, { clauses: node.data.clauses }); }, 'input input--num'),
-      iconBtn('✕', '删除条件', () => {
+      input(clause.value, 'Value', (v) => { clause.value = v; this._set(node, { clauses: node.data.clauses }); }, 'input input--num'),
+      iconBtn('✕', 'Delete clause', () => {
         const clauses = node.data.clauses.filter((_, i) => i !== index);
         this._setStructural(node, { clauses });
       })
@@ -257,11 +257,11 @@ export class Inspector {
   // —— 赋值编辑 ——
   _assignmentEditor(node) {
     const wrap = el('div', 'editor-block');
-    wrap.append(label('要修改的变量'));
+    wrap.append(label('Variable assignments'));
     const list = el('div', 'list');
     (node.data.assignments || []).forEach((a, i) => list.append(this._assignRow(node, a, i)));
     wrap.append(list);
-    wrap.append(button('＋ 添加一条修改', 'add-btn', () => {
+    wrap.append(button('＋ Add assignment', 'add-btn', () => {
       const assignments = [...(node.data.assignments || []), { var: this._firstVar(), op: 'add', value: '1' }];
       this._setStructural(node, { assignments });
     }));
@@ -273,8 +273,8 @@ export class Inspector {
     row.append(
       varSelect(this.model, a.var, (v) => { a.var = v; this._set(node, { assignments: node.data.assignments }); }),
       opSelect(OPERATORS_EFFECT, a.op, (v) => { a.op = v; this._set(node, { assignments: node.data.assignments }); }),
-      input(a.value, '值', (v) => { a.value = v; this._set(node, { assignments: node.data.assignments }); }, 'input input--num'),
-      iconBtn('✕', '删除', () => {
+      input(a.value, 'Value', (v) => { a.value = v; this._set(node, { assignments: node.data.assignments }); }, 'input input--num'),
+      iconBtn('✕', 'Delete', () => {
         const assignments = node.data.assignments.filter((_, i) => i !== index);
         this._setStructural(node, { assignments });
       })
@@ -303,7 +303,7 @@ export class Inspector {
   _speakerField(labelText, value, onChange) {
     const f = el('div', 'field');
     f.append(label(labelText));
-    const inp = input(value, '如：Adam、Lizz、旁白', onChange);
+    const inp = input(value, 'e.g. Adam, Lizz, Narrator', onChange);
     inp.setAttribute('list', 'speakerList');
     // 收集已有说话人作为建议
     const dl = document.getElementById('speakerList') || createDatalist();
@@ -359,7 +359,7 @@ function varSelect(model, value, onChange) {
   const s = document.createElement('select');
   s.className = 'select select--var';
   const opts = model.variables.map((v) => `<option value="${v.name}" ${v.name === value ? 'selected' : ''}>${v.name}</option>`).join('');
-  s.innerHTML = `<option value="" ${!value ? 'selected' : ''}>选择变量…</option>` + opts;
+  s.innerHTML = `<option value="" ${!value ? 'selected' : ''}>Select a variable…</option>` + opts;
   s.addEventListener('change', () => onChange(s.value));
   return s;
 }

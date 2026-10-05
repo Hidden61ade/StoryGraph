@@ -1,102 +1,89 @@
-# StoryGraph 插件开发规范
+# StoryGraph plugin guide
 
-StoryGraph 的「非核心」能力都是插件。核心通过 `PluginHost` 暴露一组**稳定的扩展点**，
-插件只碰这个 `api`，不直接触碰核心内部——这样核心可以独立演进，插件也能独立增删。
+Optional capabilities extend the editor through `PluginHost`. Plugins use the public `api` instead of changing core internals. The included examples are `npc-schedule/` and `ai-deepseek/`.
 
-> 本目录已内置两个示范：`npc-schedule/`（注册新节点类型，做 NPC 日程）与 `ai-deepseek/`（AI 增强）。
+## Register a plugin
 
----
-
-## 一、一个插件长什么样
-
-插件是 `plugins/` 下的一个 ES Module，默认导出一个含 `setup(api)` 的对象：
+Create an ES module under `plugins/` with a default export containing `setup(api)`:
 
 ```js
-// plugins/my-plugin/index.js
 export default {
-  id: 'my-plugin',         // 唯一 id
-  name: '我的插件',         // 显示在「🧩 插件」管理面板
+  id: 'my-plugin',
+  name: 'My plugin',
   setup(api) {
-    // 在这里用 api 注册扩展点（见下）
+    // Register node types, actions, toolbar buttons, or validators here.
   },
 };
 ```
 
-然后在 `plugins/plugins.json` 登记即生效：
+Add an entry to `plugins/plugins.json`:
 
-```jsonc
+```json
 {
   "plugins": [
-    { "id": "my-plugin", "name": "我的插件", "path": "my-plugin/index.js", "enabled": true,
-      "desc": "一句话说明，显示在插件管理面板里。" }
+    {
+      "id": "my-plugin",
+      "name": "My plugin",
+      "path": "my-plugin/index.js",
+      "enabled": true,
+      "desc": "A short description shown in the plugin manager."
+    }
   ]
 }
 ```
 
-启动时 `main.js` 读清单 → 动态 `import()` → `host.loadAll()`。用户在「🧩 插件」面板停用的插件记在
-`localStorage`，下次不加载。**核心没有任何插件也能完整运行。**
+`main.js` reads this manifest, imports enabled modules, and calls `host.loadAll()`. The plugin manager stores disabled IDs in browser `localStorage`; changing a setting reloads the page. Core story editing, preview, checking, and export work without either included plugin. A graph using custom node types still needs those type definitions to edit or export them correctly.
 
----
+## API reference
 
-## 二、api 扩展点速查
-
-| 扩展点 | 用途 |
+| Extension point | Purpose |
 | --- | --- |
-| `api.nodeTypes.register(type, def)` | **注册全新节点类型**（让节点图不只能编剧情）。 |
-| `api.actions.addNodeAction({ id, label, title?, when(node)?, run(node) })` | 在检查器里给某类节点加按钮（如 AI 润色）。 |
-| `api.toolbar.addButton({ id, label, title?, run() })` | 在顶栏「🧩 插件」区加一个按钮。 |
-| `api.validators.register({ id, label, run(model) -> issues[] })` | 加自定义校验，结果并入「🔍 检查」。 |
-| `api.model` | 唯一数据源：增删节点/连线/变量、`targetOf(id, port)` 等。 |
-| `api.canvas` | `viewportCenterContent()`、`selectNodes(ids)` 等。 |
-| `api.ui` | `toast` / `openDialog` / `confirm` / `download` / `prompt`。 |
-| `api.context.memory()` | 读取 `src/context/MEMORY.md`（角色圣经）。 |
-| `api.config` | 读取 `config.local.json`（如 AI 的 apiKey）。 |
-| `api.refresh()` | 改完节点数据后让检查器重渲染。 |
+| `api.nodeTypes.register(type, def)` | Register a node type. |
+| `api.actions.addNodeAction({ id, label, title?, when(node)?, run(node) })` | Add an inspector action for matching nodes. |
+| `api.toolbar.addButton({ id, label, title?, run() })` | Add a toolbar action. |
+| `api.validators.register({ id, label, run(model) })` | Return issues for the Check dialog. |
+| `api.model` | Read and change nodes, edges, groups, and variables. |
+| `api.canvas` | Select nodes or obtain the viewport center. |
+| `api.ui` | Show toasts and dialogs, ask for input, or download output. |
+| `api.context.memory()` | Read `src/context/MEMORY.md`. |
+| `api.config` | Access the current local configuration. |
+| `api.refresh()` | Rebuild the inspector after changing node data. |
 
----
+Validators return an array of `{ level: 'error' | 'warn', msg, nodeId? }` objects.
 
-## 三、注册自定义节点类型（重点）
+## Define a node type
 
-`def` 用**声明式**描述，检查器据此自动生成表单、画布据此渲染摘要、导出器据此编译——插件无需写任何 DOM：
+The canvas, palette, inspector, and exporters use declarative definitions. A plugin can supply fields and a summary without creating a separate editor UI:
 
 ```js
-api.nodeTypes.register('time_block', {
-  label: '时段',                 // 显示名
-  icon: '⏰',                    // 图标
-  color: '#0d9488',              // 主题色
-  categoryLabel: '🗓 NPC 日程',  // 调色板分组标题
-  hasInput: true,                // 是否有输入口
-  // terminal: true,             // 无输出口（如「结局」类）
-  // ports: (node) => [{ id:'out', label:'' }],  // 自定义多输出口（默认单 out）
-
+api.nodeTypes.register('my-plugin.time_block', {
+  label: 'Time block',
+  icon: '⏰',
+  color: '#0d9488',
+  categoryLabel: 'NPC schedules',
+  hasInput: true,
   defaultData: () => ({ time: '08:00', activity: '', location: '' }),
-
-  // 声明式表单：type 支持 text / textarea / number / time / select / var
   fields: [
-    { key: 'time', label: '时间', type: 'time' },
-    { key: 'activity', label: '活动', type: 'text', placeholder: '如：烤面包' },
-    { key: 'location', label: '地点', type: 'text' },
+    { key: 'time', label: 'Time', type: 'time' },
+    { key: 'activity', label: 'Activity', type: 'text', placeholder: 'e.g. Bake bread' },
+    { key: 'location', label: 'Location', type: 'text' },
   ],
-
-  // 画布上的摘要（第二参是 HTML 转义函数）
   summary: (node, esc) => `<b>${esc(node.data.time)}</b> ${esc(node.data.activity)}`,
-
-  // 导出为引擎运行时节点；h.next(port) 取该端口连到的目标 id
   toEngine: (node, h) => ({
-    type: 'time_block', time: node.data.time, activity: node.data.activity,
-    location: node.data.location, next: h.next('out'),
+    type: 'my-plugin.time_block',
+    ...node.data,
+    next: h.next('out'),
   }),
 });
 ```
 
-注册后，这个类型会自动出现在左侧调色板（按 `categoryLabel` 分组），可拖拽、可连线、可校验、可导出，
-与内置节点完全平权。
+Supported field types are `text`, `textarea`, `number`, `time`, `select`, and `var`. A node has a single `out` port by default. Set `terminal: true` for no outputs, or define `ports(node)` to return custom `{ id, label }` ports. The exporter helpers provide `h.next(port)` and `h.coerce(variableName, rawValue)`.
 
----
+Custom runtime types require an interpreter that knows their behavior. Registering a node and exporter does not add that behavior to the browser story preview or the Unity interpreter automatically.
 
-## 四、设计约定
+## Included plugins and boundaries
 
-- **优雅降级**：插件出错不应让工具崩溃。涉及网络/Key 的（如 AI）要 try/catch 并用 `api.ui` 给友好提示。
-- **只通过 api**：不要 import 核心内部文件去改私有状态；只用 `api.model` 等公开入口。
-- **可停用**：任何插件都应能被关掉而不影响核心编辑/导出。
-- **命名空间**：节点类型、按钮 id 建议带插件前缀，避免与其他插件冲突。
+- **NPC schedules:** adds `npc_day` and `time_block` nodes, a sample, time-format checks, and schedule export. The schedule exporter follows one branch through conditions and skips assignment nodes; it is a configuration example rather than a complete conditional schedule runtime.
+- **DeepSeek assistant:** uses English prompts and the project notes to suggest dialogue and choices or review consistency. It requires your own key in `config.local.json`. Requests send selected text and the project notes to the configured provider. Suggestions need an author’s review; the core editor remains usable when requests fail.
+
+Catch network errors and show useful messages through `api.ui`. Use the API rather than importing private core internals. Prefix custom type and action IDs to avoid collisions with other plugins.

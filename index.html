@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>StoryGraph · 剧情节点编辑器</title>
+  <title>StoryGraph · Narrative editor</title>
   <link rel="stylesheet" href="src/ui/styles.css" />
 </head>
 <body>
@@ -16,8 +16,8 @@
       </main>
       <aside class="sidebar">
         <div class="sidebar__tabs" id="sidebarTabs">
-          <button class="tab is-active" data-tab="inspector">属性</button>
-          <button class="tab" data-tab="assets">资产库</button>
+          <button class="tab is-active" data-tab="inspector">Inspector</button>
+          <button class="tab" data-tab="assets">Assets</button>
         </div>
         <section class="panel" id="inspector"></section>
         <section class="panel" id="assets" hidden></section>
@@ -40,16 +40,16 @@
         if (window.__sgBooted) return;
         document.body.innerHTML =
           '<div style="max-width:680px;margin:8vh auto;padding:32px 36px;font-family:\'Segoe UI\',system-ui,sans-serif;color:#1f2740;background:#fff;border-radius:16px;box-shadow:0 10px 40px rgba(20,28,56,.12)">' +
-          '<h1 style="margin:0 0 4px;font-size:22px">StoryGraph 需要通过本地服务器打开</h1>' +
-          '<p style="color:#8b93a7;margin:0 0 20px">浏览器安全策略不允许从 <code>file://</code> 直接运行本应用（这就是双击打开后空白的原因）。一键启动即可：</p>' +
+          '<h1 style="margin:0 0 4px;font-size:22px">Open StoryGraph through a local server</h1>' +
+          '<p style="color:#8b93a7;margin:0 0 20px">Browser security blocks ES modules opened directly from <code>file://</code>. Start a local server to use the editor:</p>' +
           '<div style="background:#f4f6fb;border-radius:12px;padding:18px 20px;margin-bottom:16px">' +
-          '<div style="font-weight:800;margin-bottom:6px">✅ 推荐：双击 <code>启动.bat</code></div>' +
-          '<div style="color:#58607a;font-size:14px;line-height:1.7">就在本文件同一个文件夹里。它会自动开启本地服务器并打开浏览器。</div>' +
+          '<div style="font-weight:800;margin-bottom:6px">✅ Windows: double-click <code>launch.bat</code></div>' +
+          '<div style="color:#58607a;font-size:14px;line-height:1.7">The launcher is in this folder. It starts a local server and opens your browser.</div>' +
           '</div>' +
           '<div style="background:#f4f6fb;border-radius:12px;padding:18px 20px">' +
-          '<div style="font-weight:800;margin-bottom:6px">或：手动命令行启动</div>' +
-          '<pre style="margin:8px 0 0;background:#0f1730;color:#cdd6f4;padding:12px 14px;border-radius:8px;font-size:13px;overflow:auto">cd StoryGraph\npython -m http.server 8123\n# 然后浏览器打开 http://localhost:8123</pre>' +
-          '<div style="color:#58607a;font-size:13px;margin-top:8px">没有 Python？改用 <code>node serve.mjs 8123</code>（仅需 Node.js，无需联网）。</div>' +
+          '<div style="font-weight:800;margin-bottom:6px">Or start it from a terminal</div>' +
+          '<pre style="margin:8px 0 0;background:#0f1730;color:#cdd6f4;padding:12px 14px;border-radius:8px;font-size:13px;overflow:auto">cd StoryGraph\npython -m http.server 8123\n# Then open http://localhost:8123 in your browser</pre>' +
+          '<div style="color:#58607a;font-size:13px;margin-top:8px">Alternatively, use <code>node serve.mjs 8123</code> (Node.js only; no package installation needed).</div>' +
           '</div>' +
           '</div>';
       }, 1800);

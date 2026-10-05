@@ -110,7 +110,7 @@ export function toEngineJSON(model) {
     }
   }
 
-  return { name: model.meta.name || '未命名剧情', variables, start, nodes };
+  return { name: model.meta.name || 'Untitled story', variables, start, nodes };
 }
 
 /**
@@ -194,7 +194,7 @@ export function toUnityJSON(model) {
     }
   }
 
-  return { name: model.meta.name || '未命名剧情', start, variables, nodes };
+  return { name: model.meta.name || 'Untitled story', start, variables, nodes };
 }
 
 /**
@@ -209,11 +209,11 @@ export function toYarn(model) {
     lines.push(`title: ${title(node.id)}`);
     lines.push('---');
     if (node.type === 'dialogue') {
-      lines.push(`${node.data.speaker || '旁白'}: ${node.data.text || ''}`);
+      lines.push(`${node.data.speaker || 'Narrator'}: ${node.data.text || ''}`);
       const next = model.targetOf(node.id, 'out');
       if (next) lines.push(`<<jump ${title(next)}>>`);
     } else if (node.type === 'choice') {
-      if (node.data.prompt) lines.push(`旁白: ${node.data.prompt}`);
+      if (node.data.prompt) lines.push(`Narrator: ${node.data.prompt}`);
       for (const o of node.data.options || []) {
         const next = model.targetOf(node.id, o.id);
         lines.push(`-> ${o.text}`);
@@ -242,7 +242,7 @@ export function toYarn(model) {
       const next = model.targetOf(node.id, 'out');
       if (next) lines.push(`<<jump ${title(next)}>>`);
     } else if (node.type === 'end') {
-      lines.push(`旁白: 【结局：${node.data.ending || node.data.label || ''}】`);
+      lines.push(`Narrator: [Ending: ${node.data.ending || node.data.label || ''}]`);
     }
     lines.push('===', '');
   }
@@ -265,33 +265,33 @@ export function toYarn(model) {
 export function validate(model) {
   const issues = [];
   const starts = [...model.nodes.values()].filter((n) => n.type === 'start');
-  if (starts.length === 0) issues.push({ level: 'error', msg: '缺少「开始」节点，剧情没有入口。' });
-  if (starts.length > 1) issues.push({ level: 'warn', msg: `有 ${starts.length} 个「开始」节点，导出时只会用其中一个。` });
+  if (starts.length === 0) issues.push({ level: 'error', msg: 'Missing Start node: the story has no entry point.' });
+  if (starts.length > 1) issues.push({ level: 'warn', msg: `There are ${starts.length} Start nodes. Only one is used during export.` });
 
   const varNames = new Set(model.variables.map((v) => v.name));
 
   for (const node of model.nodes.values()) {
     const name = nodeName(node);
     if (node.type === 'dialogue') {
-      if (!node.data.text) issues.push({ level: 'warn', msg: `${name}：对话内容为空。`, nodeId: node.id });
-      if (!model.targetOf(node.id, 'out')) issues.push({ level: 'warn', msg: `${name}：没有连向下一步。`, nodeId: node.id });
+      if (!node.data.text) issues.push({ level: 'warn', msg: `${name}: dialogue text is empty.`, nodeId: node.id });
+      if (!model.targetOf(node.id, 'out')) issues.push({ level: 'warn', msg: `${name}: no connection to the next step.`, nodeId: node.id });
     }
     if (node.type === 'choice') {
       (node.data.options || []).forEach((o, i) => {
         if (!model.targetOf(node.id, o.id)) {
-          issues.push({ level: 'warn', msg: `${name}：选项「${o.text || '#' + (i + 1)}」是断头路。`, nodeId: node.id });
+          issues.push({ level: 'warn', msg: `${name}: option ${o.text || '#' + (i + 1)} leads to a dead end.`, nodeId: node.id });
         }
         (o.effects || []).forEach((e) => checkVar(e.var, name));
       });
     }
     if (node.type === 'condition') {
-      if (!model.targetOf(node.id, 'true')) issues.push({ level: 'warn', msg: `${name}：「是」分支未连接。`, nodeId: node.id });
-      if (!model.targetOf(node.id, 'false')) issues.push({ level: 'warn', msg: `${name}：「否」分支未连接。`, nodeId: node.id });
+      if (!model.targetOf(node.id, 'true')) issues.push({ level: 'warn', msg: `${name}: True branch is not connected.`, nodeId: node.id });
+      if (!model.targetOf(node.id, 'false')) issues.push({ level: 'warn', msg: `${name}: False branch is not connected.`, nodeId: node.id });
       (node.data.clauses || []).forEach((c) => checkVar(c.var, name));
     }
     if (node.type === 'setvar') {
       (node.data.assignments || []).forEach((a) => checkVar(a.var, name));
-      if (!model.targetOf(node.id, 'out')) issues.push({ level: 'warn', msg: `${name}：没有连向下一步。`, nodeId: node.id });
+      if (!model.targetOf(node.id, 'out')) issues.push({ level: 'warn', msg: `${name}: no connection to the next step.`, nodeId: node.id });
     }
   }
 
@@ -310,7 +310,7 @@ export function validate(model) {
     for (const node of model.nodes.values()) {
       if (node.type === 'note') continue;
       if (!reachable.has(node.id)) {
-        issues.push({ level: 'warn', msg: `${nodeName(node)}：从开始无法到达（孤立节点）。`, nodeId: node.id });
+        issues.push({ level: 'warn', msg: `${nodeName(node)}: unreachable from Start (isolated node).`, nodeId: node.id });
       }
     }
   }
@@ -318,7 +318,7 @@ export function validate(model) {
   return issues;
 
   function checkVar(v, name) {
-    if (v && !varNames.has(v)) issues.push({ level: 'error', msg: `${name}：使用了未定义的变量「${v}」。`, nodeId: undefined });
+    if (v && !varNames.has(v)) issues.push({ level: 'error', msg: `${name}: undefined variable ${v}.`, nodeId: undefined });
   }
   function nodeName(node) {
     const label = node.data.label || node.data.speaker || node.data.ending || '';
@@ -327,7 +327,7 @@ export function validate(model) {
 }
 
 function typeLabel(type) {
-  return { start: '开始', dialogue: '对话', choice: '选择', condition: '条件', setvar: '赋值', end: '结局', note: '便签' }[type] || type;
+  return { start: 'Start', dialogue: 'Dialogue', choice: 'Choice', condition: 'Condition', setvar: 'Assignment', end: 'Ending', note: 'Note' }[type] || type;
 }
 
 // 给 UI 复用的运算符符号

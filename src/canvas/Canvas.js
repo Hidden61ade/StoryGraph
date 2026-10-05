@@ -35,9 +35,9 @@ export class Canvas {
       </div>
       <div class="canvas__hint">
         <div class="canvas__hint-emoji">🎬</div>
-        <h2>开始编织你的剧情</h2>
-        <p>从左侧把「开始 / 对话 / 选择」拖进来，或点击它们。<br>
-        拖动节点右侧的小圆点连到下一个节点。</p>
+        <h2>Build your story</h2>
+        <p>Drag Start, Dialogue, or Choice from the palette, or click to add.<br>
+        Drag a node’s output port to the next node to connect them.</p>
       </div>`;
     this.content = root.querySelector('.canvas__content');
     this.svg = root.querySelector('.canvas__edges');
@@ -145,7 +145,7 @@ export class Canvas {
 
   _nodeInner(node, def) {
     const input = def.hasInput
-      ? `<div class="node__port node__port--in" data-port-in title="上一步接到这里"></div>`
+      ? `<div class="node__port node__port--in" data-port-in title="Connect the previous step here"></div>`
       : '';
     const title = node.data.label && (node.type === 'start' || node.type === 'end')
       ? `${def.label} · ${esc(node.data.label)}`
@@ -157,54 +157,54 @@ export class Canvas {
         <span class="node__title">${esc(title)}</span>
       </div>
       <div class="node__body">${this._nodeBody(node)}</div>
-      <div class="node__resize" data-resize title="拖动调整节点大小"></div>`;
+      <div class="node__resize" data-resize title="Drag to resize the node"></div>`;
   }
 
   _nodeBody(node) {
     const outPort = (id, extra = '') =>
-      `<div class="node__port node__port--out ${extra}" data-port="${id}" title="拖动连线到下一个节点"></div>`;
+      `<div class="node__port node__port--out ${extra}" data-port="${id}" title="Drag to connect to the next node"></div>`;
 
     switch (node.type) {
       case 'start':
-        return `<div class="node__single">${outPort('out')}<span class="node__hint-text">剧情从这里开始</span></div>`;
+        return `<div class="node__single">${outPort('out')}<span class="node__hint-text">The story starts here</span></div>`;
       case 'dialogue':
         return `
           <div class="node__single">
-            ${node.data.speaker ? `<span class="node__speaker">${esc(node.data.speaker)}</span>` : `<span class="node__speaker node__speaker--empty">未命名角色</span>`}
+            ${node.data.speaker ? `<span class="node__speaker">${esc(node.data.speaker)}</span>` : `<span class="node__speaker node__speaker--empty">Unnamed speaker</span>`}
             ${outPort('out')}
           </div>
-          <div class="node__text">${esc(node.data.text) || '<span class="node__muted">（空对话，点此在右侧编辑）</span>'}</div>`;
+          <div class="node__text">${esc(node.data.text) || '<span class="node__muted">(Empty dialogue; select to edit)</span>'}</div>`;
       case 'choice': {
         const prompt = node.data.prompt ? `<div class="node__text node__prompt">${esc(node.data.prompt)}</div>` : '';
         const rows = (node.data.options || []).map((o) => `
           <div class="node__row">
-            <span class="node__row-text">${esc(o.text) || '<span class="node__muted">空选项</span>'}</span>
+            <span class="node__row-text">${esc(o.text) || '<span class="node__muted">Empty option</span>'}</span>
             ${(o.effects || []).map(badge).join('')}
             ${outPort(o.id)}
           </div>`).join('');
-        return prompt + `<div class="node__rows">${rows || '<div class="node__muted">暂无选项</div>'}</div>`;
+        return prompt + `<div class="node__rows">${rows || '<div class="node__muted">No options</div>'}</div>`;
       }
       case 'condition': {
         const m = node.data.match || 'all';
-        const sep = (m === 'any' || m === 'nor') ? ' <b>或</b> ' : ' <b>且</b> ';
+        const sep = (m === 'any' || m === 'nor') ? ' <b>OR</b> ' : ' <b>AND</b> ';
         const clauses = (node.data.clauses || []).map(clauseText).join(sep);
-        const modeLabel = { all: '且 AND', any: '或 OR', nand: '与非 NAND', nor: '或非 NOR' }[m];
+        const modeLabel = { all: 'AND', any: 'OR', nand: 'NAND', nor: 'NOR' }[m];
         const negated = (m === 'nand' || m === 'nor');
         const body = clauses
-          ? (negated ? `<span class="node__cond-neg">非（</span>${clauses}<span class="node__cond-neg">）</span>` : clauses)
-          : '<span class="node__muted">未设置条件</span>';
+          ? (negated ? `<span class="node__cond-neg">NOT (</span>${clauses}<span class="node__cond-neg">)</span>` : clauses)
+          : '<span class="node__muted">No clauses</span>';
         return `
           <div class="node__cond-mode">${modeLabel}</div>
           <div class="node__text node__cond">${body}</div>
-          <div class="node__row node__row--true"><span class="node__row-text">是 →</span>${outPort('true', 'node__port--true')}</div>
-          <div class="node__row node__row--false"><span class="node__row-text">否 →</span>${outPort('false', 'node__port--false')}</div>`;
+          <div class="node__row node__row--true"><span class="node__row-text">True →</span>${outPort('true', 'node__port--true')}</div>
+          <div class="node__row node__row--false"><span class="node__row-text">False →</span>${outPort('false', 'node__port--false')}</div>`;
       }
       case 'setvar': {
-        const items = (node.data.assignments || []).map(badge).join('') || '<span class="node__muted">未设置</span>';
+        const items = (node.data.assignments || []).map(badge).join('') || '<span class="node__muted">Not set</span>';
         return `<div class="node__single"><div class="node__badges">${items}</div>${outPort('out')}</div>`;
       }
       case 'end':
-        return `<div class="node__text">${node.data.ending ? '🏁 ' + esc(node.data.ending) : '<span class="node__muted">结束（可在右侧命名结局）</span>'}</div>`;
+        return `<div class="node__text">${node.data.ending ? '🏁 ' + esc(node.data.ending) : '<span class="node__muted">End (name the ending in the inspector)</span>'}</div>`;
       case 'note':
         return `<div class="node__note">${esc(node.data.text) || ''}</div>`;
       default:
@@ -219,7 +219,7 @@ export class Canvas {
     const summary = def.summary ? def.summary(node, esc) : '';
     const ports = outputPorts(node);
     if (ports.length === 0) {
-      return `<div class="node__text">${summary || '<span class="node__muted">（无输出）</span>'}</div>`;
+      return `<div class="node__text">${summary || '<span class="node__muted">(No output)</span>'}</div>`;
     }
     if (ports.length === 1 && !ports[0].label) {
       return `<div class="node__single"><div class="node__text">${summary || ''}</div>${outPort(ports[0].id)}</div>`;
@@ -445,7 +445,7 @@ export class Canvas {
     menu.className = 'node-menu';
     const order = ['dialogue', 'choice', 'condition', 'setvar', 'end'];
     menu.innerHTML =
-      `<div class="node-menu__title">在此新建并连接</div>` +
+      `<div class="node-menu__title">Create and connect here</div>` +
       order.map((type) => {
         const def = NODE_TYPES[type];
         return `<button class="node-menu__item" data-type="${type}" style="--node-color:${def.color}">
@@ -456,7 +456,7 @@ export class Canvas {
           </span>
         </button>`;
       }).join('') +
-      `<button class="node-menu__item node-menu__item--cancel" data-type="">✕ 取消</button>`;
+      `<button class="node-menu__item node-menu__item--cancel" data-type="">✕ Cancel</button>`;
     document.body.appendChild(menu);
     this._nodeMenu = menu;
 
@@ -746,11 +746,11 @@ export class Canvas {
       div.style.height = rect.h + 'px';
       div.style.setProperty('--group-color', g.color || '#64748b');
       div.innerHTML = `<div class="group__bar" data-group-bar>
-        <span class="group__label">${esc(g.label || '组')}</span>
+        <span class="group__label">${esc(g.label || 'Group')}</span>
         <span class="group__ops">
-          <button class="group__btn" data-group-collapse title="折叠为组件（像 UE 蓝图那样收成一个节点）">⊟</button>
-          <button class="group__btn" data-group-saveasset title="把这个组存成可复用组件（资产库）">📦</button>
-          <button class="group__btn" data-group-ungroup title="解散组（保留节点）">✕</button>
+          <button class="group__btn" data-group-collapse title="Collapse the group into one node">⊟</button>
+          <button class="group__btn" data-group-saveasset title="Save this group as a reusable asset">📦</button>
+          <button class="group__btn" data-group-ungroup title="Ungroup while keeping the nodes">✕</button>
         </span></div>`;
       div.querySelector('[data-group-collapse]').addEventListener('click', (ev) => { ev.stopPropagation(); this.collapseGroup(g.id); });
       div.querySelector('[data-group-saveasset]').addEventListener('click', (ev) => { ev.stopPropagation(); this.onGroupSaveAsset?.(g.members.slice(), g.label); });
@@ -771,18 +771,18 @@ export class Canvas {
     div.style.width = COLLAPSE_W + 'px';
     div.style.height = COLLAPSE_H + 'px';
     div.style.setProperty('--group-color', g.color || '#64748b');
-    div.title = '双击展开组件';
+    div.title = 'Double-click to expand';
     div.innerHTML = `
       <div class="group__cport group__cport--in"></div>
       <div class="group__cbar" data-group-collapsedbar>
         <span class="group__cicon">🧩</span>
-        <span class="group__label">${esc(g.label || '组件')}</span>
+        <span class="group__label">${esc(g.label || 'Asset')}</span>
         <span class="group__ops">
-          <button class="group__btn" data-group-saveasset title="存为可复用组件（资产库）">📦</button>
-          <button class="group__btn" data-group-expand title="展开组件">⤢</button>
+          <button class="group__btn" data-group-saveasset title="Save as a reusable asset">📦</button>
+          <button class="group__btn" data-group-expand title="Expand group">⤢</button>
         </span>
       </div>
-      <div class="group__cmeta">${g.members.length} 个节点 · 折叠为组件</div>
+      <div class="group__cmeta">${g.members.length} nodes · collapsed group</div>
       <div class="group__cport group__cport--out"></div>`;
     div.querySelector('[data-group-expand]').addEventListener('click', (ev) => { ev.stopPropagation(); this.expandGroup(g.id); });
     div.querySelector('[data-group-saveasset]').addEventListener('click', (ev) => { ev.stopPropagation(); this.onGroupSaveAsset?.(g.members.slice(), g.label); });
