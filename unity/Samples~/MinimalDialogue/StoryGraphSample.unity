@@ -146,7 +146,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5fc514a2d9eae3b44821800644edc24f, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::StoryGraphSample
   story: {fileID: -2663366898902896103, guid: de02e69f4ea9d3c4987055ce354697f9, type: 3}
 --- !u!4 &941388514
